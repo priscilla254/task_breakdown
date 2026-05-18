@@ -1,0 +1,203 @@
+import { useCallback, useEffect, useState } from "react";
+import {
+  appendTaskLog,
+  createTask,
+  fetchTasks,
+  updateProjectStart,
+  updateTask,
+} from "./api";
+import GanttChart from "./GanttChart";
+import TaskTable from "./TaskTable";
+import TaskEditor from "./TaskEditor";
+import TaskLogView from "./TaskLogView";
+import AddTaskModal from "./AddTaskModal";
+
+export default function App() {
+  const [tasks, setTasks] = useState([]);
+  const [projectStart, setProjectStart] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [view, setView] = useState("gantt");
+  const [logTask, setLogTask] = useState(null);
+  const [editingTask, setEditingTask] = useState(null);
+  const [showAddTask, setShowAddTask] = useState(false);
+
+  const load = useCallback(async () => {
+    try {
+      setError(null);
+      const taskData = await fetchTasks();
+      setTasks(taskData.tasks);
+      setProjectStart(taskData.project_start);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  useEffect(() => {
+    if (!logTask) return;
+    const fresh = tasks.find((t) => t.id === logTask.id);
+    if (fresh) setLogTask(fresh);
+  }, [tasks, logTask?.id]);
+
+  useEffect(() => {
+    if (!editingTask) return;
+    const fresh = tasks.find((t) => t.id === editingTask.id);
+    if (fresh) setEditingTask(fresh);
+  }, [tasks, editingTask?.id]);
+
+  const handleProjectStart = async (value) => {
+    try {
+      await updateProjectStart(value);
+      await load();
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const handleTaskUpdate = async (id, payload) => {
+    try {
+      await updateTask(id, payload);
+      await load();
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const handleAppendLog = async (id, message) => {
+    const result = await appendTaskLog(id, message);
+    await load();
+    return result.task;
+  };
+
+  const openLog = (task) => setLogTask(task);
+  const openEditor = (task) => setEditingTask(task);
+
+  const handleCreateTask = async (payload) => {
+    await createTask(payload);
+    await load();
+  };
+
+  const projectEnd = tasks.length
+    ? (tasks[tasks.length - 1].end || "").slice(0, 10)
+    : "—";
+  const totalHours = tasks.reduce((s, t) => s + (t.hours || 0), 0);
+
+  if (loading) {
+    return <div className="app-shell loading">Loading project schedule…</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="app-shell">
+        <div className="error-banner">{error}</div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {!logTask && (
+        <div className="app-shell">
+          <header className="app-header">
+            <div>
+              <h1>
+                Data science and Innovation <span>Phase 1</span>
+              </h1>
+              <p>Excel → database → API → Power BI rollout</p>
+            </div>
+            <div className="toolbar">
+              <label>
+                Project start
+                <input
+                  type="date"
+                  value={projectStart}
+                  onChange={(e) => handleProjectStart(e.target.value)}
+                />
+              </label>
+            </div>
+          </header>
+
+          <div className="stats-row">
+            <span className="stat-pill">
+              <strong>{tasks.length}</strong> tasks
+            </span>
+            <span className="stat-pill">
+              <strong>{totalHours}</strong> project hours
+            </span>
+            <span className="stat-pill">
+              Target end <strong>{projectEnd}</strong>
+            </span>
+          </div>
+
+          <section className="card main-panel">
+            <div className="card-header">
+              <h2>{view === "gantt" ? "Timeline" : "Tasks"}</h2>
+              <div className="card-header-actions">
+                <button type="button" className="btn btn-primary" onClick={() => setShowAddTask(true)}>
+                  + Add task
+                </button>
+                <div className="view-toggle" role="tablist" aria-label="View mode">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={view === "gantt"}
+                    className={view === "gantt" ? "active" : ""}
+                    onClick={() => setView("gantt")}
+                  >
+                    Gantt chart
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={view === "tasks"}
+                    className={view === "tasks" ? "active" : ""}
+                    onClick={() => setView("tasks")}
+                  >
+                    Task list
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`card-body ${view === "tasks" ? "card-body-table" : ""}`}>
+              {view === "gantt" ? (
+                <GanttChart tasks={tasks} onTaskSelect={openLog} />
+              ) : (
+                <TaskTable
+                  tasks={tasks}
+                  onUpdate={handleTaskUpdate}
+                  onTaskSelect={openLog}
+                  onEditSchedule={openEditor}
+                />
+              )}
+            </div>
+          </section>
+        </div>
+      )}
+
+      {logTask && (
+        <TaskLogView
+          task={logTask}
+          onClose={() => setLogTask(null)}
+          onEditSchedule={openEditor}
+          onAppendLog={handleAppendLog}
+        />
+      )}
+
+      <TaskEditor
+        task={editingTask}
+        onClose={() => setEditingTask(null)}
+        onSave={handleTaskUpdate}
+      />
+
+      {showAddTask && (
+        <AddTaskModal onCreate={handleCreateTask} onClose={() => setShowAddTask(false)} />
+      )}
+    </>
+  );
+}

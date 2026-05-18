@@ -1,0 +1,387 @@
+{
+  "project_start": "2026-06-01",
+  "gap_days": 1,
+  "tasks": [
+    {
+      "id": 1,
+      "task": "1. Finalise Excel template - protected sheets, validation rules",
+      "hours": 14,
+      "status": "In progress",
+      "log": "",
+      "depends_on": []
+    },
+    {
+      "id": 2,
+      "task": "2. Meeting with directors, sign off template, roll-out plan",
+      "hours": 3.5,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "task": "3. Choose database platform and get subscription (Azure SQL)",
+      "hours": 10,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "task": "4. Set up a development database instance on chosen platform",
+      "hours": 10,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        3
+      ]
+    },
+    {
+      "id": 5,
+      "task": "5. Finalise design on initial schema - tables, relationships, entities",
+      "hours": 18,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        4
+      ]
+    },
+    {
+      "id": 6,
+      "task": "6. Implement schema on dev DB",
+      "hours": 9,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        5
+      ]
+    },
+    {
+      "id": 7,
+      "task": "7.1. Read and validate the finalised Excel template",
+      "hours": 9,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 8,
+      "task": "7.2. Extract data from each sheet",
+      "hours": 4,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        7
+      ]
+    },
+    {
+      "id": 9,
+      "task": "7.3. Clean and transform data",
+      "hours": 20,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        8
+      ]
+    },
+    {
+      "id": 10,
+      "task": "7.4. Apply business rules / validation",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        9
+      ]
+    },
+    {
+      "id": 11,
+      "task": "7.5. Load data into staging tables in the database",
+      "hours": 15,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        10
+      ]
+    },
+    {
+      "id": 12,
+      "task": "7.6. Logging; success/failure",
+      "hours": 5,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        11
+      ]
+    },
+    {
+      "id": 13,
+      "task": "7.7. Raise alerts on failure",
+      "hours": 6,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        12
+      ]
+    },
+    {
+      "id": 14,
+      "task": "7.8. Handle concurrency (simultaneous updates don't corrupt data)",
+      "hours": 8,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        13
+      ]
+    },
+    {
+      "id": 15,
+      "task": "8. Test ETL script with sample data",
+      "hours": 20,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "id": 16,
+      "task": "9. Finalise schema - adjustments based on testing",
+      "hours": 9,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        15,
+        6
+      ]
+    },
+    {
+      "id": 17,
+      "task": "10. Document schema (tables, relationships, data dictionary)",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        16
+      ]
+    },
+    {
+      "id": 18,
+      "task": "11. FastAPI backend",
+      "hours": 42,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "id": 19,
+      "task": "12. PHP frontend (Anthony) - upload form, status feedback",
+      "hours": 3,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "id": 20,
+      "task": "13. Page design (TDL)",
+      "hours": 2,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "id": 21,
+      "task": "14. Integration test: upload -> DB",
+      "hours": 20,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "id": 22,
+      "task": "15. Deploy final schema to production",
+      "hours": 10,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        16,
+        21
+      ]
+    },
+    {
+      "id": 23,
+      "task": "16. Write detailed database manual",
+      "hours": 21,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        22
+      ]
+    },
+    {
+      "id": 24,
+      "task": "17. Determine which tables, relationships, key fields contain data needed for reporting",
+      "hours": 9,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        23
+      ]
+    },
+    {
+      "id": 25,
+      "task": "18. Define dashboard requirements - review with directors on outputs",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        24
+      ]
+    },
+    {
+      "id": 26,
+      "task": "19. Set up PowerBI environment - get license and workspace",
+      "hours": 5,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        25
+      ]
+    },
+    {
+      "id": 27,
+      "task": "20. Connect PowerBI to production DB; configure credentials; test connection",
+      "hours": 10,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        26,
+        22
+      ]
+    },
+    {
+      "id": 28,
+      "task": "21. Design data model; define relationships; create DAX measures; hide unused fields",
+      "hours": 42,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        27
+      ]
+    },
+    {
+      "id": 29,
+      "task": "22. Create dashboard wireframes / mockups",
+      "hours": 10,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        28
+      ]
+    },
+    {
+      "id": 30,
+      "task": "23. Build dashboard visuals; apply formatting, colours, labels",
+      "hours": 45,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        29
+      ]
+    },
+    {
+      "id": 31,
+      "task": "24. Review dashboard design / branding with TDL",
+      "hours": 4,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        30
+      ]
+    },
+    {
+      "id": 32,
+      "task": "25. Test dashboard with sample data; compare outputs; validate measures and filters",
+      "hours": 20,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        31
+      ]
+    },
+    {
+      "id": 33,
+      "task": "26. Publish dashboard to PowerBI service",
+      "hours": 6,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        32
+      ]
+    },
+    {
+      "id": 34,
+      "task": "27. Create dashboard documentation",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        33
+      ]
+    },
+    {
+      "id": 35,
+      "task": "28. User acceptance testing (UAT) - give access, gather feedback, fix issues",
+      "hours": 20,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        34
+      ]
+    },
+    {
+      "id": 36,
+      "task": "29. Finalise - incorporate feedback, deliver dashboard and documentation, schedule training",
+      "hours": 12,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        35
+      ]
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Gantt Tool (FastAPI)</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .container { display: flex; flex-wrap: wrap; gap: 20px; }
+        .gantt { flex: 2; min-width: 600px; }
+        .tasks { flex: 1; min-width: 400px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
+        th { background: #f2f2f2; }
+        input, select { width: 100%; box-sizing: border-box; }
+        .log-area { margin-top: 20px; }
+        textarea { width: 100%; height: 150px; }
+        button { margin: 5px; padding: 8px 12px; }
+    </style>
+</head>
+<body>
+<h1>📊 Project Gantt with Logging & Adjustments</h1>
+<p>
+    <label>Project start: <input type="date" id="projectStart"></label>
+    <span style="color:#666; font-size:0.9em;">(tasks without dependencies start here; others wait on predecessors)</span>
+</p>
+<div class="container">
+    <div class="gantt">
+        <div id="ganttChart"></div>
+        <div>
+            <button id="shiftBtn">Delay entire project (+1 week)</button>
+        </div>
+    </div>
+    <div class="tasks">
+        <h3>Task list (editable)</h3>
+        <table id="taskTable">
+            <thead>
+                <tr><th>ID</th><th>Task</th><th>Depends on</th><th>Start</th><th>End</th><th>Hours</th><th>Status</th><th>Log</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="saveTasksBtn">Save changes</button>
+    </div>
+</div>
+<div class="log-area">
+    <h3>Project Log</h3>
+    <textarea id="logText" readonly></textarea>
+    <input type="text" id="newLogMsg" placeholder="Add log entry..." style="width: 70%;"/>
+    <button id="addLogBtn">Add log</button>
+</div>
+
+<script>
+    let currentTasks = [];
+    let projectStart = '';
+
+    async function fetchTasks() {
+        const res = await fetch('/api/tasks');
+        const data = await res.json();
+        currentTasks = data.tasks;
+        projectStart = data.project_start;
+        document.getElementById('projectStart').value = projectStart;
+        renderTable();
+        renderGantt();
+    }
+
+    async function updateProjectStart(value) {
+        const res = await fetch('/api/project-start', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({project_start: value})
+        });
+        if (res.ok) fetchTasks();
+    }
+
+    function renderTable() {
+        const tbody = document.querySelector('#taskTable tbody');
+        tbody.innerHTML = '';
+        for (let task of currentTasks) {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = task.id;
+            row.insertCell(1).innerText = task.task;
+            const deps = (task.depends_on || []).join(', ');
+            row.insertCell(2).innerHTML = `<input type="text" value="${deps}" placeholder="e.g. 1,6" data-id="${task.id}" data-field="depends_on" title="Comma-separated task IDs">`;
+            row.insertCell(3).innerText = task.start;
+            row.insertCell(4).innerText = (task.end || '').slice(0, 10);
+            row.insertCell(5).innerHTML = `<input type="number" step="0.5" value="${task.hours}" data-id="${task.id}" data-field="hours">`;
+            row.insertCell(6).innerHTML = `<select data-id="${task.id}" data-field="status">
+                <option ${task.status === 'Not started' ? 'selected' : ''}>Not started</option>
+                <option ${task.status === 'In progress' ? 'selected' : ''}>In progress</option>
+                <option ${task.status === 'Completed' ? 'selected' : ''}>Completed</option>
+            </select>`;
+            row.insertCell(7).innerHTML = `<input type="text" value="${task.log || ''}" data-id="${task.id}" data-field="log">`;
+        }
+        // Attach event listeners dynamically (simplified: use onchange)
+        document.querySelectorAll('#taskTable input, #taskTable select').forEach(el => {
+            el.addEventListener('change', (e) => {
+                const id = parseInt(el.dataset.id);
+                const field = el.dataset.field;
+                let value = el.value;
+                if (field === 'hours') value = parseFloat(value);
+                else if (field === 'depends_on') {
+                    value = value.trim() ? value.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n)) : [];
+                }
+                updateTaskField(id, field, value);
+            });
+        });
+    }
+
+    async function updateTaskField(id, field, value) {
+        const payload = {};
+        payload[field] = value;
+        const res = await fetch(`/api/tasks/${id}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            fetchTasks();
+        } else {
+            const err = await res.json().catch(() => ({}));
+            alert(err.detail || 'Update failed');
+        }
+    }
+
+    async function renderGantt() {
+        const statusColors = {
+            'Not started': '#c8c8c8',
+            'In progress': '#ffa500',
+            'Completed': '#2ca02c'
+        };
+
+        const y = [];
+        const durations = [];
+        const bases = [];
+        const colors = [];
+        const customdata = [];
+
+        for (const t of currentTasks) {
+            const start = new Date(t.start);
+            const end = new Date(t.end);
+            y.push(t.task);
+            durations.push(end - start);
+            bases.push(start);
+            colors.push(statusColors[t.status] || '#4682b4');
+            customdata.push([
+                t.start,
+                (t.end || '').slice(0, 10),
+                t.hours,
+                t.status,
+                (t.depends_on || []).join(', ') || '—'
+            ]);
+        }
+
+        const trace = {
+            type: 'bar',
+            orientation: 'h',
+            y: y,
+            x: durations,
+            base: bases,
+            marker: { color: colors, line: { color: '#888', width: 0.5 } },
+            customdata: customdata,
+            hovertemplate:
+                '<b>%{y}</b><br>' +
+                'Start: %{customdata[0]}<br>' +
+                'End: %{customdata[1]}<br>' +
+                'Hours: %{customdata[2]}<br>' +
+                'Status: %{customdata[3]}<br>' +
+                'Depends on: %{customdata[4]}' +
+                '<extra></extra>'
+        };
+
+        const layout = {
+            title: 'Gantt Chart',
+            xaxis: { type: 'date', title: '' },
+            yaxis: { autorange: 'reversed', automargin: true, tickfont: { size: 11 } },
+            height: Math.max(700, currentTasks.length * 32),
+            margin: { l: 10, r: 30, t: 50, b: 40 },
+            bargap: 0.15,
+            showlegend: false
+        };
+
+        Plotly.newPlot('ganttChart', [trace], layout, { responsive: true });
+    }
+
+    async function shiftTasks() {
+        const res = await fetch('/api/shift', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({extra_days: 7})
+        });
+        if (res.ok) fetchTasks();
+    }
+
+    async function addLog() {
+        const msg = document.getElementById('newLogMsg').value;
+        if (!msg) return;
+        await fetch('/api/log', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: msg})
+        });
+        document.getElementById('newLogMsg').value = '';
+        loadLogs();
+    }
+
+    async function loadLogs() {
+        const res = await fetch('/api/logs');
+        const data = await res.json();
+        document.getElementById('logText').value = data.logs.join('');
+    }
+
+    document.getElementById('shiftBtn').onclick = shiftTasks;
+    document.getElementById('addLogBtn').onclick = addLog;
+    document.getElementById('projectStart').addEventListener('change', (e) => {
+        updateProjectStart(e.target.value);
+    });
+
+    fetchTasks();
+    loadLogs();
+</script>
+</body>
+</html>
