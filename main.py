@@ -2,7 +2,7 @@ from datetime import datetime
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional
@@ -23,11 +23,15 @@ DIST_INDEX = STATIC_DIR / "dist" / "index.html"
 
 
 @app.get("/health")
+@app.head("/health")
 def health():
-    return {
-        "status": "ok",
-        "frontend_built": DIST_INDEX.is_file(),
-    }
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "ok",
+            "frontend_built": DIST_INDEX.is_file(),
+        },
+    )
 
 
 @app.get("/")
