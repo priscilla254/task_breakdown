@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
@@ -17,13 +18,30 @@ from utils import SchedulingError
 
 app = FastAPI()
 
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+DIST_INDEX = STATIC_DIR / "dist" / "index.html"
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "ok",
+        "frontend_built": DIST_INDEX.is_file(),
+    }
+
 
 @app.get("/")
 def root():
+    if not DIST_INDEX.is_file():
+        raise HTTPException(
+            status_code=503,
+            detail="Frontend not built. Run: cd frontend && npm ci && npm run build",
+        )
     return RedirectResponse(url="/static/dist/index.html")
 
 
-app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+if STATIC_DIR.is_dir():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR), html=True), name="static")
 
 
 class TaskCreate(BaseModel):

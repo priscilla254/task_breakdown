@@ -1,0 +1,16 @@
+# Railway uses Nixpacks — Node builds the React app, Python runs the API.
+
+[phases.setup]
+nixPkgs = ["nodejs_20", "python312"]
+
+[phases.install]
+cmds = [
+  "pip install -r requirements.txt",
+  "cd frontend && npm ci",
+]
+
+[phases.build]
+cmds = ["cd frontend && npm run build"]
+
+[start]
+cmd = "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"

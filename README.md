@@ -50,7 +50,7 @@ tasks_gantt/
 - Node.js 18+ (for building or developing the UI)
 
 ```bash
-pip install fastapi uvicorn
+pip install -r requirements.txt
 ```
 
 ### Production (single server)
@@ -138,6 +138,38 @@ Default calendar in `utils.py`:
 | Friday–Sunday | 0 |
 
 Adjust `RAW_DAILY_HOURS` if your availability changes (project hours are half of raw hours).
+
+## Deploying on Railway
+
+The repo includes `nixpacks.toml`, `Procfile`, and `railway.toml` so Railway:
+
+1. Installs Python dependencies from `requirements.txt`
+2. Installs Node and runs `npm run build` in `frontend/` → outputs to `static/dist/`
+3. Starts `uvicorn` on Railway’s `$PORT`
+
+### Steps
+
+1. Push this repo to GitHub and connect it in [Railway](https://railway.com).
+2. Ensure **`data/tasks.json`** is committed (your task plan).
+3. Deploy — no extra build settings needed if config files are picked up.
+4. Open your Railway URL (root `/` redirects to the React app).
+
+### Manual Railway settings (if needed)
+
+| Setting | Value |
+|---------|--------|
+| **Build command** | `cd frontend && npm ci && npm run build` |
+| **Start command** | `uvicorn main:app --host 0.0.0.0 --port $PORT` |
+
+### Verify deployment
+
+- `https://your-app.up.railway.app/health` → `{"status":"ok","frontend_built":true}`
+- `https://your-app.up.railway.app/api/tasks` → JSON task list
+- `https://your-app.up.railway.app/` → Gantt UI
+
+### Persistence
+
+Railway’s disk is **ephemeral** by default — task edits reset on redeploy. For production, attach a [Railway volume](https://docs.railway.com/guides/volumes) mounted at `/app/data` (or set `DATA_DIR` if you add that later).
 
 ## Notes
 
