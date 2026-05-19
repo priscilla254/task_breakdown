@@ -97,7 +97,8 @@ def schedule_tasks(
         else:
             start = earliest
 
-        end = add_working_hours(start, t["hours"])
+        effective_hours = float(t["hours"]) + float(t.get("delay_hours") or 0)
+        end = add_working_hours(start, effective_hours)
         ends[tid] = end
 
         task = {k: v for k, v in t.items() if k not in ("start", "end")}

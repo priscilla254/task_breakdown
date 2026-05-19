@@ -6,18 +6,40 @@ function statusClass(status) {
   return "status-not-started";
 }
 
-export default function TaskLogView({ task, onAppendLog, onEditSchedule, onClose }) {
+export default function TaskLogView({
+  task,
+  onAppendLog,
+  onLogDelay,
+  onUpdate,
+  onDelete,
+  onClose,
+}) {
   const [logHistory, setLogHistory] = useState("");
   const [newLogEntry, setNewLogEntry] = useState("");
   const [addingLog, setAddingLog] = useState(false);
+  const [delayHours, setDelayHours] = useState("");
+  const [delayReason, setDelayReason] = useState("");
+  const [loggingDelay, setLoggingDelay] = useState(false);
+  const [lastProjectEnd, setLastProjectEnd] = useState(null);
 
   useEffect(() => {
     if (!task) return;
     setLogHistory(task.log || "");
+  }, [task?.log, task?.delay_hours, task?.delays]);
+
+  useEffect(() => {
+    if (!task) return;
     setNewLogEntry("");
-  }, [task]);
+    setDelayHours("");
+    setDelayReason("");
+    setLastProjectEnd(null);
+  }, [task?.id]);
 
   if (!task) return null;
+
+  const totalDelay = task.delay_hours || 0;
+  const effectiveHours = (task.hours || 0) + totalDelay;
+  const delayEntries = task.delays || [];
 
   const handleAddLog = async (e) => {
     e.preventDefault();
@@ -31,6 +53,33 @@ export default function TaskLogView({ task, onAppendLog, onEditSchedule, onClose
       alert(err.message || "Could not add log entry");
     } finally {
       setAddingLog(false);
+    }
+  };
+
+  const handleLogDelay = async (e) => {
+    e.preventDefault();
+    const hours = parseFloat(delayHours);
+    if (!hours || hours <= 0) {
+      alert("Enter delay hours greater than zero.");
+      return;
+    }
+    if (!delayReason.trim()) {
+      alert("Enter a reason for the delay.");
+      return;
+    }
+    setLoggingDelay(true);
+    try {
+      const result = await onLogDelay(task.id, hours, delayReason.trim());
+      setLogHistory(result.task.log || "");
+      setDelayHours("");
+      setDelayReason("");
+      if (result.project_end) {
+        setLastProjectEnd(result.project_end);
+      }
+    } catch (err) {
+      alert(err.message || "Could not log delay");
+    } finally {
+      setLoggingDelay(false);
     }
   };
 
@@ -48,8 +97,11 @@ export default function TaskLogView({ task, onAppendLog, onEditSchedule, onClose
           ← Back to timeline
         </button>
         <div className="task-log-header-actions">
-          <button type="button" className="btn btn-ghost" onClick={() => onEditSchedule(task)}>
-            Edit schedule
+          <button type="button" className="btn btn-ghost" onClick={() => onUpdate(task)}>
+            Update
+          </button>
+          <button type="button" className="btn btn-danger" onClick={() => onDelete(task)}>
+            Delete
           </button>
         </div>
       </header>
@@ -59,15 +111,67 @@ export default function TaskLogView({ task, onAppendLog, onEditSchedule, onClose
           <h1 id="task-log-title">Task documentation</h1>
           <p className="task-log-task-name">{task.task}</p>
           <div className="task-log-meta-row">
-            <span className={`status-badge ${statusClass(task.status)}`}>
-              {task.status}
-            </span>
+            <span className={`status-badge ${statusClass(task.status)}`}>{task.status}</span>
             <span>
               {task.start} → {(task.end || "").slice(0, 10)}
             </span>
-            <span>{task.hours} project hours</span>
+            <span>
+              {task.hours}h planned
+              {totalDelay > 0 ? ` + ${totalDelay}h delay = ${effectiveHours}h` : ""}
+            </span>
           </div>
         </div>
+
+        <section className="task-log-delay-section" aria-labelledby="delay-heading">
+          <h2 id="delay-heading">Log delay</h2>
+          <p className="task-log-delay-hint">
+            Adds project hours to this task and pushes dependent tasks. The project target end
+            date updates when this task (or work downstream) defines the finish.
+          </p>
+          {lastProjectEnd && (
+            <p className="task-log-delay-success" role="status">
+              Project target end is now <strong>{lastProjectEnd}</strong>.
+            </p>
+          )}
+          <form onSubmit={handleLogDelay} className="task-log-delay-form">
+            <label className="task-log-delay-field">
+              Delay (project hours)
+              <input
+                type="number"
+                min="0.5"
+                step="0.5"
+                value={delayHours}
+                onChange={(e) => setDelayHours(e.target.value)}
+                placeholder="e.g. 8"
+                required
+              />
+            </label>
+            <label className="task-log-delay-field task-log-delay-field-wide">
+              Reason
+              <input
+                type="text"
+                value={delayReason}
+                onChange={(e) => setDelayReason(e.target.value)}
+                placeholder="What caused the slip?"
+                required
+              />
+            </label>
+            <button type="submit" className="btn btn-primary" disabled={loggingDelay}>
+              {loggingDelay ? "Applying…" : "Log delay & update timeline"}
+            </button>
+          </form>
+          {delayEntries.length > 0 && (
+            <ul className="task-log-delay-list">
+              {delayEntries.map((entry, i) => (
+                <li key={`${entry.date}-${entry.hours}-${i}`}>
+                  <span className="task-log-delay-list-date">{entry.date}</span>
+                  <span className="task-log-delay-list-hours">+{entry.hours}h</span>
+                  <span>{entry.reason}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
 
         <section className="task-log-compose-section" aria-labelledby="compose-heading">
           <h2 id="compose-heading">New entry</h2>
@@ -78,8 +182,7 @@ export default function TaskLogView({ task, onAppendLog, onEditSchedule, onClose
               onChange={(e) => setNewLogEntry(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="What happened, decisions made, blockers, next steps…"
-              rows={12}
-              autoFocus
+              rows={8}
             />
             <div className="task-log-compose-actions">
               <button type="submit" className="btn btn-primary" disabled={addingLog}>

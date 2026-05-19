@@ -4,7 +4,7 @@ function statusClass(status) {
   return "status-not-started";
 }
 
-export default function TaskTable({ tasks, onUpdate, onTaskSelect, onEditSchedule }) {
+export default function TaskTable({ tasks, onUpdate, onTaskSelect, onEditSchedule, onDelete }) {
   const handleDepsBlur = (id, value) => {
     const depends_on = value.trim()
       ? value.split(",").map((s) => parseInt(s.trim(), 10)).filter((n) => !isNaN(n))
@@ -24,7 +24,7 @@ export default function TaskTable({ tasks, onUpdate, onTaskSelect, onEditSchedul
             <th>End</th>
             <th>Hrs</th>
             <th>Status</th>
-            <th></th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -70,17 +70,28 @@ export default function TaskTable({ tasks, onUpdate, onTaskSelect, onEditSchedul
                   <option>Completed</option>
                 </select>
               </td>
-              <td>
+              <td className="table-actions-cell">
                 <button
                   type="button"
                   className="btn-table-edit"
-                  title="Edit schedule"
+                  title="Update task"
                   onClick={(e) => {
                     e.stopPropagation();
                     onEditSchedule?.(t);
                   }}
                 >
-                  Schedule
+                  Update
+                </button>
+                <button
+                  type="button"
+                  className="btn-table-delete"
+                  title="Delete task"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete?.(t);
+                  }}
+                >
+                  Delete
                 </button>
               </td>
             </tr>

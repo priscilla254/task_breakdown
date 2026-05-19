@@ -56,6 +56,7 @@ class TaskCreate(BaseModel):
 
 
 class TaskUpdate(BaseModel):
+    task: Optional[str] = None
     hours: Optional[float] = None
     status: Optional[str] = None
     log: Optional[str] = None
@@ -73,6 +74,11 @@ class ShiftRequest(BaseModel):
 
 class LogRequest(BaseModel):
     message: str
+
+
+class DelayRequest(BaseModel):
+    hours: float
+    reason: str
 
 
 @app.get("/api/tasks")
@@ -134,6 +140,11 @@ def update_task(task_id: int, update: TaskUpdate):
     found = False
     for t in tasks:
         if t["id"] == task_id:
+            if update.task is not None:
+                name = update.task.strip()
+                if not name:
+                    raise HTTPException(status_code=400, detail="Task name cannot be empty")
+                t["task"] = name
             if update.hours is not None:
                 t["hours"] = update.hours
             if update.status is not None:
@@ -159,7 +170,50 @@ def update_task(task_id: int, update: TaskUpdate):
         _, _, scheduled = load_tasks()
     except SchedulingError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
-    return {"message": "updated", "tasks": scheduled}
+    project_end = max((t["end"] for t in scheduled), default="")
+    return {
+        "message": "updated",
+        "tasks": scheduled,
+        "project_end": project_end[:10] if project_end else "",
+    }
+
+
+@app.delete("/api/tasks/{task_id}")
+def delete_task(task_id: int):
+    project_start, gap_days, tasks = load_raw()
+    removed = None
+    for t in tasks:
+        if t["id"] == task_id:
+            removed = t
+            break
+    if not removed:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    dependents = [
+        t["id"]
+        for t in tasks
+        if task_id in (t.get("depends_on") or []) and t["id"] != task_id
+    ]
+    tasks = [t for t in tasks if t["id"] != task_id]
+    for t in tasks:
+        deps = t.get("depends_on") or []
+        if task_id in deps:
+            t["depends_on"] = [d for d in deps if d != task_id]
+
+    save_tasks(project_start, gap_days, tasks)
+    add_log_entry(f"Deleted task {task_id}: {removed.get('task', '')}")
+    try:
+        _, _, scheduled = load_tasks()
+    except SchedulingError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+    project_end = max((t["end"] for t in scheduled), default="")
+    return {
+        "message": "deleted",
+        "tasks": scheduled,
+        "project_end": project_end[:10] if project_end else "",
+        "dependents_updated": dependents,
+    }
 
 
 @app.post("/api/shift")
@@ -191,3 +245,50 @@ def append_task_log(task_id: int, body: LogRequest):
             updated = next(x for x in scheduled if x["id"] == task_id)
             return {"message": "logged", "task": updated}
     raise HTTPException(status_code=404, detail="Task not found")
+
+
+@app.post("/api/tasks/{task_id}/delay")
+def log_task_delay(task_id: int, body: DelayRequest):
+    if body.hours <= 0:
+        raise HTTPException(status_code=400, detail="Delay hours must be greater than zero")
+    reason = body.reason.strip()
+    if not reason:
+        raise HTTPException(status_code=400, detail="Delay reason is required")
+
+    project_start, gap_days, tasks = load_raw()
+    found_task = None
+    for t in tasks:
+        if t["id"] == task_id:
+            found_task = t
+            t["delay_hours"] = float(t.get("delay_hours") or 0) + body.hours
+            entry = {
+                "date": datetime.now().date().isoformat(),
+                "hours": body.hours,
+                "reason": reason,
+            }
+            t.setdefault("delays", []).append(entry)
+            stamp = datetime.now().isoformat(timespec="seconds")
+            line = f"{stamp} - DELAY +{body.hours}h: {reason}\n"
+            t["log"] = (t.get("log") or "") + line
+            break
+    if not found_task:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    save_tasks(project_start, gap_days, tasks)
+    add_log_entry(
+        f"Task {task_id} delay +{body.hours}h: {reason} "
+        f"(total delay on task: {found_task.get('delay_hours')}h)"
+    )
+    try:
+        _, _, scheduled = load_tasks()
+    except SchedulingError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+    updated = next(x for x in scheduled if x["id"] == task_id)
+    project_end = max((t["end"] for t in scheduled), default="")
+    return {
+        "message": "delay logged",
+        "task": updated,
+        "tasks": scheduled,
+        "project_end": project_end[:10] if project_end else "",
+    }

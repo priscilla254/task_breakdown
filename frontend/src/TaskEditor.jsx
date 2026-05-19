@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 
 const STATUSES = ["Not started", "In progress", "Completed"];
 
-export default function TaskEditor({ task, onSave, onClose }) {
+export default function TaskEditor({ task, onSave, onDelete, onClose }) {
+  const [name, setName] = useState("");
   const [status, setStatus] = useState("Not started");
   const [hours, setHours] = useState(0);
   const [startDate, setStartDate] = useState("");
   const [useAutoStart, setUseAutoStart] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!task) return;
+    setName(task.task || "");
     setStatus(task.status || "Not started");
     setHours(task.hours ?? 0);
     setStartDate(task.fixed_start || task.start || "");
@@ -21,18 +24,34 @@ export default function TaskEditor({ task, onSave, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const trimmed = name.trim();
+    if (!trimmed) {
+      alert("Task name is required.");
+      return;
+    }
     setSaving(true);
     try {
       await onSave(task.id, {
+        task: trimmed,
         status,
         hours: parseFloat(hours),
         fixed_start: useAutoStart ? null : startDate,
       });
       onClose();
     } catch (err) {
-      alert(err.message || "Save failed");
+      alert(err.message || "Update failed");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      await onDelete(task);
+      onClose();
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -45,13 +64,21 @@ export default function TaskEditor({ task, onSave, onClose }) {
         aria-labelledby="task-editor-title"
       >
         <div className="modal-header">
-          <h2 id="task-editor-title">Edit schedule</h2>
+          <h2 id="task-editor-title">Update task</h2>
           <button type="button" className="modal-close" onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
-        <p className="modal-task-name">{task.task}</p>
         <form onSubmit={handleSubmit} className="modal-form">
+          <label>
+            Task name
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </label>
           <label>
             Status
             <select value={status} onChange={(e) => setStatus(e.target.value)}>
@@ -102,13 +129,23 @@ export default function TaskEditor({ task, onSave, onClose }) {
             <span>Scheduled: {task.start}</span>
             <span>→ {(task.end || "").slice(0, 10)}</span>
           </div>
-          <div className="modal-actions">
-            <button type="button" className="btn btn-ghost" onClick={onClose}>
-              Cancel
+          <div className="modal-actions modal-actions-spread">
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={handleDelete}
+              disabled={deleting || saving}
+            >
+              {deleting ? "Deleting…" : "Delete"}
             </button>
-            <button type="submit" className="btn btn-primary" disabled={saving}>
-              {saving ? "Saving…" : "Save & reschedule"}
-            </button>
+            <div className="modal-actions-right">
+              <button type="button" className="btn btn-ghost" onClick={onClose}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary" disabled={saving || deleting}>
+                {saving ? "Updating…" : "Update"}
+              </button>
+            </div>
           </div>
         </form>
       </div>

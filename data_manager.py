@@ -65,6 +65,12 @@ def _clean_task(task: Dict) -> Dict:
     fixed = task.get("fixed_start")
     if fixed:
         cleaned["fixed_start"] = fixed
+    delay_hours = task.get("delay_hours")
+    if delay_hours:
+        cleaned["delay_hours"] = float(delay_hours)
+    delays = task.get("delays")
+    if delays:
+        cleaned["delays"] = list(delays)
     return cleaned
 
 

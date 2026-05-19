@@ -2,10 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import {
   appendTaskLog,
   createTask,
+  deleteTask,
   fetchTasks,
+  logTaskDelay,
   updateProjectStart,
   updateTask,
 } from "./api";
+import { confirmDeleteTask } from "./taskActions";
 import GanttChart from "./GanttChart";
 import TaskTable from "./TaskTable";
 import TaskEditor from "./TaskEditor";
@@ -75,6 +78,12 @@ export default function App() {
     return result.task;
   };
 
+  const handleLogDelay = async (id, hours, reason) => {
+    const result = await logTaskDelay(id, hours, reason);
+    await load();
+    return result;
+  };
+
   const openLog = (task) => setLogTask(task);
   const openEditor = (task) => setEditingTask(task);
 
@@ -83,8 +92,23 @@ export default function App() {
     await load();
   };
 
+  const handleDeleteTask = async (task) => {
+    if (!confirmDeleteTask(task, tasks)) return;
+    try {
+      await deleteTask(task.id);
+      if (logTask?.id === task.id) setLogTask(null);
+      if (editingTask?.id === task.id) setEditingTask(null);
+      await load();
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
   const projectEnd = tasks.length
-    ? (tasks[tasks.length - 1].end || "").slice(0, 10)
+    ? tasks.reduce((latest, t) => {
+        const end = (t.end || "").slice(0, 10);
+        return end > latest ? end : latest;
+      }, "")
     : "—";
   const totalHours = tasks.reduce((s, t) => s + (t.hours || 0), 0);
 
@@ -173,6 +197,7 @@ export default function App() {
                   onUpdate={handleTaskUpdate}
                   onTaskSelect={openLog}
                   onEditSchedule={openEditor}
+                  onDelete={handleDeleteTask}
                 />
               )}
             </div>
@@ -184,8 +209,10 @@ export default function App() {
         <TaskLogView
           task={logTask}
           onClose={() => setLogTask(null)}
-          onEditSchedule={openEditor}
           onAppendLog={handleAppendLog}
+          onLogDelay={handleLogDelay}
+          onUpdate={openEditor}
+          onDelete={handleDeleteTask}
         />
       )}
 
@@ -193,6 +220,7 @@ export default function App() {
         task={editingTask}
         onClose={() => setEditingTask(null)}
         onSave={handleTaskUpdate}
+        onDelete={handleDeleteTask}
       />
 
       {showAddTask && (

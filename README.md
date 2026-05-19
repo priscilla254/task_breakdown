@@ -19,8 +19,8 @@ When you change hours, dependencies, status, or a manual start date on a task, t
 |--------|-------------|
 | **Gantt chart** | Horizontal timeline with colour by status (not started / in progress / completed). Click a bar or task name to open documentation. |
 | **Task list** | Table view with inline edits; click a row to document, or use **Schedule** for dates and hours. |
-| **Task documentation** | Full-page log per task: add timestamped notes without changing the schedule. |
-| **Edit schedule** | Modal to update status, duration, optional fixed start date, and dependencies. |
+| **Task documentation** | Full-page log per task: notes, or **log delay** (hours + reason) which extends the task and pushes the timeline. |
+| **Update / Delete** | Task list, documentation page, and update modal: edit or remove tasks; timeline recalculates. |
 | **Add task** | Create new tasks with name, hours, dependencies, and status; ID is assigned automatically. |
 | **Project start** | Change the global kickoff date from the header. |
 
@@ -123,8 +123,10 @@ Computed fields `start` and `end` are returned by the API but not stored in JSON
 |--------|----------|---------|
 | GET | `/api/tasks` | List tasks with computed start/end dates |
 | POST | `/api/tasks` | Create a new task |
-| PUT | `/api/tasks/{id}` | Update task fields |
+| PUT | `/api/tasks/{id}` | Update task (name, hours, status, dependencies, fixed start) |
+| DELETE | `/api/tasks/{id}` | Remove task; strips it from dependencies and reschedules |
 | POST | `/api/tasks/{id}/log` | Append a log entry to a task |
+| POST | `/api/tasks/{id}/delay` | Log delay hours + reason; extends schedule and downstream tasks |
 | PUT | `/api/project-start` | Change project start date |
 
 ## Working hours (scheduling)
