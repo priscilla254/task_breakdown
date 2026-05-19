@@ -141,10 +141,10 @@ Adjust `RAW_DAILY_HOURS` if your availability changes (project hours are half of
 
 ## Deploying on Railway
 
-The repo includes `nixpacks.toml`, `Procfile`, and `railway.toml` so Railway:
+The repo includes a **`Dockerfile`** (preferred on Railway), plus `nixpacks.toml` / `Procfile` as fallbacks. Deploy:
 
-1. Installs Python dependencies from `requirements.txt`
-2. Installs Node and runs `npm run build` in `frontend/` → outputs to `static/dist/`
+1. Builds the React app with Node (`frontend/` → `static/dist/`)
+2. Installs Python dependencies from `requirements.txt`
 3. Starts `uvicorn` on Railway’s `$PORT`
 
 ### Steps
@@ -154,12 +154,16 @@ The repo includes `nixpacks.toml`, `Procfile`, and `railway.toml` so Railway:
 3. Deploy — no extra build settings needed if config files are picked up.
 4. Open your Railway URL (root `/` redirects to the React app).
 
-### Manual Railway settings (if needed)
+### Manual Railway settings (if not using Dockerfile)
+
+Set **Builder** to **Dockerfile**, or use:
 
 | Setting | Value |
 |---------|--------|
 | **Build command** | `cd frontend && npm ci && npm run build` |
 | **Start command** | `uvicorn main:app --host 0.0.0.0 --port $PORT` |
+
+If you see `pip: command not found`, Railway is running Nixpacks without Python on PATH — use the **Dockerfile** builder instead.
 
 ### Verify deployment
 

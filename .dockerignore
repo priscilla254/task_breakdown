@@ -1,0 +1,10 @@
+frontend/node_modules
+**/__pycache__
+**/*.pyc
+.venv
+venv
+.env
+.git
+.cursor
+static/dist
+frontend/.gitignore
