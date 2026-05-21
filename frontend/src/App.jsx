@@ -9,6 +9,7 @@ import {
   updateTask,
 } from "./api";
 import { confirmDeleteTask } from "./taskActions";
+import { DEFAULT_PROJECT_ID, PROJECTS, getProject } from "./projects";
 import GanttChart from "./GanttChart";
 import TaskTable from "./TaskTable";
 import TaskEditor from "./TaskEditor";
@@ -16,6 +17,7 @@ import TaskLogView from "./TaskLogView";
 import AddTaskModal from "./AddTaskModal";
 
 export default function App() {
+  const [activeProject, setActiveProject] = useState(DEFAULT_PROJECT_ID);
   const [tasks, setTasks] = useState([]);
   const [projectStart, setProjectStart] = useState("");
   const [loading, setLoading] = useState(true);
@@ -25,10 +27,12 @@ export default function App() {
   const [editingTask, setEditingTask] = useState(null);
   const [showAddTask, setShowAddTask] = useState(false);
 
+  const projectMeta = getProject(activeProject);
+
   const load = useCallback(async () => {
     try {
       setError(null);
-      const taskData = await fetchTasks();
+      const taskData = await fetchTasks(activeProject);
       setTasks(taskData.tasks);
       setProjectStart(taskData.project_start);
     } catch (e) {
@@ -36,9 +40,10 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [activeProject]);
 
   useEffect(() => {
+    setLoading(true);
     load();
   }, [load]);
 
@@ -54,9 +59,18 @@ export default function App() {
     if (fresh) setEditingTask(fresh);
   }, [tasks, editingTask?.id]);
 
+  const switchProject = (projectId) => {
+    if (projectId === activeProject) return;
+    setActiveProject(projectId);
+    setLogTask(null);
+    setEditingTask(null);
+    setShowAddTask(false);
+    setLoading(true);
+  };
+
   const handleProjectStart = async (value) => {
     try {
-      await updateProjectStart(value);
+      await updateProjectStart(activeProject, value);
       await load();
     } catch (e) {
       alert(e.message);
@@ -65,7 +79,7 @@ export default function App() {
 
   const handleTaskUpdate = async (id, payload) => {
     try {
-      await updateTask(id, payload);
+      await updateTask(activeProject, id, payload);
       await load();
     } catch (e) {
       alert(e.message);
@@ -73,13 +87,13 @@ export default function App() {
   };
 
   const handleAppendLog = async (id, message) => {
-    const result = await appendTaskLog(id, message);
+    const result = await appendTaskLog(activeProject, id, message);
     await load();
     return result.task;
   };
 
   const handleLogDelay = async (id, hours, reason) => {
-    const result = await logTaskDelay(id, hours, reason);
+    const result = await logTaskDelay(activeProject, id, hours, reason);
     await load();
     return result;
   };
@@ -88,14 +102,14 @@ export default function App() {
   const openEditor = (task) => setEditingTask(task);
 
   const handleCreateTask = async (payload) => {
-    await createTask(payload);
+    await createTask(activeProject, payload);
     await load();
   };
 
   const handleDeleteTask = async (task) => {
     if (!confirmDeleteTask(task, tasks)) return;
     try {
-      await deleteTask(task.id);
+      await deleteTask(activeProject, task.id);
       if (logTask?.id === task.id) setLogTask(null);
       if (editingTask?.id === task.id) setEditingTask(null);
       await load();
@@ -128,12 +142,37 @@ export default function App() {
     <>
       {!logTask && (
         <div className="app-shell">
+          <div
+            className="project-tabs view-toggle"
+            role="tablist"
+            aria-label="Project"
+          >
+            {PROJECTS.map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                role="tab"
+                aria-selected={activeProject === p.id}
+                className={activeProject === p.id ? "active" : ""}
+                onClick={() => switchProject(p.id)}
+              >
+                {p.tabLabel}
+              </button>
+            ))}
+          </div>
+
           <header className="app-header">
             <div>
               <h1>
-                Data science and Innovation <span>Phase 1</span>
+                {projectMeta.title}
+                {projectMeta.highlight ? (
+                  <>
+                    {" "}
+                    <span>{projectMeta.highlight}</span>
+                  </>
+                ) : null}
               </h1>
-              <p>Excel → database → API → Power BI rollout</p>
+              <p>{projectMeta.subtitle}</p>
             </div>
             <div className="toolbar">
               <label>
@@ -189,7 +228,12 @@ export default function App() {
               </div>
             </div>
             <div className={`card-body ${view === "tasks" ? "card-body-table" : ""}`}>
-              {view === "gantt" ? (
+              {tasks.length === 0 ? (
+                <p className="empty-state">
+                  No tasks yet for this project. Use <strong>+ Add task</strong> to build your
+                  breakdown.
+                </p>
+              ) : view === "gantt" ? (
                 <GanttChart tasks={tasks} onTaskSelect={openLog} />
               ) : (
                 <TaskTable

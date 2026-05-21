@@ -17,11 +17,14 @@ ENV PORT=8000
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY main.py data_manager.py utils.py start.sh ./
+COPY main.py data_manager.py utils.py dependencies.py schemas.py exceptions.py start.sh ./
+COPY routers ./routers/
+COPY services ./services/
 COPY data/ ./data/
 COPY --from=frontend /app/static/dist ./static/dist
 
-RUN chmod +x start.sh
+# Windows checkouts often use CRLF; fix shebang so ./start.sh runs in Linux
+RUN sed -i 's/\r$//' start.sh && chmod +x start.sh
 
 EXPOSE 8000
 CMD ["./start.sh"]
