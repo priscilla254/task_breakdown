@@ -2,10 +2,13 @@ import { useState } from "react";
 
 const STATUSES = ["Not started", "In progress", "Completed"];
 
-export default function AddTaskModal({ onCreate, onClose }) {
+export default function AddTaskModal({ onCreate, onClose, trainingMode = false }) {
   const [task, setTask] = useState("");
   const [hours, setHours] = useState(8);
   const [dependsOn, setDependsOn] = useState("");
+  const [department, setDepartment] = useState("");
+  const [subject, setSubject] = useState("");
+  const [assignee, setAssignee] = useState("");
   const [status, setStatus] = useState("Not started");
   const [saving, setSaving] = useState(false);
 
@@ -17,12 +20,18 @@ export default function AddTaskModal({ onCreate, onClose }) {
       const depends_on = dependsOn.trim()
         ? dependsOn.split(",").map((s) => parseInt(s.trim(), 10)).filter((n) => !isNaN(n))
         : [];
-      await onCreate({
+      const payload = {
         task: task.trim(),
         hours: parseFloat(hours),
         depends_on,
         status,
-      });
+      };
+      if (trainingMode) {
+        if (department.trim()) payload.department = department.trim();
+        if (subject.trim()) payload.subject = subject.trim();
+        if (assignee.trim()) payload.assignee = assignee.trim();
+      }
+      await onCreate(payload);
       onClose();
     } catch (err) {
       alert(err.message || "Could not create task");
@@ -68,6 +77,37 @@ export default function AddTaskModal({ onCreate, onClose }) {
               required
             />
           </label>
+          {trainingMode ? (
+            <>
+              <label>
+                Department
+                <input
+                  type="text"
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  placeholder="e.g. Group"
+                />
+              </label>
+              <label>
+                Subject
+                <input
+                  type="text"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  placeholder="e.g. Communications"
+                />
+              </label>
+              <label>
+                Assignee
+                <input
+                  type="text"
+                  value={assignee}
+                  onChange={(e) => setAssignee(e.target.value)}
+                  placeholder="Free text — your tracker only"
+                />
+              </label>
+            </>
+          ) : null}
           <label>
             Depends on (task IDs)
             <input

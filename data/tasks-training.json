@@ -1,5 +1,4271 @@
 {
   "project_start": "2026-06-01",
   "gap_days": 1,
-  "tasks": []
+  "tasks": [
+    {
+      "id": 1,
+      "task": "What is our standard? \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Introduction / The Costplan Way",
+      "phase": "content",
+      "module_index": "1"
+    },
+    {
+      "id": 159,
+      "task": "What is our standard? \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        1
+      ],
+      "department": "Group",
+      "subject": "Introduction / The Costplan Way",
+      "phase": "development",
+      "module_index": "1"
+    },
+    {
+      "id": 2,
+      "task": "Our Values \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Introduction / The Costplan Way",
+      "phase": "content",
+      "module_index": "2"
+    },
+    {
+      "id": 160,
+      "task": "Our Values \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        2,
+        159
+      ],
+      "department": "Group",
+      "subject": "Introduction / The Costplan Way",
+      "phase": "development",
+      "module_index": "2"
+    },
+    {
+      "id": 3,
+      "task": "Office Culture \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Introduction / The Costplan Way",
+      "phase": "content",
+      "module_index": "3"
+    },
+    {
+      "id": 161,
+      "task": "Office Culture \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        3,
+        160
+      ],
+      "department": "Group",
+      "subject": "Introduction / The Costplan Way",
+      "phase": "development",
+      "module_index": "3"
+    },
+    {
+      "id": 4,
+      "task": "Professionalism \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Introduction / The Costplan Way",
+      "phase": "content",
+      "module_index": "4"
+    },
+    {
+      "id": 162,
+      "task": "Professionalism \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        4,
+        161
+      ],
+      "department": "Group",
+      "subject": "Introduction / The Costplan Way",
+      "phase": "development",
+      "module_index": "4"
+    },
+    {
+      "id": 5,
+      "task": "Communication generally \u2014 Content",
+      "hours": 7,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "content",
+      "module_index": "5"
+    },
+    {
+      "id": 163,
+      "task": "Communication generally \u2014 Development",
+      "hours": 14,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [
+        5,
+        162
+      ],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "development",
+      "module_index": "5"
+    },
+    {
+      "id": 6,
+      "task": "Phone First \u2014 Content",
+      "hours": 7,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "content",
+      "module_index": "6"
+    },
+    {
+      "id": 164,
+      "task": "Phone First \u2014 Development",
+      "hours": 14,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [
+        6,
+        163
+      ],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "development",
+      "module_index": "6"
+    },
+    {
+      "id": 7,
+      "task": "Meeting preparation \u2014 Content",
+      "hours": 7,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "content",
+      "module_index": "7"
+    },
+    {
+      "id": 165,
+      "task": "Meeting preparation \u2014 Development",
+      "hours": 14,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [
+        7,
+        164
+      ],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "development",
+      "module_index": "7"
+    },
+    {
+      "id": 8,
+      "task": "How to take Meeting Minutes \u2014 Content",
+      "hours": 7,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "content",
+      "module_index": "8"
+    },
+    {
+      "id": 166,
+      "task": "How to take Meeting Minutes \u2014 Development",
+      "hours": 14,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [
+        8,
+        165
+      ],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "development",
+      "module_index": "8"
+    },
+    {
+      "id": 9,
+      "task": "Teams meeting etiquette \u2014 Content",
+      "hours": 7,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "content",
+      "module_index": "9"
+    },
+    {
+      "id": 167,
+      "task": "Teams meeting etiquette \u2014 Development",
+      "hours": 14,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [
+        9,
+        166
+      ],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "development",
+      "module_index": "9"
+    },
+    {
+      "id": 10,
+      "task": "Letter Writing \u2014 Content",
+      "hours": 7,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "content",
+      "module_index": "10"
+    },
+    {
+      "id": 168,
+      "task": "Letter Writing \u2014 Development",
+      "hours": 14,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [
+        10,
+        167
+      ],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "development",
+      "module_index": "10"
+    },
+    {
+      "id": 11,
+      "task": "Email etiquette \u2014 Content",
+      "hours": 7,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "content",
+      "module_index": "11"
+    },
+    {
+      "id": 169,
+      "task": "Email etiquette \u2014 Development",
+      "hours": 14,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [
+        11,
+        168
+      ],
+      "department": "Group",
+      "subject": "Communications",
+      "phase": "development",
+      "module_index": "11"
+    },
+    {
+      "id": 12,
+      "task": "Efficiencies explained \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Time / efficiencies",
+      "phase": "content",
+      "module_index": "12"
+    },
+    {
+      "id": 170,
+      "task": "Efficiencies explained \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        12,
+        169
+      ],
+      "department": "Group",
+      "subject": "Time / efficiencies",
+      "phase": "development",
+      "module_index": "12"
+    },
+    {
+      "id": 13,
+      "task": "WorkflowMax use \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Time / efficiencies",
+      "phase": "content",
+      "module_index": "13"
+    },
+    {
+      "id": 171,
+      "task": "WorkflowMax use \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        13,
+        170
+      ],
+      "department": "Group",
+      "subject": "Time / efficiencies",
+      "phase": "development",
+      "module_index": "13"
+    },
+    {
+      "id": 14,
+      "task": "Dropbox \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Document & Quality Control",
+      "phase": "content",
+      "module_index": "14"
+    },
+    {
+      "id": 172,
+      "task": "Dropbox \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        14,
+        171
+      ],
+      "department": "Group",
+      "subject": "Document & Quality Control",
+      "phase": "development",
+      "module_index": "14"
+    },
+    {
+      "id": 15,
+      "task": "File naming conventions \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Document & Quality Control",
+      "phase": "content",
+      "module_index": "15"
+    },
+    {
+      "id": 173,
+      "task": "File naming conventions \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        15,
+        172
+      ],
+      "department": "Group",
+      "subject": "Document & Quality Control",
+      "phase": "development",
+      "module_index": "15"
+    },
+    {
+      "id": 16,
+      "task": "Record keeping \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Document & Quality Control",
+      "phase": "content",
+      "module_index": "16"
+    },
+    {
+      "id": 174,
+      "task": "Record keeping \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        16,
+        173
+      ],
+      "department": "Group",
+      "subject": "Document & Quality Control",
+      "phase": "development",
+      "module_index": "16"
+    },
+    {
+      "id": 17,
+      "task": "Quality Assurance \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "Document & Quality Control",
+      "phase": "content",
+      "module_index": "17"
+    },
+    {
+      "id": 175,
+      "task": "Quality Assurance \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        17,
+        174
+      ],
+      "department": "Group",
+      "subject": "Document & Quality Control",
+      "phase": "development",
+      "module_index": "17"
+    },
+    {
+      "id": 18,
+      "task": "Diversity & Inclusion \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "HR",
+      "phase": "content",
+      "module_index": "18"
+    },
+    {
+      "id": 176,
+      "task": "Diversity & Inclusion \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        18,
+        175
+      ],
+      "department": "Group",
+      "subject": "HR",
+      "phase": "development",
+      "module_index": "18"
+    },
+    {
+      "id": 19,
+      "task": "bullying and harrassment \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Group",
+      "subject": "HR",
+      "phase": "content",
+      "module_index": "19"
+    },
+    {
+      "id": 177,
+      "task": "bullying and harrassment \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        19,
+        176
+      ],
+      "department": "Group",
+      "subject": "HR",
+      "phase": "development",
+      "module_index": "19"
+    },
+    {
+      "id": 20,
+      "task": "Measurement rules \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "20"
+    },
+    {
+      "id": 178,
+      "task": "Measurement rules \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        20,
+        177
+      ],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "20"
+    },
+    {
+      "id": 21,
+      "task": "Software selection \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "21"
+    },
+    {
+      "id": 179,
+      "task": "Software selection \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        21,
+        178
+      ],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "21"
+    },
+    {
+      "id": 22,
+      "task": "Drawings scales \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "22"
+    },
+    {
+      "id": 180,
+      "task": "Drawings scales \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        22,
+        179
+      ],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "22"
+    },
+    {
+      "id": 23,
+      "task": "Understanding RICS Competencies \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "23"
+    },
+    {
+      "id": 181,
+      "task": "Understanding RICS Competencies \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        23,
+        180
+      ],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "23"
+    },
+    {
+      "id": 24,
+      "task": "Quality Assurance - Generally \u2014 Content",
+      "hours": 7,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "24"
+    },
+    {
+      "id": 182,
+      "task": "Quality Assurance - Generally \u2014 Development",
+      "hours": 14,
+      "status": "In progress",
+      "log": "",
+      "depends_on": [
+        24,
+        181
+      ],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "24"
+    },
+    {
+      "id": 25,
+      "task": "Quality Assurance - Costplan QA processes \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "25"
+    },
+    {
+      "id": 183,
+      "task": "Quality Assurance - Costplan QA processes \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        25,
+        182
+      ],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "25"
+    },
+    {
+      "id": 26,
+      "task": "Query sheets \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "26"
+    },
+    {
+      "id": 184,
+      "task": "Query sheets \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        26,
+        183
+      ],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "26"
+    },
+    {
+      "id": 27,
+      "task": "Record keeping \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "27"
+    },
+    {
+      "id": 185,
+      "task": "Record keeping \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        27,
+        184
+      ],
+      "department": "Quantity Surveying",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "27"
+    },
+    {
+      "id": 28,
+      "task": "Appointments \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "content",
+      "module_index": "28"
+    },
+    {
+      "id": 186,
+      "task": "Appointments \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        28,
+        185
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "development",
+      "module_index": "28"
+    },
+    {
+      "id": 29,
+      "task": "Insurances \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "content",
+      "module_index": "29"
+    },
+    {
+      "id": 187,
+      "task": "Insurances \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        29,
+        186
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "development",
+      "module_index": "29"
+    },
+    {
+      "id": 30,
+      "task": "Client Brief \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "content",
+      "module_index": "30"
+    },
+    {
+      "id": 188,
+      "task": "Client Brief \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        30,
+        187
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "development",
+      "module_index": "30"
+    },
+    {
+      "id": 31,
+      "task": "Deliverables \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "content",
+      "module_index": "31"
+    },
+    {
+      "id": 189,
+      "task": "Deliverables \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        31,
+        188
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "development",
+      "module_index": "31"
+    },
+    {
+      "id": 32,
+      "task": "Defining our Scope of Work \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "content",
+      "module_index": "32"
+    },
+    {
+      "id": 190,
+      "task": "Defining our Scope of Work \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        32,
+        189
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Project Establishment",
+      "phase": "development",
+      "module_index": "32"
+    },
+    {
+      "id": 33,
+      "task": "Procurement selection \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "33"
+    },
+    {
+      "id": 191,
+      "task": "Procurement selection \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        33,
+        190
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "33"
+    },
+    {
+      "id": 34,
+      "task": "Types and Tender Docs associated \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "34"
+    },
+    {
+      "id": 192,
+      "task": "Types and Tender Docs associated \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        34,
+        191
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "34"
+    },
+    {
+      "id": 35,
+      "task": "Selection of contract \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "35"
+    },
+    {
+      "id": 193,
+      "task": "Selection of contract \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        35,
+        192
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "35"
+    },
+    {
+      "id": 36,
+      "task": "PCSA's \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "36"
+    },
+    {
+      "id": 194,
+      "task": "PCSA's \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        36,
+        193
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "36"
+    },
+    {
+      "id": 37,
+      "task": "Single Stage \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "37"
+    },
+    {
+      "id": 195,
+      "task": "Single Stage \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        37,
+        194
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "37"
+    },
+    {
+      "id": 38,
+      "task": "Two Stage \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "38"
+    },
+    {
+      "id": 196,
+      "task": "Two Stage \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        38,
+        195
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "38"
+    },
+    {
+      "id": 39,
+      "task": "Frameworks \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "39"
+    },
+    {
+      "id": 197,
+      "task": "Frameworks \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        39,
+        196
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "39"
+    },
+    {
+      "id": 40,
+      "task": "Prime Cost \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "40"
+    },
+    {
+      "id": 198,
+      "task": "Prime Cost \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        40,
+        197
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "40"
+    },
+    {
+      "id": 41,
+      "task": "CM etc \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "content",
+      "module_index": "41"
+    },
+    {
+      "id": 199,
+      "task": "CM etc \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        41,
+        198
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Procurement",
+      "phase": "development",
+      "module_index": "41"
+    },
+    {
+      "id": 42,
+      "task": "Contract Administration \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "content",
+      "module_index": "42"
+    },
+    {
+      "id": 200,
+      "task": "Contract Administration \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        42,
+        199
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "development",
+      "module_index": "42"
+    },
+    {
+      "id": 43,
+      "task": "Key Contract Information \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "content",
+      "module_index": "43"
+    },
+    {
+      "id": 201,
+      "task": "Key Contract Information \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        43,
+        200
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "development",
+      "module_index": "43"
+    },
+    {
+      "id": 44,
+      "task": "Valuations \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "content",
+      "module_index": "44"
+    },
+    {
+      "id": 202,
+      "task": "Valuations \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        44,
+        201
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "development",
+      "module_index": "44"
+    },
+    {
+      "id": 45,
+      "task": "Variations \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "content",
+      "module_index": "45"
+    },
+    {
+      "id": 203,
+      "task": "Variations \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        45,
+        202
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "development",
+      "module_index": "45"
+    },
+    {
+      "id": 46,
+      "task": "Warranties / Insurances \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "content",
+      "module_index": "46"
+    },
+    {
+      "id": 204,
+      "task": "Warranties / Insurances \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        46,
+        203
+      ],
+      "department": "Quantity Surveying",
+      "subject": "Construction",
+      "phase": "development",
+      "module_index": "46"
+    },
+    {
+      "id": 47,
+      "task": "Introduction; purpose \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "47"
+    },
+    {
+      "id": 205,
+      "task": "Introduction; purpose \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        47,
+        204
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "47"
+    },
+    {
+      "id": 48,
+      "task": "Planning Basics \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "48"
+    },
+    {
+      "id": 206,
+      "task": "Planning Basics \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        48,
+        205
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "48"
+    },
+    {
+      "id": 49,
+      "task": "Document appraisal \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "49"
+    },
+    {
+      "id": 207,
+      "task": "Document appraisal \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        49,
+        206
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "49"
+    },
+    {
+      "id": 50,
+      "task": "Cascade analysis \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "50"
+    },
+    {
+      "id": 208,
+      "task": "Cascade analysis \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        50,
+        207
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "50"
+    },
+    {
+      "id": 51,
+      "task": "Strategy \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "51"
+    },
+    {
+      "id": 209,
+      "task": "Strategy \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        51,
+        208
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "51"
+    },
+    {
+      "id": 52,
+      "task": "PFD presentation \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "52"
+    },
+    {
+      "id": 210,
+      "task": "PFD presentation \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        52,
+        209
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "52"
+    },
+    {
+      "id": 53,
+      "task": "PFD - Stage 1 \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "53"
+    },
+    {
+      "id": 211,
+      "task": "PFD - Stage 1 \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        53,
+        210
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "53"
+    },
+    {
+      "id": 54,
+      "task": "Gantt charts -1 \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "54"
+    },
+    {
+      "id": 212,
+      "task": "Gantt charts -1 \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        54,
+        211
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "54"
+    },
+    {
+      "id": 55,
+      "task": "Programme - Stage 2 \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "55"
+    },
+    {
+      "id": 213,
+      "task": "Programme - Stage 2 \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        55,
+        212
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "55"
+    },
+    {
+      "id": 56,
+      "task": "Programme - Stage 3 \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "content",
+      "module_index": "56"
+    },
+    {
+      "id": 214,
+      "task": "Programme - Stage 3 \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        56,
+        213
+      ],
+      "department": "Planning and Programming",
+      "subject": "Planning Process",
+      "phase": "development",
+      "module_index": "56"
+    },
+    {
+      "id": 57,
+      "task": "Industry Processes [RIBA, Highways, Rail, Nuclear, \u2026] \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "57"
+    },
+    {
+      "id": 215,
+      "task": "Industry Processes [RIBA, Highways, Rail, Nuclear, \u2026] \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        57,
+        214
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "57"
+    },
+    {
+      "id": 58,
+      "task": "Selection of appropriate format \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "58"
+    },
+    {
+      "id": 216,
+      "task": "Selection of appropriate format \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        58,
+        215
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "58"
+    },
+    {
+      "id": 59,
+      "task": "Gantt charts -2 \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "59"
+    },
+    {
+      "id": 217,
+      "task": "Gantt charts -2 \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        59,
+        216
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "59"
+    },
+    {
+      "id": 60,
+      "task": "Use of Computer Gantt \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "60"
+    },
+    {
+      "id": 218,
+      "task": "Use of Computer Gantt \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        60,
+        217
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "60"
+    },
+    {
+      "id": 61,
+      "task": "Outputs \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "61"
+    },
+    {
+      "id": 219,
+      "task": "Outputs \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        61,
+        218
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "61"
+    },
+    {
+      "id": 62,
+      "task": "Conditions, Constraints & Requirements \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "62"
+    },
+    {
+      "id": 220,
+      "task": "Conditions, Constraints & Requirements \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        62,
+        219
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "62"
+    },
+    {
+      "id": 63,
+      "task": "Calendars - Time \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "63"
+    },
+    {
+      "id": 221,
+      "task": "Calendars - Time \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        63,
+        220
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "63"
+    },
+    {
+      "id": 64,
+      "task": "Critical Path/ Longest Path; Float paths \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "64"
+    },
+    {
+      "id": 222,
+      "task": "Critical Path/ Longest Path; Float paths \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        64,
+        221
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "64"
+    },
+    {
+      "id": 65,
+      "task": "Float; type, function, analysis, presentation \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "65"
+    },
+    {
+      "id": 223,
+      "task": "Float; type, function, analysis, presentation \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        65,
+        222
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "65"
+    },
+    {
+      "id": 66,
+      "task": "Baselines \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "content",
+      "module_index": "66"
+    },
+    {
+      "id": 224,
+      "task": "Baselines \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        66,
+        223
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme development",
+      "phase": "development",
+      "module_index": "66"
+    },
+    {
+      "id": 67,
+      "task": "QSRA / Monte Carlo - Risk & Uncertainty \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "content",
+      "module_index": "67"
+    },
+    {
+      "id": 225,
+      "task": "QSRA / Monte Carlo - Risk & Uncertainty \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        67,
+        224
+      ],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "development",
+      "module_index": "67"
+    },
+    {
+      "id": 68,
+      "task": "Definitions & interpretations \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "content",
+      "module_index": "68"
+    },
+    {
+      "id": 226,
+      "task": "Definitions & interpretations \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        68,
+        225
+      ],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "development",
+      "module_index": "68"
+    },
+    {
+      "id": 69,
+      "task": "TRA \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "content",
+      "module_index": "69"
+    },
+    {
+      "id": 227,
+      "task": "TRA \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        69,
+        226
+      ],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "development",
+      "module_index": "69"
+    },
+    {
+      "id": 70,
+      "task": "Project Risk Schedule \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "content",
+      "module_index": "70"
+    },
+    {
+      "id": 228,
+      "task": "Project Risk Schedule \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        70,
+        227
+      ],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "development",
+      "module_index": "70"
+    },
+    {
+      "id": 71,
+      "task": "Value Engineering \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "content",
+      "module_index": "71"
+    },
+    {
+      "id": 229,
+      "task": "Value Engineering \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        71,
+        228
+      ],
+      "department": "Planning and Programming",
+      "subject": "Risk & Opportunity",
+      "phase": "development",
+      "module_index": "71"
+    },
+    {
+      "id": 72,
+      "task": "Function \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Temporary Works",
+      "phase": "content",
+      "module_index": "72"
+    },
+    {
+      "id": 230,
+      "task": "Function \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        72,
+        229
+      ],
+      "department": "Planning and Programming",
+      "subject": "Temporary Works",
+      "phase": "development",
+      "module_index": "72"
+    },
+    {
+      "id": 73,
+      "task": "Selection / options \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Temporary Works",
+      "phase": "content",
+      "module_index": "73"
+    },
+    {
+      "id": 231,
+      "task": "Selection / options \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        73,
+        230
+      ],
+      "department": "Planning and Programming",
+      "subject": "Temporary Works",
+      "phase": "development",
+      "module_index": "73"
+    },
+    {
+      "id": 74,
+      "task": "Construction Methods Highrise \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "74"
+    },
+    {
+      "id": 232,
+      "task": "Construction Methods Highrise \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        74,
+        231
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "74"
+    },
+    {
+      "id": 75,
+      "task": "Construction Methods - Residential \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "75"
+    },
+    {
+      "id": 233,
+      "task": "Construction Methods - Residential \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        75,
+        232
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "75"
+    },
+    {
+      "id": 76,
+      "task": "Construction Methods - Data Centres \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "76"
+    },
+    {
+      "id": 234,
+      "task": "Construction Methods - Data Centres \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        76,
+        233
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "76"
+    },
+    {
+      "id": 77,
+      "task": "Construction Methods - Hospital \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "77"
+    },
+    {
+      "id": 235,
+      "task": "Construction Methods - Hospital \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        77,
+        234
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "77"
+    },
+    {
+      "id": 78,
+      "task": "Construction Methods - School/ education \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "78"
+    },
+    {
+      "id": 236,
+      "task": "Construction Methods - School/ education \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        78,
+        235
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "78"
+    },
+    {
+      "id": 79,
+      "task": "Construction Methods - Rail \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "79"
+    },
+    {
+      "id": 237,
+      "task": "Construction Methods - Rail \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        79,
+        236
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "79"
+    },
+    {
+      "id": 80,
+      "task": "Construction Methods - Cable \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "80"
+    },
+    {
+      "id": 238,
+      "task": "Construction Methods - Cable \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        80,
+        237
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "80"
+    },
+    {
+      "id": 81,
+      "task": "Construction Methods - Pipeline \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "81"
+    },
+    {
+      "id": 239,
+      "task": "Construction Methods - Pipeline \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        81,
+        238
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "81"
+    },
+    {
+      "id": 82,
+      "task": "Construction Methods - Structures \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "82"
+    },
+    {
+      "id": 240,
+      "task": "Construction Methods - Structures \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        82,
+        239
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "82"
+    },
+    {
+      "id": 83,
+      "task": "Construction Methods - Highways \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "83"
+    },
+    {
+      "id": 241,
+      "task": "Construction Methods - Highways \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        83,
+        240
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "83"
+    },
+    {
+      "id": 84,
+      "task": "Construction Methods - Marine \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "84"
+    },
+    {
+      "id": 242,
+      "task": "Construction Methods - Marine \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        84,
+        241
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "84"
+    },
+    {
+      "id": 85,
+      "task": "Construction Methods - Water Treatment \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "85"
+    },
+    {
+      "id": 243,
+      "task": "Construction Methods - Water Treatment \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        85,
+        242
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "85"
+    },
+    {
+      "id": 86,
+      "task": "Construction Methods - Sewage Treatment \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "86"
+    },
+    {
+      "id": 244,
+      "task": "Construction Methods - Sewage Treatment \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        86,
+        243
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "86"
+    },
+    {
+      "id": 87,
+      "task": "Construction Methods - Nuclear \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "87"
+    },
+    {
+      "id": 245,
+      "task": "Construction Methods - Nuclear \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        87,
+        244
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "87"
+    },
+    {
+      "id": 88,
+      "task": "Construction Methods - General Groundworks \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "88"
+    },
+    {
+      "id": 246,
+      "task": "Construction Methods - General Groundworks \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        88,
+        245
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "88"
+    },
+    {
+      "id": 89,
+      "task": "Construction Methods - Airports \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "89"
+    },
+    {
+      "id": 247,
+      "task": "Construction Methods - Airports \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        89,
+        246
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "89"
+    },
+    {
+      "id": 90,
+      "task": "Construction Methods - River/ canal/ Reservoir \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "content",
+      "module_index": "90"
+    },
+    {
+      "id": 248,
+      "task": "Construction Methods - River/ canal/ Reservoir \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        90,
+        247
+      ],
+      "department": "Planning and Programming",
+      "subject": "Construction Methods",
+      "phase": "development",
+      "module_index": "90"
+    },
+    {
+      "id": 91,
+      "task": "Methods of measurement \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "content",
+      "module_index": "91"
+    },
+    {
+      "id": 249,
+      "task": "Methods of measurement \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        91,
+        248
+      ],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "development",
+      "module_index": "91"
+    },
+    {
+      "id": 92,
+      "task": "CostX interface \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "content",
+      "module_index": "92"
+    },
+    {
+      "id": 250,
+      "task": "CostX interface \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        92,
+        249
+      ],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "development",
+      "module_index": "92"
+    },
+    {
+      "id": 93,
+      "task": "BoQ interface \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "content",
+      "module_index": "93"
+    },
+    {
+      "id": 251,
+      "task": "BoQ interface \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        93,
+        250
+      ],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "development",
+      "module_index": "93"
+    },
+    {
+      "id": 94,
+      "task": "Activity Schedule Interface \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "content",
+      "module_index": "94"
+    },
+    {
+      "id": 252,
+      "task": "Activity Schedule Interface \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        94,
+        251
+      ],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "development",
+      "module_index": "94"
+    },
+    {
+      "id": 95,
+      "task": "Allocation \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "content",
+      "module_index": "95"
+    },
+    {
+      "id": 253,
+      "task": "Allocation \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        95,
+        252
+      ],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "development",
+      "module_index": "95"
+    },
+    {
+      "id": 96,
+      "task": "Analysis : SPI/CPI ? EVM \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "content",
+      "module_index": "96"
+    },
+    {
+      "id": 254,
+      "task": "Analysis : SPI/CPI ? EVM \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        96,
+        253
+      ],
+      "department": "Planning and Programming",
+      "subject": "Cost Management",
+      "phase": "development",
+      "module_index": "96"
+    },
+    {
+      "id": 97,
+      "task": "Recording \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "content",
+      "module_index": "97"
+    },
+    {
+      "id": 255,
+      "task": "Recording \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        97,
+        254
+      ],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "development",
+      "module_index": "97"
+    },
+    {
+      "id": 98,
+      "task": "Processing \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "content",
+      "module_index": "98"
+    },
+    {
+      "id": 256,
+      "task": "Processing \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        98,
+        255
+      ],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "development",
+      "module_index": "98"
+    },
+    {
+      "id": 99,
+      "task": "Analysis \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "content",
+      "module_index": "99"
+    },
+    {
+      "id": 257,
+      "task": "Analysis \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        99,
+        256
+      ],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "development",
+      "module_index": "99"
+    },
+    {
+      "id": 100,
+      "task": "Presentation \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "content",
+      "module_index": "100"
+    },
+    {
+      "id": 258,
+      "task": "Presentation \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        100,
+        257
+      ],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "development",
+      "module_index": "100"
+    },
+    {
+      "id": 101,
+      "task": "Procurement Tracking \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "content",
+      "module_index": "101"
+    },
+    {
+      "id": 259,
+      "task": "Procurement Tracking \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        101,
+        258
+      ],
+      "department": "Planning and Programming",
+      "subject": "Progress",
+      "phase": "development",
+      "module_index": "101"
+    },
+    {
+      "id": 102,
+      "task": "Requirements \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Project Management",
+      "phase": "content",
+      "module_index": "102"
+    },
+    {
+      "id": 260,
+      "task": "Requirements \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        102,
+        259
+      ],
+      "department": "Planning and Programming",
+      "subject": "Project Management",
+      "phase": "development",
+      "module_index": "102"
+    },
+    {
+      "id": 103,
+      "task": "Psychology \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Project Management",
+      "phase": "content",
+      "module_index": "103"
+    },
+    {
+      "id": 261,
+      "task": "Psychology \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        103,
+        260
+      ],
+      "department": "Planning and Programming",
+      "subject": "Project Management",
+      "phase": "development",
+      "module_index": "103"
+    },
+    {
+      "id": 104,
+      "task": "Project teams \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Project Management",
+      "phase": "content",
+      "module_index": "104"
+    },
+    {
+      "id": 262,
+      "task": "Project teams \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        104,
+        261
+      ],
+      "department": "Planning and Programming",
+      "subject": "Project Management",
+      "phase": "development",
+      "module_index": "104"
+    },
+    {
+      "id": 105,
+      "task": "Activity Day Count - S-Curve ; Burn-down,.. \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Project Controls",
+      "phase": "content",
+      "module_index": "105"
+    },
+    {
+      "id": 263,
+      "task": "Activity Day Count - S-Curve ; Burn-down,.. \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        105,
+        262
+      ],
+      "department": "Planning and Programming",
+      "subject": "Project Controls",
+      "phase": "development",
+      "module_index": "105"
+    },
+    {
+      "id": 106,
+      "task": "KPIs for key trades (under proejct controls) \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Project Controls",
+      "phase": "content",
+      "module_index": "106"
+    },
+    {
+      "id": 264,
+      "task": "KPIs for key trades (under proejct controls) \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        106,
+        263
+      ],
+      "department": "Planning and Programming",
+      "subject": "Project Controls",
+      "phase": "development",
+      "module_index": "106"
+    },
+    {
+      "id": 107,
+      "task": "Lead & Lag indicators \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Project Controls",
+      "phase": "content",
+      "module_index": "107"
+    },
+    {
+      "id": 265,
+      "task": "Lead & Lag indicators \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        107,
+        264
+      ],
+      "department": "Planning and Programming",
+      "subject": "Project Controls",
+      "phase": "development",
+      "module_index": "107"
+    },
+    {
+      "id": 108,
+      "task": "Managing EW's \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Managing Change",
+      "phase": "content",
+      "module_index": "108"
+    },
+    {
+      "id": 266,
+      "task": "Managing EW's \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        108,
+        265
+      ],
+      "department": "Planning and Programming",
+      "subject": "Managing Change",
+      "phase": "development",
+      "module_index": "108"
+    },
+    {
+      "id": 109,
+      "task": "Impacting programme with CE \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Managing Change",
+      "phase": "content",
+      "module_index": "109"
+    },
+    {
+      "id": 267,
+      "task": "Impacting programme with CE \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        109,
+        266
+      ],
+      "department": "Planning and Programming",
+      "subject": "Managing Change",
+      "phase": "development",
+      "module_index": "109"
+    },
+    {
+      "id": 110,
+      "task": "Claims [EoT] Methods \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Managing Change",
+      "phase": "content",
+      "module_index": "110"
+    },
+    {
+      "id": 268,
+      "task": "Claims [EoT] Methods \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        110,
+        267
+      ],
+      "department": "Planning and Programming",
+      "subject": "Managing Change",
+      "phase": "development",
+      "module_index": "110"
+    },
+    {
+      "id": 111,
+      "task": "PDF \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Assessment of Programmes",
+      "phase": "content",
+      "module_index": "111"
+    },
+    {
+      "id": 269,
+      "task": "PDF \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        111,
+        268
+      ],
+      "department": "Planning and Programming",
+      "subject": "Assessment of Programmes",
+      "phase": "development",
+      "module_index": "111"
+    },
+    {
+      "id": 112,
+      "task": "Live File \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Assessment of Programmes",
+      "phase": "content",
+      "module_index": "112"
+    },
+    {
+      "id": 270,
+      "task": "Live File \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        112,
+        269
+      ],
+      "department": "Planning and Programming",
+      "subject": "Assessment of Programmes",
+      "phase": "development",
+      "module_index": "112"
+    },
+    {
+      "id": 113,
+      "task": "NEC: 3,4 \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Forms of Contract",
+      "phase": "content",
+      "module_index": "113"
+    },
+    {
+      "id": 271,
+      "task": "NEC: 3,4 \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        113,
+        270
+      ],
+      "department": "Planning and Programming",
+      "subject": "Forms of Contract",
+      "phase": "development",
+      "module_index": "113"
+    },
+    {
+      "id": 114,
+      "task": "JCT \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Forms of Contract",
+      "phase": "content",
+      "module_index": "114"
+    },
+    {
+      "id": 272,
+      "task": "JCT \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        114,
+        271
+      ],
+      "department": "Planning and Programming",
+      "subject": "Forms of Contract",
+      "phase": "development",
+      "module_index": "114"
+    },
+    {
+      "id": 115,
+      "task": "FIDIC \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Forms of Contract",
+      "phase": "content",
+      "module_index": "115"
+    },
+    {
+      "id": 273,
+      "task": "FIDIC \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        115,
+        272
+      ],
+      "department": "Planning and Programming",
+      "subject": "Forms of Contract",
+      "phase": "development",
+      "module_index": "115"
+    },
+    {
+      "id": 116,
+      "task": "Modified/ bespoke \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Forms of Contract",
+      "phase": "content",
+      "module_index": "116"
+    },
+    {
+      "id": 274,
+      "task": "Modified/ bespoke \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        116,
+        273
+      ],
+      "department": "Planning and Programming",
+      "subject": "Forms of Contract",
+      "phase": "development",
+      "module_index": "116"
+    },
+    {
+      "id": 117,
+      "task": "Time Chainage/ Time - Location \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme Formats",
+      "phase": "content",
+      "module_index": "117"
+    },
+    {
+      "id": 275,
+      "task": "Time Chainage/ Time - Location \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        117,
+        274
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme Formats",
+      "phase": "development",
+      "module_index": "117"
+    },
+    {
+      "id": 118,
+      "task": "Line of Balance \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme Formats",
+      "phase": "content",
+      "module_index": "118"
+    },
+    {
+      "id": 276,
+      "task": "Line of Balance \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        118,
+        275
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme Formats",
+      "phase": "development",
+      "module_index": "118"
+    },
+    {
+      "id": 119,
+      "task": "Gantt \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Programme Formats",
+      "phase": "content",
+      "module_index": "119"
+    },
+    {
+      "id": 277,
+      "task": "Gantt \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        119,
+        276
+      ],
+      "department": "Planning and Programming",
+      "subject": "Programme Formats",
+      "phase": "development",
+      "module_index": "119"
+    },
+    {
+      "id": 120,
+      "task": "Powerproject - Asta \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "content",
+      "module_index": "120"
+    },
+    {
+      "id": 278,
+      "task": "Powerproject - Asta \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        120,
+        277
+      ],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "development",
+      "module_index": "120"
+    },
+    {
+      "id": 121,
+      "task": "Primavera \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "content",
+      "module_index": "121"
+    },
+    {
+      "id": 279,
+      "task": "Primavera \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        121,
+        278
+      ],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "development",
+      "module_index": "121"
+    },
+    {
+      "id": 122,
+      "task": "MSP (MS Project) \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "content",
+      "module_index": "122"
+    },
+    {
+      "id": 280,
+      "task": "MSP (MS Project) \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        122,
+        279
+      ],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "development",
+      "module_index": "122"
+    },
+    {
+      "id": 123,
+      "task": "Excel \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "content",
+      "module_index": "123"
+    },
+    {
+      "id": 281,
+      "task": "Excel \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        123,
+        280
+      ],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "development",
+      "module_index": "123"
+    },
+    {
+      "id": 124,
+      "task": "Bespoke \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "content",
+      "module_index": "124"
+    },
+    {
+      "id": 282,
+      "task": "Bespoke \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        124,
+        281
+      ],
+      "department": "Planning and Programming",
+      "subject": "Software Packages",
+      "phase": "development",
+      "module_index": "124"
+    },
+    {
+      "id": 125,
+      "task": "Design Programme \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Function Programmes",
+      "phase": "content",
+      "module_index": "125"
+    },
+    {
+      "id": 283,
+      "task": "Design Programme \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        125,
+        282
+      ],
+      "department": "Planning and Programming",
+      "subject": "Function Programmes",
+      "phase": "development",
+      "module_index": "125"
+    },
+    {
+      "id": 126,
+      "task": "Procurement Programme \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Function Programmes",
+      "phase": "content",
+      "module_index": "126"
+    },
+    {
+      "id": 284,
+      "task": "Procurement Programme \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        126,
+        283
+      ],
+      "department": "Planning and Programming",
+      "subject": "Function Programmes",
+      "phase": "development",
+      "module_index": "126"
+    },
+    {
+      "id": 127,
+      "task": "Completion \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Function Programmes",
+      "phase": "content",
+      "module_index": "127"
+    },
+    {
+      "id": 285,
+      "task": "Completion \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        127,
+        284
+      ],
+      "department": "Planning and Programming",
+      "subject": "Function Programmes",
+      "phase": "development",
+      "module_index": "127"
+    },
+    {
+      "id": 128,
+      "task": "As-Built \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Function Programmes",
+      "phase": "content",
+      "module_index": "128"
+    },
+    {
+      "id": 286,
+      "task": "As-Built \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        128,
+        285
+      ],
+      "department": "Planning and Programming",
+      "subject": "Function Programmes",
+      "phase": "development",
+      "module_index": "128"
+    },
+    {
+      "id": 129,
+      "task": "Format Selection \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Methodology",
+      "phase": "content",
+      "module_index": "129"
+    },
+    {
+      "id": 287,
+      "task": "Format Selection \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        129,
+        286
+      ],
+      "department": "Planning and Programming",
+      "subject": "Methodology",
+      "phase": "development",
+      "module_index": "129"
+    },
+    {
+      "id": 130,
+      "task": "Sequencing \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Methodology",
+      "phase": "content",
+      "module_index": "130"
+    },
+    {
+      "id": 288,
+      "task": "Sequencing \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        130,
+        287
+      ],
+      "department": "Planning and Programming",
+      "subject": "Methodology",
+      "phase": "development",
+      "module_index": "130"
+    },
+    {
+      "id": 131,
+      "task": "Presentation \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Methodology",
+      "phase": "content",
+      "module_index": "131"
+    },
+    {
+      "id": 289,
+      "task": "Presentation \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        131,
+        288
+      ],
+      "department": "Planning and Programming",
+      "subject": "Methodology",
+      "phase": "development",
+      "module_index": "131"
+    },
+    {
+      "id": 132,
+      "task": "Scenario's \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Methodology",
+      "phase": "content",
+      "module_index": "132"
+    },
+    {
+      "id": 290,
+      "task": "Scenario's \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        132,
+        289
+      ],
+      "department": "Planning and Programming",
+      "subject": "Methodology",
+      "phase": "development",
+      "module_index": "132"
+    },
+    {
+      "id": 133,
+      "task": "P1686_East Road - Hackney , Time-Cost \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Reference",
+      "phase": "content",
+      "module_index": "133"
+    },
+    {
+      "id": 291,
+      "task": "P1686_East Road - Hackney , Time-Cost \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        133,
+        290
+      ],
+      "department": "Planning and Programming",
+      "subject": "Reference",
+      "phase": "development",
+      "module_index": "133"
+    },
+    {
+      "id": 134,
+      "task": "P1490_1-3 Whitefriars_Canterbury \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Reference",
+      "phase": "content",
+      "module_index": "134"
+    },
+    {
+      "id": 292,
+      "task": "P1490_1-3 Whitefriars_Canterbury \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        134,
+        291
+      ],
+      "department": "Planning and Programming",
+      "subject": "Reference",
+      "phase": "development",
+      "module_index": "134"
+    },
+    {
+      "id": 135,
+      "task": "P2034_Wye Wetlands \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Planning and Programming",
+      "subject": "Reference",
+      "phase": "content",
+      "module_index": "135"
+    },
+    {
+      "id": 293,
+      "task": "P2034_Wye Wetlands \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        135,
+        292
+      ],
+      "department": "Planning and Programming",
+      "subject": "Reference",
+      "phase": "development",
+      "module_index": "135"
+    },
+    {
+      "id": 136,
+      "task": "Site visits \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Safety",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "136"
+    },
+    {
+      "id": 294,
+      "task": "Site visits \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        136,
+        293
+      ],
+      "department": "Safety",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "136"
+    },
+    {
+      "id": 137,
+      "task": "PPE \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Safety",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "137"
+    },
+    {
+      "id": 295,
+      "task": "PPE \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        137,
+        294
+      ],
+      "department": "Safety",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "137"
+    },
+    {
+      "id": 138,
+      "task": "Contacts for safety \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Safety",
+      "subject": "General Requirements",
+      "phase": "content",
+      "module_index": "138"
+    },
+    {
+      "id": 296,
+      "task": "Contacts for safety \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        138,
+        295
+      ],
+      "department": "Safety",
+      "subject": "General Requirements",
+      "phase": "development",
+      "module_index": "138"
+    },
+    {
+      "id": 139,
+      "task": "Slips trips & falls \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "content",
+      "module_index": "139"
+    },
+    {
+      "id": 297,
+      "task": "Slips trips & falls \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        139,
+        296
+      ],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "development",
+      "module_index": "139"
+    },
+    {
+      "id": 140,
+      "task": "Excavations \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "content",
+      "module_index": "140"
+    },
+    {
+      "id": 298,
+      "task": "Excavations \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        140,
+        297
+      ],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "development",
+      "module_index": "140"
+    },
+    {
+      "id": 141,
+      "task": "Risk Assessments \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "content",
+      "module_index": "141"
+    },
+    {
+      "id": 299,
+      "task": "Risk Assessments \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        141,
+        298
+      ],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "development",
+      "module_index": "141"
+    },
+    {
+      "id": 142,
+      "task": "Method Statements \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "content",
+      "module_index": "142"
+    },
+    {
+      "id": 300,
+      "task": "Method Statements \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        142,
+        299
+      ],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "development",
+      "module_index": "142"
+    },
+    {
+      "id": 143,
+      "task": "Person in control \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "content",
+      "module_index": "143"
+    },
+    {
+      "id": 301,
+      "task": "Person in control \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        143,
+        300
+      ],
+      "department": "Safety",
+      "subject": "Site Safety",
+      "phase": "development",
+      "module_index": "143"
+    },
+    {
+      "id": 144,
+      "task": "Training Requirements / scope \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Training & Development",
+      "subject": "Scope",
+      "phase": "content",
+      "module_index": "144"
+    },
+    {
+      "id": 302,
+      "task": "Training Requirements / scope \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        144,
+        301
+      ],
+      "department": "Training & Development",
+      "subject": "Scope",
+      "phase": "development",
+      "module_index": "144"
+    },
+    {
+      "id": 145,
+      "task": "Compiling a syllabus \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Training & Development",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "145"
+    },
+    {
+      "id": 303,
+      "task": "Compiling a syllabus \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        145,
+        302
+      ],
+      "department": "Training & Development",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "145"
+    },
+    {
+      "id": 146,
+      "task": "Compiling training sessions \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Training & Development",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "146"
+    },
+    {
+      "id": 304,
+      "task": "Compiling training sessions \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        146,
+        303
+      ],
+      "department": "Training & Development",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "146"
+    },
+    {
+      "id": 147,
+      "task": "Venue organisation \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Training & Development",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "147"
+    },
+    {
+      "id": 305,
+      "task": "Venue organisation \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        147,
+        304
+      ],
+      "department": "Training & Development",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "147"
+    },
+    {
+      "id": 148,
+      "task": "Feedback \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Training & Development",
+      "subject": "Development",
+      "phase": "content",
+      "module_index": "148"
+    },
+    {
+      "id": 306,
+      "task": "Feedback \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        148,
+        305
+      ],
+      "department": "Training & Development",
+      "subject": "Development",
+      "phase": "development",
+      "module_index": "148"
+    },
+    {
+      "id": 149,
+      "task": "Action Plans \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Training & Development",
+      "subject": "Development",
+      "phase": "content",
+      "module_index": "149"
+    },
+    {
+      "id": 307,
+      "task": "Action Plans \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        149,
+        306
+      ],
+      "department": "Training & Development",
+      "subject": "Development",
+      "phase": "development",
+      "module_index": "149"
+    },
+    {
+      "id": 150,
+      "task": "what skills a manager requires \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Training & Development",
+      "subject": "Management",
+      "phase": "content",
+      "module_index": "150"
+    },
+    {
+      "id": 308,
+      "task": "what skills a manager requires \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        150,
+        307
+      ],
+      "department": "Training & Development",
+      "subject": "Management",
+      "phase": "development",
+      "module_index": "150"
+    },
+    {
+      "id": 151,
+      "task": "Training Requirements / scope \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Administration",
+      "subject": "Scope",
+      "phase": "content",
+      "module_index": "151"
+    },
+    {
+      "id": 309,
+      "task": "Training Requirements / scope \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        151,
+        308
+      ],
+      "department": "Administration",
+      "subject": "Scope",
+      "phase": "development",
+      "module_index": "151"
+    },
+    {
+      "id": 152,
+      "task": "How to run payroll (safeHr) \u2014 Content",
+      "hours": 0.0,
+      "status": "Completed",
+      "log": "",
+      "depends_on": [],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "152"
+    },
+    {
+      "id": 310,
+      "task": "How to run payroll (safeHr) \u2014 Development",
+      "hours": 10.0,
+      "status": "In progress",
+      "log": "",
+      "depends_on": [
+        152
+      ],
+      "fixed_start": "2026-06-02",
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "152"
+    },
+    {
+      "id": 153,
+      "task": "Guide to chasing invoices and downloadin the relevant info \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "153"
+    },
+    {
+      "id": 311,
+      "task": "Guide to chasing invoices and downloadin the relevant info \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        153,
+        310
+      ],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "153"
+    },
+    {
+      "id": 154,
+      "task": "Guide for completing expenses via safeHR \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "154"
+    },
+    {
+      "id": 312,
+      "task": "Guide for completing expenses via safeHR \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        154,
+        311
+      ],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "154"
+    },
+    {
+      "id": 155,
+      "task": "Guide to create P&Q numbers \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "155"
+    },
+    {
+      "id": 313,
+      "task": "Guide to create P&Q numbers \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        155,
+        312
+      ],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "155"
+    },
+    {
+      "id": 156,
+      "task": "How to submit and complete newsletter information \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "156"
+    },
+    {
+      "id": 314,
+      "task": "How to submit and complete newsletter information \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        156,
+        313
+      ],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "156"
+    },
+    {
+      "id": 157,
+      "task": "How to conduct an Interview \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "157"
+    },
+    {
+      "id": 315,
+      "task": "How to conduct an Interview \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        157,
+        314
+      ],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "157"
+    },
+    {
+      "id": 158,
+      "task": "Bullying and harrassment \u2014 Content",
+      "hours": 7,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "content",
+      "module_index": "158"
+    },
+    {
+      "id": 316,
+      "task": "Bullying and harrassment \u2014 Development",
+      "hours": 14,
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        158,
+        315
+      ],
+      "department": "Administration",
+      "subject": "Delivery",
+      "phase": "development",
+      "module_index": "158"
+    }
+  ]
 }

@@ -112,6 +112,11 @@ export default function TaskLogView({
           <p className="task-log-task-name">{task.task}</p>
           <div className="task-log-meta-row">
             <span className={`status-badge ${statusClass(task.status)}`}>{task.status}</span>
+            {task.department ? <span>{task.department}</span> : null}
+            {task.subject ? <span>{task.subject}</span> : null}
+            {task.assignee ? (
+              <span className="assignee-pill">{task.assignee}</span>
+            ) : null}
             <span>
               {task.start} → {(task.end || "").slice(0, 10)}
             </span>

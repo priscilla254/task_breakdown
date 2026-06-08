@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 
 const STATUSES = ["Not started", "In progress", "Completed"];
 
-export default function TaskEditor({ task, onSave, onDelete, onClose }) {
+export default function TaskEditor({ task, onSave, onDelete, onClose, trainingMode = false }) {
   const [name, setName] = useState("");
   const [status, setStatus] = useState("Not started");
   const [hours, setHours] = useState(0);
+  const [department, setDepartment] = useState("");
+  const [subject, setSubject] = useState("");
+  const [assignee, setAssignee] = useState("");
   const [startDate, setStartDate] = useState("");
   const [useAutoStart, setUseAutoStart] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -16,6 +19,9 @@ export default function TaskEditor({ task, onSave, onDelete, onClose }) {
     setName(task.task || "");
     setStatus(task.status || "Not started");
     setHours(task.hours ?? 0);
+    setDepartment(task.department || "");
+    setSubject(task.subject || "");
+    setAssignee(task.assignee || "");
     setStartDate(task.fixed_start || task.start || "");
     setUseAutoStart(!task.fixed_start);
   }, [task]);
@@ -31,12 +37,18 @@ export default function TaskEditor({ task, onSave, onDelete, onClose }) {
     }
     setSaving(true);
     try {
-      await onSave(task.id, {
+      const payload = {
         task: trimmed,
         status,
         hours: parseFloat(hours),
         fixed_start: useAutoStart ? null : startDate,
-      });
+      };
+      if (trainingMode) {
+        payload.department = department.trim();
+        payload.subject = subject.trim();
+        payload.assignee = assignee.trim();
+      }
+      await onSave(task.id, payload);
       onClose();
     } catch (err) {
       alert(err.message || "Update failed");
@@ -79,6 +91,37 @@ export default function TaskEditor({ task, onSave, onDelete, onClose }) {
               required
             />
           </label>
+          {trainingMode ? (
+            <>
+              <label>
+                Department
+                <input
+                  type="text"
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  placeholder="e.g. Group, QS"
+                />
+              </label>
+              <label>
+                Subject
+                <input
+                  type="text"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  placeholder="e.g. Introduction"
+                />
+              </label>
+              <label>
+                Assignee
+                <input
+                  type="text"
+                  value={assignee}
+                  onChange={(e) => setAssignee(e.target.value)}
+                  placeholder="Who is working on this"
+                />
+              </label>
+            </>
+          ) : null}
           <label>
             Status
             <select value={status} onChange={(e) => setStatus(e.target.value)}>

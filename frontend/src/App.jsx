@@ -11,7 +11,12 @@ import {
 import { confirmDeleteTask } from "./taskActions";
 import { DEFAULT_PROJECT_ID, PROJECTS, getProject } from "./projects";
 import GanttChart from "./GanttChart";
+import TrainingFiltersBar from "./TrainingFiltersBar";
 import TaskTable from "./TaskTable";
+import TrainingTaskTable from "./TrainingTaskTable";
+import { useTrainingFilters } from "./useTrainingFilters";
+import { getRemainingHours } from "./projectStats";
+import { getTrainingHourStats } from "./trainingUtils";
 import TaskEditor from "./TaskEditor";
 import TaskLogView from "./TaskLogView";
 import AddTaskModal from "./AddTaskModal";
@@ -28,6 +33,9 @@ export default function App() {
   const [showAddTask, setShowAddTask] = useState(false);
 
   const projectMeta = getProject(activeProject);
+  const isTraining = activeProject === "training";
+
+  const trainingFilters = useTrainingFilters(tasks, isTraining);
 
   const load = useCallback(async () => {
     try {
@@ -125,6 +133,8 @@ export default function App() {
       }, "")
     : "—";
   const totalHours = tasks.reduce((s, t) => s + (t.hours || 0), 0);
+  const remainingHours = getRemainingHours(tasks);
+  const trainingHours = isTraining ? getTrainingHourStats(tasks) : null;
 
   if (loading) {
     return <div className="app-shell loading">Loading project schedule…</div>;
@@ -190,9 +200,28 @@ export default function App() {
             <span className="stat-pill">
               <strong>{tasks.length}</strong> tasks
             </span>
-            <span className="stat-pill">
-              <strong>{totalHours}</strong> project hours
-            </span>
+            {isTraining && trainingHours ? (
+              <>
+                <span className="stat-pill">
+                  <strong>{trainingHours.totalProjectHours}</strong> total project hours
+                </span>
+                <span className="stat-pill stat-pill-dev">
+                  <strong>{trainingHours.developmentHours}</strong> development hours
+                </span>
+                <span className="stat-pill stat-pill-remaining">
+                  <strong>{trainingHours.remainingHours}</strong> remaining hours
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="stat-pill">
+                  <strong>{totalHours}</strong> project hours
+                </span>
+                <span className="stat-pill stat-pill-remaining">
+                  <strong>{remainingHours}</strong> remaining hours
+                </span>
+              </>
+            )}
             <span className="stat-pill">
               Target end <strong>{projectEnd}</strong>
             </span>
@@ -233,6 +262,38 @@ export default function App() {
                   No tasks yet for this project. Use <strong>+ Add task</strong> to build your
                   breakdown.
                 </p>
+              ) : isTraining ? (
+                <div className="training-view-panel">
+                  <TrainingFiltersBar
+                    filters={trainingFilters.filters}
+                    setFilter={trainingFilters.setFilter}
+                    clearFilters={trainingFilters.clearFilters}
+                    options={trainingFilters.options}
+                    subjectChoices={trainingFilters.subjectChoices}
+                    anyActive={trainingFilters.anyActive}
+                    filteredCount={trainingFilters.filteredCount}
+                    totalCount={trainingFilters.totalCount}
+                  />
+                  {trainingFilters.filteredTasks.length === 0 ? (
+                    <p className="empty-state">
+                      No tasks match these filters. Try clearing filters.
+                    </p>
+                  ) : view === "gantt" ? (
+                    <GanttChart
+                      tasks={trainingFilters.filteredTasks}
+                      onTaskSelect={openLog}
+                      trainingMode
+                    />
+                  ) : (
+                    <TrainingTaskTable
+                      tasks={trainingFilters.filteredTasks}
+                      onUpdate={handleTaskUpdate}
+                      onTaskSelect={openLog}
+                      onEditSchedule={openEditor}
+                      onDelete={handleDeleteTask}
+                    />
+                  )}
+                </div>
               ) : view === "gantt" ? (
                 <GanttChart tasks={tasks} onTaskSelect={openLog} />
               ) : (
@@ -262,13 +323,18 @@ export default function App() {
 
       <TaskEditor
         task={editingTask}
+        trainingMode={isTraining}
         onClose={() => setEditingTask(null)}
         onSave={handleTaskUpdate}
         onDelete={handleDeleteTask}
       />
 
       {showAddTask && (
-        <AddTaskModal onCreate={handleCreateTask} onClose={() => setShowAddTask(false)} />
+        <AddTaskModal
+          trainingMode={isTraining}
+          onCreate={handleCreateTask}
+          onClose={() => setShowAddTask(false)}
+        />
       )}
     </>
   );

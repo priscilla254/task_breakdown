@@ -11,6 +11,30 @@ def _project_end(tasks) -> str:
     return end[:10] if end else ""
 
 
+def _optional_str(value) -> str | None:
+    if value is None:
+        return None
+    s = str(value).strip()
+    return s if s else None
+
+
+def _apply_training_fields(task: dict, body) -> None:
+    for field in ("department", "subject", "assignee"):
+        val = _optional_str(getattr(body, field, None))
+        if val:
+            task[field] = val
+
+
+def _apply_training_updates(task: dict, update: TaskUpdate, fields_set: set) -> None:
+    for field in ("department", "subject", "assignee"):
+        if field in fields_set:
+            val = _optional_str(getattr(update, field))
+            if val:
+                task[field] = val
+            else:
+                task.pop(field, None)
+
+
 def create_task(project_id: str, body: TaskCreate):
     project_start, gap_days, tasks = load_raw(project_id)
     new_id = max((t["id"] for t in tasks), default=0) + 1
@@ -26,6 +50,7 @@ def create_task(project_id: str, body: TaskCreate):
         "log": "",
         "depends_on": list(body.depends_on),
     }
+    _apply_training_fields(new_task, body)
     tasks.append(new_task)
     save_tasks(project_id, project_start, gap_days, tasks)
     add_log_entry(project_id, f"Created task {new_id}: {body.task.strip()}")
@@ -39,6 +64,8 @@ def update_task(project_id: str, task_id: int, update: TaskUpdate):
     found = False
     for t in tasks:
         if t["id"] == task_id:
+            fields_set = update.model_dump(exclude_unset=True)
+            previous_status = t.get("status")
             if update.task is not None:
                 name = update.task.strip()
                 if not name:
@@ -48,16 +75,24 @@ def update_task(project_id: str, task_id: int, update: TaskUpdate):
                 t["hours"] = update.hours
             if update.status is not None:
                 t["status"] = update.status
+                # Workflow rule: when a task is first moved to In progress,
+                # anchor its fixed start to today so end date is recalculated.
+                if (
+                    update.status == "In progress"
+                    and previous_status != "In progress"
+                    and "fixed_start" not in fields_set
+                ):
+                    t["fixed_start"] = datetime.now().date().isoformat()
             if update.log is not None:
                 t["log"] = update.log
             if update.depends_on is not None:
                 t["depends_on"] = update.depends_on
-            fields_set = update.model_dump(exclude_unset=True)
             if "fixed_start" in fields_set:
                 if update.fixed_start:
                     t["fixed_start"] = update.fixed_start
                 else:
                     t.pop("fixed_start", None)
+            _apply_training_updates(t, update, fields_set)
             found = True
             break
     if not found:

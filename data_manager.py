@@ -11,6 +11,8 @@ DEFAULT_PROJECT_START = "2026-06-01"
 DEFAULT_GAP_DAYS = 1
 
 TASK_FIELDS = ("id", "task", "hours", "status", "log", "depends_on")
+# Training project: optional metadata (preserved on load/save when present)
+TRAINING_TASK_FIELDS = ("department", "subject", "assignee", "phase", "module_index")
 
 PROJECTS: Dict[str, Dict[str, str]] = {
     "phase1": {
@@ -116,6 +118,11 @@ def _clean_task(task: Dict) -> Dict:
     delays = task.get("delays")
     if delays:
         cleaned["delays"] = list(delays)
+    for key in TRAINING_TASK_FIELDS:
+        if key in task and task[key] is not None:
+            val = str(task[key]).strip()
+            if val:
+                cleaned[key] = val
     return cleaned
 
 

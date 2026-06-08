@@ -10,6 +10,9 @@ class TaskCreate(BaseModel):
     hours: float = 8
     depends_on: List[int] = []
     status: str = "Not started"
+    department: Optional[str] = None
+    subject: Optional[str] = None
+    assignee: Optional[str] = None
 
 
 class TaskUpdate(BaseModel):
@@ -19,6 +22,9 @@ class TaskUpdate(BaseModel):
     log: Optional[str] = None
     depends_on: Optional[List[int]] = None
     fixed_start: Optional[str] = None
+    department: Optional[str] = None
+    subject: Optional[str] = None
+    assignee: Optional[str] = None
 
 
 class ProjectStartUpdate(BaseModel):
