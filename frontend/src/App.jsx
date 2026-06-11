@@ -231,6 +231,12 @@ export default function App() {
             <div className="card-header">
               <h2>{view === "gantt" ? "Timeline" : "Tasks"}</h2>
               <div className="card-header-actions">
+                <a
+                  className="btn btn-ghost"
+                  href={`/api/export?project=${activeProject}`}
+                >
+                  Download CSV
+                </a>
                 <button type="button" className="btn btn-primary" onClick={() => setShowAddTask(true)}>
                   + Add task
                 </button>

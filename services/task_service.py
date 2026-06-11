@@ -83,6 +83,12 @@ def update_task(project_id: str, task_id: int, update: TaskUpdate):
                     and "fixed_start" not in fields_set
                 ):
                     t["fixed_start"] = datetime.now().date().isoformat()
+                # Stamp actual completion date so the scheduler can use it as
+                # the task's real end; clear it if the task is reopened.
+                if update.status == "Completed" and previous_status != "Completed":
+                    t["completed_on"] = datetime.now().date().isoformat()
+                elif update.status != "Completed":
+                    t.pop("completed_on", None)
             if update.log is not None:
                 t["log"] = update.log
             if update.depends_on is not None:

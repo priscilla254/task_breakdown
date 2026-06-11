@@ -1,4 +1,7 @@
+from datetime import date
+
 from fastapi import APIRouter, Depends
+from fastapi.responses import Response
 
 from dependencies import get_project_id
 from schemas import (
@@ -9,9 +12,20 @@ from schemas import (
     TaskCreate,
     TaskUpdate,
 )
-from services import project_service, task_service
+from services import export_service, project_service, task_service
 
 router = APIRouter(prefix="/api", tags=["tasks"])
+
+
+@router.get("/export")
+def export_tasks_csv(project_id: str = Depends(get_project_id)):
+    csv_text = export_service.tasks_to_csv(project_id)
+    filename = f"{project_id}-tasks-{date.today().isoformat()}.csv"
+    return Response(
+        content=csv_text,
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 @router.get("/tasks")

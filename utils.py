@@ -97,8 +97,16 @@ def schedule_tasks(
         else:
             start = earliest
 
-        effective_hours = float(t["hours"]) + float(t.get("delay_hours") or 0)
-        end = add_working_hours(start, effective_hours)
+        completed_on = t.get("completed_on")
+        if t.get("status") == "Completed" and completed_on:
+            # Task is actually done: its real end is the completion date,
+            # so successors can be scheduled from there instead of the plan.
+            end = datetime.fromisoformat(completed_on)
+            if end < start:
+                start = end
+        else:
+            effective_hours = float(t["hours"]) + float(t.get("delay_hours") or 0)
+            end = add_working_hours(start, effective_hours)
         ends[tid] = end
 
         task = {k: v for k, v in t.items() if k not in ("start", "end")}
