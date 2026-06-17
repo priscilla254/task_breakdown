@@ -1,69 +1,80 @@
 {
-  "project_start": "2026-06-01",
+  "project_start": "2026-06-15",
   "gap_days": 1,
   "tasks": [
     {
       "id": 1,
-      "task": "1. Finalise Excel template - protected sheets, validation rules",
-      "hours": 14,
+      "task": "Finalise Excel template - protected sheets, validation rules",
       "status": "In progress",
       "log": "",
-      "depends_on": []
+      "depends_on": [],
+      "days": 2,
+      "assignee": "Directors, Priscilla",
+      "display_order": 0
     },
     {
       "id": 2,
-      "task": "2. Meeting with directors, sign off template, roll-out plan",
-      "hours": 3.5,
+      "task": "Meeting with directors,  agree on adjustments approach, sign off template, roll-out plan",
       "status": "Not started",
       "log": "",
       "depends_on": [
         1
-      ]
+      ],
+      "days": 1,
+      "assignee": "Directors, Priscilla",
+      "display_order": 1
     },
     {
       "id": 3,
-      "task": "3. Choose database platform and get subscription (Azure SQL)",
-      "hours": 10,
+      "task": "Choose database platform and get subscription (Azure SQL)",
       "status": "Not started",
       "log": "",
       "depends_on": [
-        2
-      ]
+        1
+      ],
+      "days": 1,
+      "assignee": "Directors, Priscilla",
+      "display_order": 2
     },
     {
       "id": 4,
-      "task": "4. Set up a development database instance on chosen platform",
-      "hours": 10,
+      "task": "Set up a development database instance on chosen platform",
       "status": "Not started",
       "log": "",
       "depends_on": [
         3
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 5
     },
     {
       "id": 5,
-      "task": "5. Finalise design on initial schema - tables, relationships, entities",
-      "hours": 18,
+      "task": "Finalise design on initial schema - tables, relationships, entities",
       "status": "Not started",
       "log": "",
       "depends_on": [
         4
-      ]
+      ],
+      "days": 3,
+      "assignee": "Priscilla",
+      "display_order": 6
     },
     {
       "id": 6,
-      "task": "6. Implement schema on dev DB",
-      "hours": 9,
+      "task": "Implement schema on dev DB",
       "status": "Not started",
       "log": "",
       "depends_on": [
         5
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 7
     },
     {
       "id": 7,
-      "task": "7.1. Read and validate the finalised Excel template",
-      "hours": 9,
+      "task": "Read and validate the finalised Excel template",
       "status": "Not started",
       "log": "",
       "depends_on": [
@@ -73,82 +84,98 @@
         4,
         5,
         6
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 8
     },
     {
       "id": 8,
-      "task": "7.2. Extract data from each sheet",
-      "hours": 4,
+      "task": "Extract data from each sheet",
       "status": "Not started",
       "log": "",
       "depends_on": [
         7
-      ]
+      ],
+      "days": 1,
+      "assignee": "Priscilla",
+      "display_order": 9
     },
     {
       "id": 9,
-      "task": "7.3. Clean and transform data",
-      "hours": 20,
+      "task": "Clean and transform data",
       "status": "Not started",
       "log": "",
       "depends_on": [
         8
-      ]
+      ],
+      "days": 3,
+      "assignee": "Priscilla",
+      "display_order": 10
     },
     {
       "id": 10,
-      "task": "7.4. Apply business rules / validation",
-      "hours": 14,
+      "task": "Apply business rules / validation",
       "status": "Not started",
       "log": "",
       "depends_on": [
         9
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 11
     },
     {
       "id": 11,
-      "task": "7.5. Load data into staging tables in the database",
-      "hours": 15,
+      "task": "Load data into staging tables in the database",
       "status": "Not started",
       "log": "",
       "depends_on": [
         10
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 12
     },
     {
       "id": 12,
-      "task": "7.6. Logging; success/failure",
-      "hours": 5,
+      "task": "Logging; success/failure",
       "status": "Not started",
       "log": "",
       "depends_on": [
         11
-      ]
+      ],
+      "days": 1,
+      "assignee": "Priscilla",
+      "display_order": 13
     },
     {
       "id": 13,
-      "task": "7.7. Raise alerts on failure",
-      "hours": 6,
+      "task": "Raise alerts on failure",
       "status": "Not started",
       "log": "",
       "depends_on": [
         12
-      ]
+      ],
+      "days": 1,
+      "assignee": "Priscilla",
+      "display_order": 14
     },
     {
       "id": 14,
-      "task": "7.8. Handle concurrency (simultaneous updates don't corrupt data)",
-      "hours": 8,
+      "task": "Handle concurrency (simultaneous updates don't corrupt data)",
       "status": "Not started",
       "log": "",
       "depends_on": [
         13
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 15
     },
     {
       "id": 15,
-      "task": "8. Test ETL script with sample data",
-      "hours": 20,
+      "task": "Test ETL script with sample data",
       "status": "Not started",
       "log": "",
       "depends_on": [
@@ -160,228 +187,356 @@
         12,
         13,
         14
-      ]
+      ],
+      "days": 3,
+      "assignee": "Priscilla",
+      "display_order": 16
     },
     {
       "id": 16,
-      "task": "9. Finalise schema - adjustments based on testing",
-      "hours": 9,
+      "task": "Finalise schema - adjustments based on testing",
       "status": "Not started",
       "log": "",
       "depends_on": [
         15,
         6
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 17
     },
     {
       "id": 17,
-      "task": "10. Document schema (tables, relationships, data dictionary)",
-      "hours": 14,
+      "task": "Documentation; schema, setup etc",
       "status": "Not started",
       "log": "",
       "depends_on": [
-        16
-      ]
+        3
+      ],
+      "days": 1,
+      "assignee": "Priscilla",
+      "display_order": 4
     },
     {
       "id": 18,
-      "task": "11. FastAPI backend",
-      "hours": 42,
+      "task": "FastAPI backend",
       "status": "Not started",
       "log": "",
       "depends_on": [
         15,
         16,
-        17
-      ]
+        17,
+        39
+      ],
+      "days": 6,
+      "assignee": "Priscilla",
+      "display_order": 21
     },
     {
       "id": 19,
-      "task": "12. PHP frontend (Anthony) - upload form, status feedback",
-      "hours": 3,
+      "task": "PHP frontend (Anthony) - upload form, status feedback",
       "status": "Not started",
       "log": "",
       "depends_on": [
         15,
         16,
-        17
-      ]
+        17,
+        18
+      ],
+      "days": 10,
+      "assignee": "Anthony",
+      "display_order": 22
     },
     {
       "id": 20,
-      "task": "13. Page design (TDL)",
-      "hours": 2,
+      "task": "Page design (TDL)",
       "status": "Not started",
       "log": "",
       "depends_on": [
         15,
         16,
-        17
-      ]
+        17,
+        18
+      ],
+      "days": 10,
+      "assignee": "TDL",
+      "display_order": 23
     },
     {
       "id": 21,
-      "task": "14. Integration test: upload -> DB",
-      "hours": 20,
+      "task": "Integration test: upload -> DB",
       "status": "Not started",
       "log": "",
       "depends_on": [
         18,
         19,
         20
-      ]
+      ],
+      "days": 3,
+      "assignee": "Priscilla, Anthony",
+      "display_order": 24
     },
     {
       "id": 22,
-      "task": "15. Deploy final schema to production",
-      "hours": 10,
+      "task": "Deploy final schema to production",
       "status": "Not started",
       "log": "",
       "depends_on": [
         16,
         21
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 25
     },
     {
       "id": 23,
-      "task": "16. Write detailed database manual",
-      "hours": 21,
+      "task": "Write detailed database manual",
       "status": "Not started",
       "log": "",
       "depends_on": [
-        22
-      ]
+        15,
+        16,
+        17,
+        39
+      ],
+      "starts_with": 18,
+      "ends_with": 22,
+      "days": 20,
+      "assignee": "Priscilla",
+      "display_order": 20
     },
     {
       "id": 24,
-      "task": "17. Determine which tables, relationships, key fields contain data needed for reporting",
-      "hours": 9,
+      "task": "Determine which tables, relationships, key fields contain data needed for reporting",
       "status": "Not started",
       "log": "",
       "depends_on": [
         23
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 26
     },
     {
       "id": 25,
-      "task": "18. Define dashboard requirements - review with directors on outputs",
-      "hours": 7,
+      "task": "Define dashboard requirements - review with directors on outputs",
       "status": "Not started",
       "log": "",
       "depends_on": [
         24
-      ]
+      ],
+      "days": 1,
+      "assignee": "Directors, Priscilla",
+      "display_order": 27
     },
     {
       "id": 26,
-      "task": "19. Set up PowerBI environment - get license and workspace",
-      "hours": 5,
+      "task": "Set up PowerBI environment - get license and workspace",
       "status": "Not started",
       "log": "",
       "depends_on": [
         25
-      ]
+      ],
+      "days": 1,
+      "assignee": "Priscilla",
+      "display_order": 28
     },
     {
       "id": 27,
-      "task": "20. Connect PowerBI to production DB; configure credentials; test connection",
-      "hours": 10,
+      "task": "Connect PowerBI to production DB; configure credentials; test connection",
       "status": "Not started",
       "log": "",
       "depends_on": [
         26,
         22
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 29
     },
     {
       "id": 28,
-      "task": "21. Design data model; define relationships; create DAX measures; hide unused fields",
-      "hours": 42,
+      "task": "Design data model; define relationships; create DAX measures; hide unused fields",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        40
+      ],
+      "days": 6,
+      "assignee": "Priscilla",
+      "display_order": 33
+    },
+    {
+      "id": 29,
+      "task": "Create dashboard wireframes / mockups",
       "status": "Not started",
       "log": "",
       "depends_on": [
         27
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 30
     },
     {
-      "id": 29,
-      "task": "22. Create dashboard wireframes / mockups",
-      "hours": 10,
-      "status": "Not started",
-      "log": "",
-      "depends_on": [
-        28
-      ]
-    },
-    {
-      "id": 30,
-      "task": "23. Build dashboard visuals; apply formatting, colours, labels",
-      "hours": 45,
+      "id": 40,
+      "task": "Meeting with directors to review mockups",
       "status": "Not started",
       "log": "",
       "depends_on": [
         29
-      ]
+      ],
+      "days": 1,
+      "assignee": "Directors, Priscilla",
+      "display_order": 31
+    },
+    {
+      "id": 30,
+      "task": "Build dashboard visuals; apply formatting, colours, labels",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        28,
+        31
+      ],
+      "days": 6,
+      "assignee": "Priscilla",
+      "display_order": 34
     },
     {
       "id": 31,
-      "task": "24. Review dashboard design / branding with TDL",
-      "hours": 4,
+      "task": "Review dashboard design / branding with TDL",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        40
+      ],
+      "days": 1,
+      "assignee": "Priscilla, TDL",
+      "display_order": 32
+    },
+    {
+      "id": 32,
+      "task": "Test dashboard with sample data; compare outputs; validate measures and filters",
       "status": "Not started",
       "log": "",
       "depends_on": [
         30
-      ]
+      ],
+      "days": 3,
+      "assignee": "Priscilla",
+      "display_order": 35
     },
     {
-      "id": 32,
-      "task": "25. Test dashboard with sample data; compare outputs; validate measures and filters",
-      "hours": 20,
-      "status": "Not started",
-      "log": "",
-      "depends_on": [
-        31
-      ]
-    },
-    {
-      "id": 33,
-      "task": "26. Publish dashboard to PowerBI service",
-      "hours": 6,
+      "id": 41,
+      "task": "Review dashboards with directors",
       "status": "Not started",
       "log": "",
       "depends_on": [
         32
-      ]
+      ],
+      "days": 1,
+      "assignee": "Directors, Priscilla",
+      "display_order": 36
+    },
+    {
+      "id": 42,
+      "task": "Implement changes on dashboard",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        41
+      ],
+      "days": 3,
+      "assignee": "Priscilla",
+      "display_order": 37
+    },
+    {
+      "id": 33,
+      "task": "Publish dashboard to PowerBI service",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        42
+      ],
+      "days": 1,
+      "assignee": "Priscilla",
+      "display_order": 38
     },
     {
       "id": 34,
-      "task": "27. Create dashboard documentation",
-      "hours": 14,
+      "task": "Create dashboard documentation",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        25
+      ],
+      "ends_with": 36,
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 28
+    },
+    {
+      "id": 35,
+      "task": "User acceptance testing (UAT) - give access, gather feedback, fix issues",
       "status": "Not started",
       "log": "",
       "depends_on": [
         33
-      ]
-    },
-    {
-      "id": 35,
-      "task": "28. User acceptance testing (UAT) - give access, gather feedback, fix issues",
-      "hours": 20,
-      "status": "Not started",
-      "log": "",
-      "depends_on": [
-        34
-      ]
+      ],
+      "days": 3,
+      "assignee": "Priscilla",
+      "display_order": 39
     },
     {
       "id": 36,
-      "task": "29. Finalise - incorporate feedback, deliver dashboard and documentation, schedule training",
-      "hours": 12,
+      "task": "Finalise - incorporate feedback, deliver dashboard and documentation, schedule training",
       "status": "Not started",
       "log": "",
       "depends_on": [
         35
-      ]
+      ],
+      "days": 2,
+      "assignee": "Priscilla",
+      "display_order": 40
+    },
+    {
+      "id": 37,
+      "task": "Populate projects on template",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        2,
+        3
+      ],
+      "days": 7,
+      "assignee": "Directors",
+      "display_order": 3
+    },
+    {
+      "id": 38,
+      "task": "Meeting with directors; present input --> output data",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        16
+      ],
+      "days": 1,
+      "assignee": "Priscilla, Directors",
+      "display_order": 18
+    },
+    {
+      "id": 39,
+      "task": "Implement changes to schema based on feedback",
+      "status": "Not started",
+      "log": "",
+      "depends_on": [
+        38
+      ],
+      "days": 3,
+      "assignee": "Priscilla",
+      "display_order": 19
     }
   ]
 }

@@ -1,11 +1,21 @@
 """
-Generate tasks-training.json: each module -> Content (7h) + Development (14h).
-Development depends on its content; dev tasks chain serially (one module at a time).
+Generate tasks-training.json: each module → 15 subtasks across 3 phases.
+
+ID scheme:  module_index * 100 + step_offset
+  1.1 → +1,  1.2 → +2,  1.3 → +3,  1.4 → +4,  1.5 → +5
+  2.1 → +11, 2.2 → +12, 2.3 → +13
+  2.4 → +14, 2.5 → +15, 2.6 → +16 (parallel qa group)
+  2.7 → +17, 2.8 → +18
+  3.1 → +21, 3.2 → +22, 3.3 → +23 (parallel upload group)
+
+Rolling tier rule (module N+1 assign step 1.1):
+  starts_with = module N step 1.5 (management content approval start)
 """
-import json
+import json, sys
 from pathlib import Path
 
-# (module_name, subject, department) — order defines dev sequence
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 MODULES = [
     ("What is our standard?", "Introduction / The Costplan Way", "Group"),
     ("Our Values", "Introduction / The Costplan Way", "Group"),
@@ -167,65 +177,126 @@ MODULES = [
     ("Bullying and harrassment", "Delivery", "Administration"),
 ]
 
-CONTENT_HOURS = 7
-DEV_HOURS = 14
 N = len(MODULES)
-assert N == 158, f"Expected 158 modules, got {N}"
+
+
+def tid(mod_idx: int, offset: int) -> int:
+    return mod_idx * 100 + offset
+
+
+def make_module(mod_idx: int, name: str, subject: str, department: str,
+                prev_approval_id: int | None,
+                prev_dev_approval_id: int | None) -> list:
+    """Return all tasks for one module with correct dependencies."""
+
+    # Content phase IDs
+    t11 = tid(mod_idx, 1)
+    t12 = tid(mod_idx, 2)
+    t13 = tid(mod_idx, 3)
+    t14 = tid(mod_idx, 4)
+    t15 = tid(mod_idx, 5)
+
+    # Development phase IDs
+    t21 = tid(mod_idx, 11)
+    t22 = tid(mod_idx, 12)
+    t23 = tid(mod_idx, 13)
+    t24 = tid(mod_idx, 14)
+    t25 = tid(mod_idx, 15)
+    t26 = tid(mod_idx, 16)
+    t27 = tid(mod_idx, 17)
+    t28 = tid(mod_idx, 18)
+
+    # Upload phase IDs
+    t31 = tid(mod_idx, 21)
+    t32 = tid(mod_idx, 22)
+    t33 = tid(mod_idx, 23)
+
+    meta = dict(department=department, subject=subject, module_index=mod_idx)
+
+    def task(id_, step_id, task_name, phase, days, assignee, depends_on,
+             parallel_group=None, milestone=False, starts_with=None):
+        t = {
+            "id": id_,
+            "task": f"{name} - {task_name}",
+            "status": "Not started",
+            "log": "",
+            "depends_on": depends_on,
+            "days": days,
+            "phase": phase,
+            "step_id": step_id,
+            **meta,
+        }
+        if assignee:
+            t["assignee"] = assignee
+        if parallel_group:
+            t["parallel_group"] = parallel_group
+        if milestone:
+            t["milestone"] = True
+        if starts_with is not None:
+            t["starts_with"] = starts_with
+        return t
+
+    # Module N+1 assign (1.1) starts when module N content approval (1.5) starts.
+    t11_starts_with = prev_approval_id  # None for module 1
+
+    tasks = [
+        task(t11, "1.1", "Assign the training", "content", 0, "Priscilla", [],
+             milestone=True, starts_with=t11_starts_with),
+        task(t12, "1.2", "Populate the word document", "content", 5, "Priscilla", [t11]),
+        task(t13, "1.3", "Review and comment", "content", 1, "Priscilla", [t12],
+             parallel_group=f"m{mod_idx}-content-review"),
+        task(t14, "1.4", "Update to word", "content", 1, "Priscilla", [t12],
+             parallel_group=f"m{mod_idx}-content-review"),
+        task(t15, "1.5", "Approval of word document", "content", 3, None, [t13, t14]),
+
+        task(t21, "2.1", "Design slides", "development", 1, "Priscilla", [t15]),
+        task(t22, "2.2", "Input slide content", "development", 0.5, "Priscilla", [t21]),
+        task(t23, "2.3", "Incorporate voice-over", "development", 0.5, "Priscilla", [t22]),
+        task(t24, "2.4", "Functional review", "development", 1, "Priscilla", [t23],
+             parallel_group=f"m{mod_idx}-dev-qa"),
+        task(t25, "2.5", "Design review", "development", 1, "Priscilla", [t23],
+             parallel_group=f"m{mod_idx}-dev-qa"),
+        task(t26, "2.6", "Update", "development", 1, "Priscilla", [t23],
+             parallel_group=f"m{mod_idx}-dev-qa"),
+        task(t27, "2.7", "Submit for approval", "development", 1, "Priscilla", [t24, t25, t26]),
+        task(t28, "2.8", "Approval", "development", 5, None, [t27]),
+
+        task(t31, "3.1", "Save final files to dropbox", "upload", 1, "Priscilla", [t28],
+             parallel_group=f"m{mod_idx}-upload"),
+        task(t32, "3.2", "Upload to platform", "upload", 1, "Priscilla", [t28],
+             parallel_group=f"m{mod_idx}-upload"),
+        task(t33, "3.3", "Go live on platform", "upload", 1, "Priscilla", [t28],
+             parallel_group=f"m{mod_idx}-upload"),
+    ]
+
+    return tasks, t15, t28
 
 
 def main():
-    tasks = []
-    prev_dev_id = None
+    all_tasks = []
+    prev_approval_id = None
+    prev_dev_approval_id = None
 
     for i, (name, subject, department) in enumerate(MODULES, start=1):
-        content_id = i
-        dev_id = N + i
-
-        tasks.append(
-            {
-                "id": content_id,
-                "task": f"{name} — Content",
-                "hours": CONTENT_HOURS,
-                "department": department,
-                "subject": subject,
-                "phase": "content",
-                "module_index": i,
-                "depends_on": [],
-                "status": "Not started",
-                "log": "",
-            }
+        new_tasks, approval_id, dev_approval_id = make_module(
+            i, name, subject, department,
+            prev_approval_id=prev_approval_id,
+            prev_dev_approval_id=prev_dev_approval_id,
         )
-
-        dev_deps = [content_id]
-        if prev_dev_id is not None:
-            dev_deps.append(prev_dev_id)
-
-        tasks.append(
-            {
-                "id": dev_id,
-                "task": f"{name} — Development",
-                "hours": DEV_HOURS,
-                "department": department,
-                "subject": subject,
-                "phase": "development",
-                "module_index": i,
-                "depends_on": dev_deps,
-                "status": "Not started",
-                "log": "",
-            }
-        )
-        prev_dev_id = dev_id
+        all_tasks.extend(new_tasks)
+        prev_approval_id = approval_id
+        prev_dev_approval_id = dev_approval_id
 
     payload = {
-        "project_start": "2026-06-01",
-        "gap_days": 1,
-        "tasks": tasks,
+        "project_start": "2026-06-15",
+        "gap_days": 0,
+        "tasks": all_tasks,
     }
 
     out = Path(__file__).resolve().parent.parent / "data" / "tasks-training.json"
     with open(out, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
-    print(f"Wrote {len(tasks)} tasks ({N} modules) to {out}")
+    print(f"Wrote {len(all_tasks)} tasks ({N} modules × 15 steps) to {out}")
 
 
 if __name__ == "__main__":

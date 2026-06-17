@@ -1,8 +1,12 @@
 import json
 import os
+import tempfile
+import time
+from contextlib import contextmanager
 from datetime import datetime, timedelta
 from typing import List, Dict, Tuple, Optional
 
+from duration import hours_to_days, normalize_days, parse_task_days
 from utils import schedule_tasks, SchedulingError
 
 DATA_DIR = "data"
@@ -10,9 +14,10 @@ DEFAULT_PROJECT_ID = "phase1"
 DEFAULT_PROJECT_START = "2026-06-01"
 DEFAULT_GAP_DAYS = 1
 
-TASK_FIELDS = ("id", "task", "hours", "status", "log", "depends_on")
+TASK_FIELDS = ("id", "task", "days", "status", "log", "depends_on")
 # Training project: optional metadata (preserved on load/save when present)
-TRAINING_TASK_FIELDS = ("department", "subject", "assignee", "phase", "module_index")
+TRAINING_TASK_FIELDS = ("department", "subject", "phase", "module_index", "step_id")
+OPTIONAL_TASK_FIELDS = ("assignee",)
 
 PROJECTS: Dict[str, Dict[str, str]] = {
     "phase1": {
@@ -57,14 +62,17 @@ DEFAULT_DEPENDENCIES: Dict[int, List[int]] = {
     25: [23],
     26: [25],
     27: [26],
-    28: [23, 27],
-    29: [28],
-    30: [26],
-    31: [29, 30],
-    32: [31, 21],
-    33: [31],
-    34: [33],
-    35: [34],
+    28: [40],
+    29: [27],
+    30: [28, 31],
+    40: [29],
+    31: [40],
+    32: [30],
+    41: [32],
+    42: [41],
+    33: [42],
+    34: [25],
+    35: [33],
     36: [34],
     37: [36, 35],
 }
@@ -106,26 +114,78 @@ def ensure_data_dir():
     os.makedirs(DATA_DIR, exist_ok=True)
 
 
+def _clean_delay_entry(entry: Dict) -> Optional[Dict]:
+    if not isinstance(entry, dict):
+        return None
+    date = entry.get("date")
+    reason = entry.get("reason", "")
+    if not date:
+        return None
+    if "days" in entry and entry["days"] is not None:
+        days = normalize_days(entry["days"])
+    elif "hours" in entry and entry["hours"] is not None:
+        days = hours_to_days(entry["hours"])
+    else:
+        return None
+    return {"date": date, "days": days, "reason": reason}
+
+
 def _clean_task(task: Dict) -> Dict:
-    cleaned = {k: task[k] for k in TASK_FIELDS if k in task}
-    cleaned["depends_on"] = list(cleaned.get("depends_on") or [])
+    if "days" in task and task["days"] is not None:
+        days = parse_task_days(task["days"])
+    elif "hours" in task and task["hours"] is not None:
+        days = float(hours_to_days(task["hours"]))
+    else:
+        days = 1.0
+
+    cleaned = {k: task[k] for k in TASK_FIELDS if k in task and k != "days"}
+    cleaned["days"] = days
+    cleaned["depends_on"] = list(cleaned.get("depends_on") or task.get("depends_on") or [])
     fixed = task.get("fixed_start")
     if fixed:
         cleaned["fixed_start"] = fixed
+    fixed_end = task.get("fixed_end")
+    if fixed_end:
+        cleaned["fixed_end"] = str(fixed_end)[:10]
     completed_on = task.get("completed_on")
     if completed_on:
         cleaned["completed_on"] = completed_on
-    delay_hours = task.get("delay_hours")
-    if delay_hours:
-        cleaned["delay_hours"] = float(delay_hours)
+    delay_days = task.get("delay_days")
+    if delay_days:
+        cleaned["delay_days"] = int(delay_days)
+    elif task.get("delay_hours"):
+        cleaned["delay_days"] = hours_to_days(task["delay_hours"])
     delays = task.get("delays")
     if delays:
-        cleaned["delays"] = list(delays)
+        cleaned["delays"] = [
+            e for e in (_clean_delay_entry(d) for d in delays) if e is not None
+        ]
     for key in TRAINING_TASK_FIELDS:
+        if key in task and task[key] is not None:
+            if key == "module_index":
+                try:
+                    cleaned[key] = int(task[key])
+                except (ValueError, TypeError):
+                    pass
+            else:
+                val = str(task[key]).strip()
+                if val:
+                    cleaned[key] = val
+    for key in OPTIONAL_TASK_FIELDS:
         if key in task and task[key] is not None:
             val = str(task[key]).strip()
             if val:
                 cleaned[key] = val
+    display_order = task.get("display_order")
+    if display_order is not None:
+        cleaned["display_order"] = int(display_order)
+    for key in ("starts_with", "ends_with", "starts_when_start_of"):
+        if key in task and task[key] is not None:
+            cleaned[key] = int(task[key])
+    if task.get("parallel_group"):
+        cleaned["parallel_group"] = str(task["parallel_group"]).strip()
+    if task.get("milestone"):
+        cleaned["milestone"] = bool(task["milestone"])
     return cleaned
 
 
@@ -167,7 +227,7 @@ def _default_tasks() -> List[Dict]:
         {
             "id": 1,
             "task": "1. Finalise Excel template",
-            "hours": 14,
+            "days": 2,
             "status": "Not started",
             "log": "",
             "depends_on": [],
@@ -175,12 +235,75 @@ def _default_tasks() -> List[Dict]:
         {
             "id": 2,
             "task": "2. Meeting with directors",
-            "hours": 4,
+            "days": 1,
             "status": "Not started",
             "log": "",
             "depends_on": [1],
         },
     ]
+
+
+LOCK_WAIT_SEC = 30
+LOCK_POLL_SEC = 0.05
+READ_RETRIES = 5
+
+
+@contextmanager
+def _file_lock(path: str):
+    """Exclusive lock so API and scripts never read/write the JSON concurrently."""
+    lock_path = f"{path}.lock"
+    deadline = time.monotonic() + LOCK_WAIT_SEC
+    while time.monotonic() < deadline:
+        try:
+            fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.close(fd)
+            break
+        except FileExistsError:
+            time.sleep(LOCK_POLL_SEC)
+    else:
+        raise TimeoutError(f"Timed out waiting for lock on {path}")
+    try:
+        yield
+    finally:
+        try:
+            os.unlink(lock_path)
+        except FileNotFoundError:
+            pass
+
+
+def _read_json_locked(path: str) -> dict:
+    last_err: Exception | None = None
+    for attempt in range(READ_RETRIES):
+        try:
+            with _file_lock(path):
+                with open(path, "r", encoding="utf-8") as f:
+                    raw = f.read()
+            if not raw.strip():
+                raise ValueError(f"Tasks file is empty: {path}")
+            return json.loads(raw)
+        except json.JSONDecodeError as exc:
+            last_err = exc
+            if attempt + 1 < READ_RETRIES:
+                time.sleep(0.1 * (attempt + 1))
+    assert last_err is not None
+    raise last_err
+
+
+def _atomic_write_json(path: str, payload: dict) -> None:
+    """Write JSON atomically so readers never see a truncated file."""
+    with _file_lock(path):
+        dir_name = os.path.dirname(path) or "."
+        fd, tmp_path = tempfile.mkstemp(dir=dir_name, suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(payload, f, indent=2)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp_path, path)
+        except Exception:
+            if os.path.exists(tmp_path):
+                os.unlink(tmp_path)
+            raise
 
 
 def load_raw(project_id: str = DEFAULT_PROJECT_ID) -> Tuple[str, int, List[Dict]]:
@@ -193,8 +316,7 @@ def load_raw(project_id: str = DEFAULT_PROJECT_ID) -> Tuple[str, int, List[Dict]
         save_raw(project_id, DEFAULT_PROJECT_START, DEFAULT_GAP_DAYS, default_tasks)
         return DEFAULT_PROJECT_START, DEFAULT_GAP_DAYS, default_tasks
 
-    with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    data = _read_json_locked(path)
     return _migrate_legacy(data, project_id)
 
 
@@ -212,8 +334,7 @@ def save_raw(
         "gap_days": gap_days,
         "tasks": [_clean_task(t) for t in tasks],
     }
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2)
+    _atomic_write_json(path, payload)
 
 
 def load_tasks(project_id: str = DEFAULT_PROJECT_ID) -> Tuple[str, int, List[Dict]]:

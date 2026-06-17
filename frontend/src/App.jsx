@@ -5,6 +5,7 @@ import {
   deleteTask,
   fetchTasks,
   logTaskDelay,
+  reorderTasks,
   updateProjectStart,
   updateTask,
 } from "./api";
@@ -12,11 +13,15 @@ import { confirmDeleteTask } from "./taskActions";
 import { DEFAULT_PROJECT_ID, PROJECTS, getProject } from "./projects";
 import GanttChart from "./GanttChart";
 import TrainingFiltersBar from "./TrainingFiltersBar";
+import StatusFilterBar from "./StatusFilterBar";
 import TaskTable from "./TaskTable";
+import TrainingModuleGantt from "./TrainingModuleGantt";
 import TrainingTaskTable from "./TrainingTaskTable";
 import { useTrainingFilters } from "./useTrainingFilters";
-import { getRemainingHours } from "./projectStats";
+import { useStatusFilter } from "./useStatusFilter";
+import { getRemainingDays } from "./projectStats";
 import { getTrainingHourStats } from "./trainingUtils";
+import StatDaysPill from "./StatDaysPill";
 import TaskEditor from "./TaskEditor";
 import TaskLogView from "./TaskLogView";
 import AddTaskModal from "./AddTaskModal";
@@ -36,6 +41,7 @@ export default function App() {
   const isTraining = activeProject === "training";
 
   const trainingFilters = useTrainingFilters(tasks, isTraining);
+  const statusFilter = useStatusFilter(tasks, !isTraining);
 
   const load = useCallback(async () => {
     try {
@@ -74,6 +80,7 @@ export default function App() {
     setEditingTask(null);
     setShowAddTask(false);
     setLoading(true);
+    if (projectId === "training") setView("tasks");
   };
 
   const handleProjectStart = async (value) => {
@@ -94,14 +101,23 @@ export default function App() {
     }
   };
 
+  const handleTaskReorder = async (order) => {
+    try {
+      const result = await reorderTasks(activeProject, order);
+      setTasks(result.tasks);
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
   const handleAppendLog = async (id, message) => {
     const result = await appendTaskLog(activeProject, id, message);
     await load();
     return result.task;
   };
 
-  const handleLogDelay = async (id, hours, reason) => {
-    const result = await logTaskDelay(activeProject, id, hours, reason);
+  const handleLogDelay = async (id, days, reason) => {
+    const result = await logTaskDelay(activeProject, id, days, reason);
     await load();
     return result;
   };
@@ -126,18 +142,25 @@ export default function App() {
     }
   };
 
-  const projectEnd = tasks.length
-    ? tasks.reduce((latest, t) => {
-        const end = (t.end || "").slice(0, 10);
-        return end > latest ? end : latest;
-      }, "")
-    : "—";
-  const totalHours = tasks.reduce((s, t) => s + (t.hours || 0), 0);
-  const remainingHours = getRemainingHours(tasks);
   const trainingHours = isTraining ? getTrainingHourStats(tasks) : null;
+  const projectEnd = isTraining && trainingHours?.projectEnd
+    ? trainingHours.projectEnd
+    : tasks.length
+      ? tasks.reduce((latest, t) => {
+          const end = (t.end || "").slice(0, 10);
+          return end > latest ? end : latest;
+        }, "")
+      : "—";
+  const totalDays = tasks.reduce((s, t) => s + (t.days || 0), 0);
+  const remainingDays = getRemainingDays(tasks);
 
   if (loading) {
-    return <div className="app-shell loading">Loading project schedule…</div>;
+    return (
+      <div className="app-shell loading">
+        Loading project schedule…
+        {activeProject === "training" ? " (2,500+ tasks — may take a moment)" : ""}
+      </div>
+    );
   }
 
   if (error) {
@@ -202,24 +225,33 @@ export default function App() {
             </span>
             {isTraining && trainingHours ? (
               <>
-                <span className="stat-pill">
-                  <strong>{trainingHours.totalProjectHours}</strong> total project hours
-                </span>
-                <span className="stat-pill stat-pill-dev">
-                  <strong>{trainingHours.developmentHours}</strong> development hours
-                </span>
-                <span className="stat-pill stat-pill-remaining">
-                  <strong>{trainingHours.remainingHours}</strong> remaining hours
-                </span>
+                <StatDaysPill
+                  days={trainingHours.calendarSpanDays}
+                  label="calendar span days"
+                />
+                <StatDaysPill
+                  days={trainingHours.totalEffortDays}
+                  label="total effort days"
+                />
+                <StatDaysPill
+                  days={trainingHours.developmentDays}
+                  label="development days"
+                  className="stat-pill-dev"
+                />
+                <StatDaysPill
+                  days={trainingHours.remainingDays}
+                  label="remaining days"
+                  className="stat-pill-remaining"
+                />
               </>
             ) : (
               <>
-                <span className="stat-pill">
-                  <strong>{totalHours}</strong> project hours
-                </span>
-                <span className="stat-pill stat-pill-remaining">
-                  <strong>{remainingHours}</strong> remaining hours
-                </span>
+                <StatDaysPill days={totalDays} label="project days" />
+                <StatDaysPill
+                  days={remainingDays}
+                  label="remaining days"
+                  className="stat-pill-remaining"
+                />
               </>
             )}
             <span className="stat-pill">
@@ -229,7 +261,13 @@ export default function App() {
 
           <section className="card main-panel">
             <div className="card-header">
-              <h2>{view === "gantt" ? "Timeline" : "Tasks"}</h2>
+              <h2>
+                {view === "overview"
+                  ? "Module overview"
+                  : view === "gantt"
+                    ? "Timeline"
+                    : "Tasks"}
+              </h2>
               <div className="card-header-actions">
                 <a
                   className="btn btn-ghost"
@@ -241,6 +279,17 @@ export default function App() {
                   + Add task
                 </button>
                 <div className="view-toggle" role="tablist" aria-label="View mode">
+                  {isTraining ? (
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={view === "overview"}
+                      className={view === "overview" ? "active" : ""}
+                      onClick={() => setView("overview")}
+                    >
+                      Module overview
+                    </button>
+                  ) : null}
                   <button
                     type="button"
                     role="tab"
@@ -262,7 +311,9 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className={`card-body ${view === "tasks" ? "card-body-table" : ""}`}>
+            <div
+              className={`card-body ${view === "tasks" ? "card-body-table" : ""} ${view === "overview" ? "card-body-module-overview" : ""}`}
+            >
               {tasks.length === 0 ? (
                 <p className="empty-state">
                   No tasks yet for this project. Use <strong>+ Add task</strong> to build your
@@ -280,7 +331,13 @@ export default function App() {
                     filteredCount={trainingFilters.filteredCount}
                     totalCount={trainingFilters.totalCount}
                   />
-                  {trainingFilters.filteredTasks.length === 0 ? (
+                  {view === "overview" ? (
+                    <TrainingModuleGantt
+                      tasks={tasks}
+                      onTaskSelect={openLog}
+                      filtersActive={trainingFilters.anyActive}
+                    />
+                  ) : trainingFilters.filteredTasks.length === 0 ? (
                     <p className="empty-state">
                       No tasks match these filters. Try clearing filters.
                     </p>
@@ -293,23 +350,44 @@ export default function App() {
                   ) : (
                     <TrainingTaskTable
                       tasks={trainingFilters.filteredTasks}
+                      allTasks={tasks}
                       onUpdate={handleTaskUpdate}
+                      onReorder={handleTaskReorder}
                       onTaskSelect={openLog}
                       onEditSchedule={openEditor}
                       onDelete={handleDeleteTask}
+                      reorderEnabled={!trainingFilters.anyActive}
                     />
                   )}
                 </div>
-              ) : view === "gantt" ? (
-                <GanttChart tasks={tasks} onTaskSelect={openLog} />
               ) : (
-                <TaskTable
-                  tasks={tasks}
-                  onUpdate={handleTaskUpdate}
-                  onTaskSelect={openLog}
-                  onEditSchedule={openEditor}
-                  onDelete={handleDeleteTask}
-                />
+                <div className="phase1-view-panel">
+                  <StatusFilterBar
+                    filters={statusFilter.filters}
+                    setFilter={statusFilter.setFilter}
+                    clearFilters={statusFilter.clearFilters}
+                    anyActive={statusFilter.anyActive}
+                    filteredCount={statusFilter.filteredCount}
+                    totalCount={statusFilter.totalCount}
+                  />
+                  {statusFilter.filteredTasks.length === 0 ? (
+                    <p className="empty-state">
+                      No tasks match this filter. Try clearing the filter.
+                    </p>
+                  ) : view === "gantt" ? (
+                    <GanttChart tasks={statusFilter.filteredTasks} onTaskSelect={openLog} />
+                  ) : (
+                    <TaskTable
+                      tasks={statusFilter.filteredTasks}
+                      onUpdate={handleTaskUpdate}
+                      onReorder={handleTaskReorder}
+                      onTaskSelect={openLog}
+                      onEditSchedule={openEditor}
+                      onDelete={handleDeleteTask}
+                      reorderEnabled={!statusFilter.anyActive}
+                    />
+                  )}
+                </div>
               )}
             </div>
           </section>

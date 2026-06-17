@@ -17,6 +17,7 @@ export default function TrainingFiltersBar({
             <option value="all">All</option>
             <option value="content">Content</option>
             <option value="development">Development</option>
+            <option value="upload">Upload</option>
           </select>
         </label>
         <label>

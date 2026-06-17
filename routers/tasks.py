@@ -10,6 +10,7 @@ from schemas import (
     ProjectStartUpdate,
     ShiftRequest,
     TaskCreate,
+    TaskReorder,
     TaskUpdate,
 )
 from services import export_service, project_service, task_service
@@ -47,6 +48,14 @@ def update_project_start(
     project_id: str = Depends(get_project_id),
 ):
     return project_service.update_project_start(project_id, update.project_start)
+
+
+@router.put("/tasks/reorder")
+def reorder_tasks(
+    body: TaskReorder,
+    project_id: str = Depends(get_project_id),
+):
+    return task_service.reorder_tasks(project_id, body)
 
 
 @router.put("/tasks/{task_id}")

@@ -17,7 +17,7 @@ export default function TaskLogView({
   const [logHistory, setLogHistory] = useState("");
   const [newLogEntry, setNewLogEntry] = useState("");
   const [addingLog, setAddingLog] = useState(false);
-  const [delayHours, setDelayHours] = useState("");
+  const [delayDays, setDelayDays] = useState("");
   const [delayReason, setDelayReason] = useState("");
   const [loggingDelay, setLoggingDelay] = useState(false);
   const [lastProjectEnd, setLastProjectEnd] = useState(null);
@@ -25,20 +25,20 @@ export default function TaskLogView({
   useEffect(() => {
     if (!task) return;
     setLogHistory(task.log || "");
-  }, [task?.log, task?.delay_hours, task?.delays]);
+  }, [task?.log, task?.delay_days, task?.delays]);
 
   useEffect(() => {
     if (!task) return;
     setNewLogEntry("");
-    setDelayHours("");
+    setDelayDays("");
     setDelayReason("");
     setLastProjectEnd(null);
   }, [task?.id]);
 
   if (!task) return null;
 
-  const totalDelay = task.delay_hours || 0;
-  const effectiveHours = (task.hours || 0) + totalDelay;
+  const totalDelay = task.delay_days || 0;
+  const effectiveDays = (task.days || 0) + totalDelay;
   const delayEntries = task.delays || [];
 
   const handleAddLog = async (e) => {
@@ -58,9 +58,9 @@ export default function TaskLogView({
 
   const handleLogDelay = async (e) => {
     e.preventDefault();
-    const hours = parseFloat(delayHours);
-    if (!hours || hours <= 0) {
-      alert("Enter delay hours greater than zero.");
+    const days = parseInt(delayDays, 10);
+    if (!days || days < 1) {
+      alert("Enter delay of at least 1 day.");
       return;
     }
     if (!delayReason.trim()) {
@@ -69,9 +69,9 @@ export default function TaskLogView({
     }
     setLoggingDelay(true);
     try {
-      const result = await onLogDelay(task.id, hours, delayReason.trim());
+      const result = await onLogDelay(task.id, days, delayReason.trim());
       setLogHistory(result.task.log || "");
-      setDelayHours("");
+      setDelayDays("");
       setDelayReason("");
       if (result.project_end) {
         setLastProjectEnd(result.project_end);
@@ -89,6 +89,8 @@ export default function TaskLogView({
       handleAddLog(e);
     }
   };
+
+  const delayAmount = (entry) => entry.days ?? entry.hours;
 
   return (
     <div className="task-log-page" role="dialog" aria-labelledby="task-log-title">
@@ -121,8 +123,8 @@ export default function TaskLogView({
               {task.start} → {(task.end || "").slice(0, 10)}
             </span>
             <span>
-              {task.hours}h planned
-              {totalDelay > 0 ? ` + ${totalDelay}h delay = ${effectiveHours}h` : ""}
+              {task.days}d planned
+              {totalDelay > 0 ? ` + ${totalDelay}d delay = ${effectiveDays}d` : ""}
             </span>
           </div>
         </div>
@@ -130,7 +132,7 @@ export default function TaskLogView({
         <section className="task-log-delay-section" aria-labelledby="delay-heading">
           <h2 id="delay-heading">Log delay</h2>
           <p className="task-log-delay-hint">
-            Adds project hours to this task and pushes dependent tasks. The project target end
+            Adds work days to this task and pushes dependent tasks. The project target end
             date updates when this task (or work downstream) defines the finish.
           </p>
           {lastProjectEnd && (
@@ -140,14 +142,14 @@ export default function TaskLogView({
           )}
           <form onSubmit={handleLogDelay} className="task-log-delay-form">
             <label className="task-log-delay-field">
-              Delay (project hours)
+              Delay (work days)
               <input
                 type="number"
-                min="0.5"
-                step="0.5"
-                value={delayHours}
-                onChange={(e) => setDelayHours(e.target.value)}
-                placeholder="e.g. 8"
+                min="1"
+                step="1"
+                value={delayDays}
+                onChange={(e) => setDelayDays(e.target.value)}
+                placeholder="e.g. 2"
                 required
               />
             </label>
@@ -168,9 +170,9 @@ export default function TaskLogView({
           {delayEntries.length > 0 && (
             <ul className="task-log-delay-list">
               {delayEntries.map((entry, i) => (
-                <li key={`${entry.date}-${entry.hours}-${i}`}>
+                <li key={`${entry.date}-${delayAmount(entry)}-${i}`}>
                   <span className="task-log-delay-list-date">{entry.date}</span>
-                  <span className="task-log-delay-list-hours">+{entry.hours}h</span>
+                  <span className="task-log-delay-list-hours">+{delayAmount(entry)}d</span>
                   <span>{entry.reason}</span>
                 </li>
               ))}

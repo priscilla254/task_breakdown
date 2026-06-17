@@ -4,7 +4,7 @@ const STATUSES = ["Not started", "In progress", "Completed"];
 
 export default function AddTaskModal({ onCreate, onClose, trainingMode = false }) {
   const [task, setTask] = useState("");
-  const [hours, setHours] = useState(8);
+  const [days, setDays] = useState(1);
   const [dependsOn, setDependsOn] = useState("");
   const [department, setDepartment] = useState("");
   const [subject, setSubject] = useState("");
@@ -22,15 +22,15 @@ export default function AddTaskModal({ onCreate, onClose, trainingMode = false }
         : [];
       const payload = {
         task: task.trim(),
-        hours: parseFloat(hours),
+        days: parseInt(days, 10) || 1,
         depends_on,
         status,
       };
       if (trainingMode) {
         if (department.trim()) payload.department = department.trim();
         if (subject.trim()) payload.subject = subject.trim();
-        if (assignee.trim()) payload.assignee = assignee.trim();
       }
+      if (assignee.trim()) payload.assignee = assignee.trim();
       await onCreate(payload);
       onClose();
     } catch (err) {
@@ -67,14 +67,23 @@ export default function AddTaskModal({ onCreate, onClose, trainingMode = false }
             />
           </label>
           <label>
-            Duration (project hours)
+            Duration (work days)
             <input
               type="number"
-              step="0.5"
-              min="0"
-              value={hours}
-              onChange={(e) => setHours(e.target.value)}
+              step="1"
+              min="1"
+              value={days}
+              onChange={(e) => setDays(e.target.value)}
               required
+            />
+          </label>
+          <label>
+            Assignee
+            <input
+              type="text"
+              value={assignee}
+              onChange={(e) => setAssignee(e.target.value)}
+              placeholder="Who is working on this"
             />
           </label>
           {trainingMode ? (
@@ -95,15 +104,6 @@ export default function AddTaskModal({ onCreate, onClose, trainingMode = false }
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="e.g. Communications"
-                />
-              </label>
-              <label>
-                Assignee
-                <input
-                  type="text"
-                  value={assignee}
-                  onChange={(e) => setAssignee(e.target.value)}
-                  placeholder="Free text — your tracker only"
                 />
               </label>
             </>

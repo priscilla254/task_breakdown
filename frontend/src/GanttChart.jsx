@@ -1,6 +1,8 @@
 import { useMemo, useCallback } from "react";
 import Plot from "react-plotly.js";
+import { assigneeColor, phaseBarColor, taskBarColor, trainingRowAssigneeBorder, uniqueAssignees } from "./assigneeColors";
 import { ganttTaskLabel, sortTrainingTasks } from "./trainingUtils";
+import { sortProjectTasks } from "./taskSort";
 
 const STATUS_COLORS = {
   "Not started": "#7a8d9c",
@@ -12,18 +14,17 @@ function barColor(status) {
   return STATUS_COLORS[status] || STATUS_COLORS["Not started"];
 }
 
-function assigneeAccent(name) {
-  if (!name) return null;
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
-  const hues = [185, 160, 200, 140, 45, 280];
-  return `hsl(${hues[Math.abs(h) % hues.length]}, 55%, 58%)`;
-}
+const TRAINING_GANTT_LIMIT = 100;
 
 export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }) {
   const orderedTasks = useMemo(
-    () => (trainingMode ? sortTrainingTasks(tasks) : tasks),
+    () => (trainingMode ? sortTrainingTasks(tasks) : sortProjectTasks(tasks)),
     [tasks, trainingMode]
+  );
+
+  const assigneeLegend = useMemo(
+    () => (trainingMode ? [] : uniqueAssignees(orderedTasks)),
+    [orderedTasks, trainingMode]
   );
 
   const taskById = useMemo(() => {
@@ -46,11 +47,15 @@ export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }
       y.push(label);
       durations.push(end - start);
       bases.push(start);
-      colors.push(barColor(t.status));
+      colors.push(
+        trainingMode
+          ? phaseBarColor(t.phase)
+          : taskBarColor(t, STATUS_COLORS, t.status)
+      );
       customdata.push([
         t.start,
         (t.end || "").slice(0, 10),
-        t.hours,
+        t.days,
         t.status,
         (t.depends_on || []).join(", ") || "—",
         t.id,
@@ -63,10 +68,10 @@ export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }
     const hovertemplate = trainingMode
       ? "<b>%{y}</b><br>Dept: %{customdata[7]}<br>Subject: %{customdata[8]}<br>" +
         "Assignee: %{customdata[6]}<br>Start: %{customdata[0]}<br>End: %{customdata[1]}<br>" +
-        "Hours: %{customdata[2]}<br>Status: %{customdata[3]}<br>" +
+        "Days: %{customdata[2]}<br>Status: %{customdata[3]}<br>" +
         "Depends on: %{customdata[4]}<br><i>Click to edit</i><extra></extra>"
-      : "<b>%{y}</b><br>Start: %{customdata[0]}<br>End: %{customdata[1]}<br>" +
-        "Hours: %{customdata[2]}<br>Status: %{customdata[3]}<br>" +
+      : "<b>%{y}</b><br>Assignee: %{customdata[6]}<br>Start: %{customdata[0]}<br>End: %{customdata[1]}<br>" +
+        "Days: %{customdata[2]}<br>Status: %{customdata[3]}<br>" +
         "Depends on: %{customdata[4]}<br><i>Click to edit</i><extra></extra>";
 
     return {
@@ -111,7 +116,10 @@ export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }
           font: { color: "#f4f8fb" },
         },
       },
-      height: Math.max(520, orderedTasks.length * (trainingMode ? 34 : 30)),
+      height: Math.max(
+        520,
+        Math.min(orderedTasks.length * (trainingMode ? 34 : 30), trainingMode ? 2400 : 8000)
+      ),
     };
   }, [orderedTasks, trainingMode]);
 
@@ -142,12 +150,24 @@ export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }
     return <p className="loading">No tasks to display</p>;
   }
 
+  if (trainingMode && orderedTasks.length > TRAINING_GANTT_LIMIT) {
+    return (
+      <p className="empty-state">
+        Gantt chart shows up to <strong>{TRAINING_GANTT_LIMIT}</strong> tasks at once (
+        {orderedTasks.length} match your filters). Use department, subject, or phase filters to
+        narrow the list, or switch to <strong>Task list</strong> for the full breakdown.
+      </p>
+    );
+  }
+
   return (
     <div className="gantt-wrap">
       <p className="gantt-hint">
+        Custom row order in the list; bar position reflects scheduled dates. Click{" "}
+        {trainingMode ? "a row or bar" : "a task name or bar"} to open documentation.
         {trainingMode
-          ? "Grouped by department → subject. Click a row or bar to open documentation."
-          : "Click a task name or bar to open documentation"}
+          ? " Bar colour = phase. Row border = assignee."
+          : " Bar colour = assignee when set."}
       </p>
       <div className="gantt-chart-row" style={{ height }}>
         <div
@@ -155,27 +175,30 @@ export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }
           aria-label="Tasks"
         >
           {orderedTasks.map((t) => {
-            const accent = trainingMode ? assigneeAccent(t.assignee) : null;
+            const borderColor = trainingMode
+              ? trainingRowAssigneeBorder(t.assignee)
+              : assigneeColor(t.assignee) || barColor(t.status);
             return (
               <button
                 key={t.id}
                 type="button"
-                className={`gantt-task-label ${trainingMode ? "gantt-task-label-training" : ""}`}
-                style={{
-                  borderLeftColor: accent || barColor(t.status),
-                }}
+                className={`gantt-task-label ${trainingMode ? "gantt-task-label-training" : "gantt-task-label-phase1"}`}
+                style={{ borderLeftColor: borderColor }}
                 onClick={() => selectTask(t)}
-                title={trainingMode ? ganttTaskLabel(t) : "Click to edit"}
+                title={trainingMode ? ganttTaskLabel(t) : t.task}
               >
                 {trainingMode ? (
-                  <>
-                    <span className="gantt-label-text">{ganttTaskLabel(t)}</span>
-                    {t.assignee ? (
-                      <span className="assignee-pill">{t.assignee}</span>
-                    ) : null}
-                  </>
+                  <span className="gantt-label-text">{ganttTaskLabel(t)}</span>
                 ) : (
-                  t.task
+                  <>
+                    <span
+                      className="gantt-status-dot"
+                      style={{ background: barColor(t.status) }}
+                      title={t.status}
+                      aria-label={t.status}
+                    />
+                    <span className="gantt-label-text">{t.task}</span>
+                  </>
                 )}
               </button>
             );
@@ -193,17 +216,54 @@ export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }
         </div>
       </div>
       <div className="legend">
-        {Object.entries(STATUS_COLORS).map(([label, color]) => (
-          <span key={label} className="legend-item">
-            <span className="legend-swatch" style={{ background: color }} />
-            {label}
-          </span>
-        ))}
         {trainingMode ? (
-          <span className="legend-item legend-hint">
-            Left border colour = assignee (when set)
-          </span>
-        ) : null}
+          <>
+            <span className="legend-item legend-hint">Bar colour = phase</span>
+            <span className="legend-item">
+              <span className="legend-swatch legend-swatch-phase-content" />
+              Content
+            </span>
+            <span className="legend-item">
+              <span className="legend-swatch legend-swatch-phase-development" />
+              Development
+            </span>
+            <span className="legend-item">
+              <span className="legend-swatch legend-swatch-phase-upload" />
+              Upload
+            </span>
+            <span className="legend-item legend-hint">Row border = assignee</span>
+            <span className="legend-item">
+              <span className="legend-swatch legend-swatch-priscilla" />
+              Priscilla
+            </span>
+            <span className="legend-item">
+              <span className="legend-swatch legend-swatch-unassigned" />
+              Unassigned
+            </span>
+          </>
+        ) : (
+          <>
+            {assigneeLegend.map((name) => (
+              <span key={name} className="legend-item">
+                <span
+                  className="legend-swatch"
+                  style={{ background: assigneeColor(name) }}
+                />
+                {name}
+              </span>
+            ))}
+            <span className="legend-item legend-hint">
+              Dot beside task name = status. Bar colour = assignee when set.
+            </span>
+            <span className="legend-item legend-hint">Unassigned bars:</span>
+            {Object.entries(STATUS_COLORS).map(([label, color]) => (
+              <span key={`unassigned-${label}`} className="legend-item legend-item-compact">
+                <span className="legend-swatch legend-swatch-sm" style={{ background: color }} />
+                {label}
+              </span>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,114 @@
+2026-06-15T13:31:38.194024 - Updated task 3: {'task': '3. Choose database platform and get subscription (Azure SQL)', 'hours': 10.0, 'status': 'Not started', 'fixed_start': '2026-06-09'}
+2026-06-15T13:32:03.982961 - Updated task 3: {'task': '3. Choose database platform and get subscription (Azure SQL)', 'hours': 10.0, 'status': 'Not started', 'fixed_start': '2026-06-09'}
+2026-06-15T13:32:10.236099 - Updated task 3: {'task': '3. Choose database platform and get subscription (Azure SQL)', 'hours': 10.0, 'status': 'Not started', 'fixed_start': '2026-06-09'}
+2026-06-15T13:33:18.490227 - Updated task 3: {'depends_on': [1]}
+2026-06-15T13:33:20.283965 - Updated task 1: {'depends_on': [1]}
+2026-06-15T13:33:23.961582 - Updated task 3: {'depends_on': [1]}
+2026-06-15T13:33:25.775229 - Updated task 3: {'depends_on': [1]}
+2026-06-15T13:33:28.553770 - Updated task 3: {'depends_on': [1]}
+2026-06-15T13:33:30.123609 - Updated task 3: {'depends_on': [1]}
+2026-06-15T13:35:03.789826 - Reordered 36 tasks (display order)
+2026-06-15T13:35:29.194221 - Reordered 36 tasks (display order)
+2026-06-15T13:35:53.371432 - Updated task 3: {'hours': 1.0}
+2026-06-15T13:36:11.010183 - Updated task 4: {'hours': 10.0}
+2026-06-15T13:36:31.545448 - Updated task 2: {'task': '2. Meeting with directors,  agree on adjustments approach, sign off template, roll-out plan', 'hours': 3.5, 'status': 'Not started', 'fixed_start': None}
+2026-06-15T13:38:28.136989 - Created task 37: Populate projects on template
+2026-06-15T13:48:14.022865 - Reordered 37 tasks (display order)
+2026-06-15T13:48:50.897046 - Updated task 37: {'task': 'Populate projects on template', 'hours': 50.0, 'status': 'Not started', 'fixed_start': None}
+2026-06-15T13:49:08.258162 - Updated task 37: {'depends_on': [2, 3]}
+2026-06-15T13:49:10.118898 - Updated task 4: {'depends_on': [3]}
+2026-06-15T13:49:25.789766 - Updated task 37: {'depends_on': [2, 3]}
+2026-06-15T13:55:12.508549 - Updated task 37: {'depends_on': [2, 3]}
+2026-06-15T14:33:33.388963 - Updated task 2: {'days': 3}
+2026-06-15T14:52:51.392830 - Updated task 1: {'assignee': 'Prisca'}
+2026-06-15T14:52:51.418893 - Updated task 1: {'assignee': ''}
+2026-06-15T14:56:27.690317 - Updated task 1: {'assignee': 'Aaron, James,Emma'}
+2026-06-15T14:56:44.913085 - Updated task 2: {'assignee': 'Aaron, James, Emma, Priscilla'}
+2026-06-15T14:56:52.200211 - Updated task 1: {'assignee': 'Aaron, James,Emma, Priscilla'}
+2026-06-15T14:56:55.084747 - Updated task 3: {'assignee': 'Aaron, James,Emma, Priscilla'}
+2026-06-15T14:57:02.853062 - Updated task 37: {'assignee': 'James, Emma'}
+2026-06-15T14:57:08.092698 - Updated task 4: {'assignee': 'Priscilla'}
+2026-06-15T14:57:12.229066 - Updated task 5: {'assignee': 'Priscilla'}
+2026-06-15T14:57:17.161457 - Updated task 6: {'assignee': 'Priscilla'}
+2026-06-15T14:57:22.391750 - Updated task 7: {'assignee': 'Priscilla'}
+2026-06-15T14:57:26.648222 - Updated task 8: {'assignee': 'Priscilla'}
+2026-06-15T14:57:30.072169 - Updated task 9: {'assignee': 'Priscilla'}
+2026-06-15T14:57:33.603756 - Updated task 10: {'assignee': 'Priscilla'}
+2026-06-15T14:57:37.051770 - Updated task 11: {'assignee': 'Priscilla'}
+2026-06-15T14:57:40.668130 - Updated task 12: {'assignee': 'Priscilla'}
+2026-06-15T14:57:44.734338 - Updated task 13: {'assignee': 'Priscilla'}
+2026-06-15T14:57:48.359528 - Updated task 14: {'assignee': 'Priscilla'}
+2026-06-15T14:57:52.528352 - Updated task 15: {'assignee': 'Priscilla'}
+2026-06-15T14:57:56.613103 - Updated task 16: {'assignee': 'Priscilla'}
+2026-06-15T14:58:00.605632 - Updated task 17: {'assignee': 'Priscilla'}
+2026-06-15T14:58:04.044814 - Updated task 18: {'assignee': 'Priscilla'}
+2026-06-15T14:58:09.705903 - Updated task 19: {'assignee': 'Anthony'}
+2026-06-15T14:58:13.293317 - Updated task 20: {'assignee': 'TDL'}
+2026-06-15T14:58:20.068534 - Updated task 21: {'assignee': 'Priscilla, Anthony'}
+2026-06-15T14:58:24.970200 - Updated task 22: {'assignee': 'Priscilla'}
+2026-06-15T14:58:31.051602 - Updated task 23: {'assignee': 'Priscilla'}
+2026-06-15T14:58:35.795399 - Updated task 24: {'assignee': 'Priscilla'}
+2026-06-15T14:58:49.327901 - Updated task 25: {'assignee': 'Priscilla, Emma, James, Aaron'}
+2026-06-15T14:58:55.142277 - Updated task 26: {'assignee': 'Priscilla'}
+2026-06-15T14:58:59.076312 - Updated task 27: {'assignee': 'Priscilla'}
+2026-06-15T14:59:04.507241 - Updated task 28: {'assignee': 'Priscilla'}
+2026-06-15T14:59:09.018148 - Updated task 29: {'assignee': 'Priscilla'}
+2026-06-15T14:59:14.065212 - Updated task 30: {'assignee': 'Priscilla'}
+2026-06-15T14:59:21.043701 - Updated task 31: {'assignee': 'Priscilla, TDL'}
+2026-06-15T14:59:30.694634 - Updated task 32: {'assignee': 'Priscilla'}
+2026-06-15T14:59:34.307543 - Updated task 33: {'assignee': 'Priscilla'}
+2026-06-15T14:59:38.431056 - Updated task 34: {'assignee': 'Priscilla'}
+2026-06-15T14:59:47.116976 - Updated task 35: {'assignee': 'Priscilla'}
+2026-06-15T14:59:51.931125 - Updated task 36: {'assignee': 'Priscilla'}
+2026-06-15T15:01:24.343802 - Updated task 1: {'assignee': 'Directors'}
+2026-06-15T15:01:29.095268 - Updated task 2: {'assignee': 'Directors'}
+2026-06-15T15:01:33.939970 - Updated task 3: {'assignee': 'Directors'}
+2026-06-15T15:01:51.798225 - Updated task 37: {'assignee': 'Directors'}
+2026-06-15T15:02:04.797364 - Updated task 25: {'assignee': 'Directors, Priscilla'}
+2026-06-15T15:03:26.470965 - Updated task 1: {'assignee': 'Directors, Priscilla'}
+2026-06-15T15:03:30.413590 - Updated task 2: {'assignee': 'Directors, Priscilla'}
+2026-06-15T15:03:38.315477 - Updated task 3: {'assignee': 'Directors, Priscilla'}
+2026-06-15T20:16:16.429228 - Project start set to 2026-06-15
+2026-06-15T20:18:11.949603 - Updated task 1: {'days': 2}
+2026-06-15T20:21:06.712930 - Updated task 1: {'days': 2}
+2026-06-15T20:22:50.193680 - Updated task 1: {'days': 2}
+2026-06-16T08:54:42.144524 - Updated task 37: {'depends_on': [2, 3]}
+2026-06-16T09:02:01.745014 - Updated task 17: {'task': 'Document schema (tables, relationships, data dictionary)', 'days': 18, 'status': 'Not started', 'fixed_start': None, 'assignee': 'Priscilla'}
+2026-06-16T09:03:14.718209 - Updated task 17: {'task': 'Document schema (tables, relationships, data dictionary)', 'days': 18, 'status': 'Not started', 'fixed_start': None, 'assignee': 'Priscilla'}
+2026-06-16T09:11:03.090176 - Updated task 2: {'fixed_start': '2026-07-01', 'fixed_end': '2026-08-15'}
+2026-06-16T09:11:03.115661 - Updated task 2: {'fixed_start': None, 'fixed_end': None}
+2026-06-16T09:23:44.580307 - Updated task 17: {}
+2026-06-16T09:27:32.352636 - Updated task 7: {'fixed_start': '2026-07-15'}
+2026-06-16T09:31:02.319171 - Updated task 7: {'fixed_start': '2026-07-15'}
+2026-06-16T09:31:23.098620 - Reordered 37 tasks (display order)
+2026-06-16T09:32:01.151036 - Reordered 37 tasks (display order)
+2026-06-16T09:32:09.399188 - Updated task 7: {'fixed_start': '2026-07-15'}
+2026-06-16T09:32:32.522743 - Updated task 17: {'task': 'Documentation; schema, setup etc', 'days': 18, 'status': 'Not started', 'fixed_start': None, 'assignee': 'Priscilla'}
+2026-06-16T09:32:39.888917 - Updated task 7: {'fixed_start': '2026-07-15', 'fixed_end': '2026-08-01'}
+2026-06-16T09:38:38.203403 - Created task 38: Meeting with directors; present input --> output data
+2026-06-16T09:39:36.792366 - Created task 39: Implement changes to schema based on feedback
+2026-06-16T09:40:19.500880 - Reordered 39 tasks (display order)
+2026-06-16T09:41:01.547139 - Reordered 39 tasks (display order)
+2026-06-16T09:44:43.130135 - Reordered 39 tasks (display order)
+2026-06-16T09:44:57.762819 - Updated task 23: {'fixed_start': '2026-12-22'}
+2026-06-16T09:44:58.889434 - Updated task 23: {'fixed_start': '2026-11-22'}
+2026-06-16T09:45:01.238986 - Updated task 23: {'fixed_start': '2026-11-11'}
+2026-06-16T09:45:05.022151 - Updated task 23: {'fixed_start': '2026-11-03'}
+2026-06-16T09:45:54.987169 - Updated task 23: {'task': 'Write detailed database manual', 'days': 20, 'status': 'Not started', 'fixed_start': '2026-11-03', 'assignee': 'Priscilla'}
+2026-06-16T09:49:10.206929 - Updated task 17: {'days': 1}
+2026-06-16T09:49:12.758316 - Updated task 17: {}
+2026-06-16T09:50:12.861404 - Updated task 17: {'days': 1}
+2026-06-16T09:50:15.192331 - Updated task 3: {}
+2026-06-16T09:50:15.684390 - Updated task 3: {}
+2026-06-16T09:50:21.653747 - Updated task 3: {}
+2026-06-16T09:50:22.504693 - Updated task 3: {}
+2026-06-16T09:50:23.801790 - Updated task 3: {}
+2026-06-16T09:50:27.067203 - Updated task 3: {}
+2026-06-16T09:50:51.717895 - Updated task 3: {'task': 'Choose database platform and get subscription (Azure SQL)', 'days': 1, 'status': 'Not started', 'fixed_start': None, 'assignee': 'Directors, Priscilla'}
+2026-06-16T09:51:02.503746 - Updated task 17: {}
+2026-06-16T09:51:04.008654 - Updated task 17: {}
+2026-06-16T09:51:06.521538 - Updated task 17: {}
+2026-06-16T09:51:10.156312 - Updated task 17: {}
+2026-06-16T09:51:10.728581 - Updated task 17: {}
+2026-06-16T09:51:13.196474 - Updated task 17: {}
+2026-06-16T09:56:21.814477 - Updated task 23: {'task': 'Write detailed database manual', 'days': 20, 'status': 'Not started', 'fixed_start': None, 'assignee': 'Priscilla'}

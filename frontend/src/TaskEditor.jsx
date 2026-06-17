@@ -5,12 +5,14 @@ const STATUSES = ["Not started", "In progress", "Completed"];
 export default function TaskEditor({ task, onSave, onDelete, onClose, trainingMode = false }) {
   const [name, setName] = useState("");
   const [status, setStatus] = useState("Not started");
-  const [hours, setHours] = useState(0);
+  const [days, setDays] = useState(1);
   const [department, setDepartment] = useState("");
   const [subject, setSubject] = useState("");
   const [assignee, setAssignee] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [useAutoStart, setUseAutoStart] = useState(true);
+  const [useAutoEnd, setUseAutoEnd] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -18,12 +20,14 @@ export default function TaskEditor({ task, onSave, onDelete, onClose, trainingMo
     if (!task) return;
     setName(task.task || "");
     setStatus(task.status || "Not started");
-    setHours(task.hours ?? 0);
+    setDays(task.days ?? 1);
     setDepartment(task.department || "");
     setSubject(task.subject || "");
     setAssignee(task.assignee || "");
     setStartDate(task.fixed_start || task.start || "");
+    setEndDate(task.fixed_end || (task.end || "").slice(0, 10) || "");
     setUseAutoStart(!task.fixed_start);
+    setUseAutoEnd(!task.fixed_end);
   }, [task]);
 
   if (!task) return null;
@@ -35,18 +39,23 @@ export default function TaskEditor({ task, onSave, onDelete, onClose, trainingMo
       alert("Task name is required.");
       return;
     }
+    if (!useAutoEnd && !useAutoStart && endDate && startDate && endDate < startDate) {
+      alert("End date cannot be before start date.");
+      return;
+    }
     setSaving(true);
     try {
       const payload = {
         task: trimmed,
         status,
-        hours: parseFloat(hours),
+        days: parseInt(days, 10) || 1,
         fixed_start: useAutoStart ? null : startDate,
+        fixed_end: useAutoEnd ? null : endDate,
+        assignee: assignee.trim(),
       };
       if (trainingMode) {
         payload.department = department.trim();
         payload.subject = subject.trim();
-        payload.assignee = assignee.trim();
       }
       await onSave(task.id, payload);
       onClose();
@@ -111,17 +120,17 @@ export default function TaskEditor({ task, onSave, onDelete, onClose, trainingMo
                   placeholder="e.g. Introduction"
                 />
               </label>
-              <label>
-                Assignee
-                <input
-                  type="text"
-                  value={assignee}
-                  onChange={(e) => setAssignee(e.target.value)}
-                  placeholder="Who is working on this"
-                />
-              </label>
             </>
           ) : null}
+          <label>
+            Assignee
+            <input
+              type="text"
+              value={assignee}
+              onChange={(e) => setAssignee(e.target.value)}
+              placeholder="Who is working on this"
+            />
+          </label>
           <label>
             Status
             <select value={status} onChange={(e) => setStatus(e.target.value)}>
@@ -133,13 +142,13 @@ export default function TaskEditor({ task, onSave, onDelete, onClose, trainingMo
             </select>
           </label>
           <label>
-            Duration (project hours)
+            Duration (work days)
             <input
               type="number"
-              step="0.5"
-              min="0"
-              value={hours}
-              onChange={(e) => setHours(e.target.value)}
+              step="1"
+              min="1"
+              value={days}
+              onChange={(e) => setDays(e.target.value)}
               required
             />
           </label>
@@ -166,6 +175,31 @@ export default function TaskEditor({ task, onSave, onDelete, onClose, trainingMo
             <p className="modal-hint">
               Start cannot be earlier than predecessor end dates; dependent tasks will shift
               automatically.
+            </p>
+          )}
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={useAutoEnd}
+              onChange={(e) => setUseAutoEnd(e.target.checked)}
+            />
+            Auto-schedule end from days
+          </label>
+          {!useAutoEnd && (
+            <label>
+              End date
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
+              />
+            </label>
+          )}
+          {!useAutoEnd && (
+            <p className="modal-hint">
+              Use a fixed end for parallel work; days still count toward project totals but do not
+              set the bar length while end is manual.
             </p>
           )}
           <div className="modal-meta">

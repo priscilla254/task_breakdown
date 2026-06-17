@@ -1,8 +1,9 @@
 from datetime import datetime
 
 from data_manager import add_log_entry, load_raw, save_tasks
+from duration import normalize_days
 from exceptions import BadRequestError, NotFoundError
-from schemas import DelayRequest, LogRequest, TaskCreate, TaskUpdate
+from schemas import DelayRequest, LogRequest, TaskCreate, TaskReorder, TaskUpdate
 from services.project_service import _schedule
 
 
@@ -19,20 +20,29 @@ def _optional_str(value) -> str | None:
 
 
 def _apply_training_fields(task: dict, body) -> None:
-    for field in ("department", "subject", "assignee"):
+    for field in ("department", "subject"):
         val = _optional_str(getattr(body, field, None))
         if val:
             task[field] = val
+    val = _optional_str(getattr(body, "assignee", None))
+    if val:
+        task["assignee"] = val
 
 
 def _apply_training_updates(task: dict, update: TaskUpdate, fields_set: set) -> None:
-    for field in ("department", "subject", "assignee"):
+    for field in ("department", "subject"):
         if field in fields_set:
             val = _optional_str(getattr(update, field))
             if val:
                 task[field] = val
             else:
                 task.pop(field, None)
+    if "assignee" in fields_set:
+        val = _optional_str(update.assignee)
+        if val:
+            task["assignee"] = val
+        else:
+            task.pop("assignee", None)
 
 
 def create_task(project_id: str, body: TaskCreate):
@@ -45,7 +55,7 @@ def create_task(project_id: str, body: TaskCreate):
     new_task = {
         "id": new_id,
         "task": body.task.strip(),
-        "hours": body.hours,
+        "days": normalize_days(body.days),
         "status": body.status,
         "log": "",
         "depends_on": list(body.depends_on),
@@ -71,8 +81,11 @@ def update_task(project_id: str, task_id: int, update: TaskUpdate):
                 if not name:
                     raise BadRequestError("Task name cannot be empty")
                 t["task"] = name
-            if update.hours is not None:
-                t["hours"] = update.hours
+            if update.days is not None:
+                if update.days < 0:
+                    raise BadRequestError("Days must be 0 or more")
+                from duration import parse_task_days as _ptd
+                t["days"] = _ptd(update.days)
             if update.status is not None:
                 t["status"] = update.status
                 # Workflow rule: when a task is first moved to In progress,
@@ -95,10 +108,28 @@ def update_task(project_id: str, task_id: int, update: TaskUpdate):
                 t["depends_on"] = update.depends_on
             if "fixed_start" in fields_set:
                 if update.fixed_start:
-                    t["fixed_start"] = update.fixed_start
+                    start_val = update.fixed_start[:10]
+                    end_ref = (t.get("fixed_end") or "")[:10]
+                    if end_ref and end_ref < start_val:
+                        raise BadRequestError("End date cannot be before start date")
+                    t["fixed_start"] = start_val
                 else:
                     t.pop("fixed_start", None)
+            if "fixed_end" in fields_set:
+                if update.fixed_end:
+                    end_val = update.fixed_end[:10]
+                    start_ref = (t.get("fixed_start") or "")[:10]
+                    if start_ref and end_val < start_ref:
+                        raise BadRequestError("End date cannot be before start date")
+                    t["fixed_end"] = end_val
+                else:
+                    t.pop("fixed_end", None)
             _apply_training_updates(t, update, fields_set)
+            if "display_order" in fields_set:
+                if update.display_order is None:
+                    t.pop("display_order", None)
+                else:
+                    t["display_order"] = int(update.display_order)
             found = True
             break
     if not found:
@@ -112,6 +143,31 @@ def update_task(project_id: str, task_id: int, update: TaskUpdate):
     _, _, scheduled = _schedule(project_id)
     return {
         "message": "updated",
+        "tasks": scheduled,
+        "project_end": _project_end(scheduled),
+    }
+
+
+def reorder_tasks(project_id: str, body: TaskReorder):
+    project_start, gap_days, tasks = load_raw(project_id)
+    task_ids = {t["id"] for t in tasks}
+    order = list(body.order)
+    if len(order) != len(task_ids):
+        raise BadRequestError(
+            f"order must contain exactly {len(task_ids)} task ids, got {len(order)}"
+        )
+    if set(order) != task_ids:
+        raise BadRequestError("order must contain each task id exactly once")
+
+    order_index = {tid: i for i, tid in enumerate(order)}
+    for t in tasks:
+        t["display_order"] = order_index[t["id"]]
+
+    save_tasks(project_id, project_start, gap_days, tasks)
+    add_log_entry(project_id, f"Reordered {len(order)} tasks (display order)")
+    _, _, scheduled = _schedule(project_id)
+    return {
+        "message": "reordered",
         "tasks": scheduled,
         "project_end": _project_end(scheduled),
     }
@@ -168,8 +224,8 @@ def append_task_log(project_id: str, task_id: int, body: LogRequest):
 
 
 def log_task_delay(project_id: str, task_id: int, body: DelayRequest):
-    if body.hours <= 0:
-        raise BadRequestError("Delay hours must be greater than zero")
+    if body.days < 1:
+        raise BadRequestError("Delay days must be at least 1")
     reason = body.reason.strip()
     if not reason:
         raise BadRequestError("Delay reason is required")
@@ -179,15 +235,15 @@ def log_task_delay(project_id: str, task_id: int, body: DelayRequest):
     for t in tasks:
         if t["id"] == task_id:
             found_task = t
-            t["delay_hours"] = float(t.get("delay_hours") or 0) + body.hours
+            t["delay_days"] = int(t.get("delay_days") or 0) + body.days
             entry = {
                 "date": datetime.now().date().isoformat(),
-                "hours": body.hours,
+                "days": body.days,
                 "reason": reason,
             }
             t.setdefault("delays", []).append(entry)
             stamp = datetime.now().isoformat(timespec="seconds")
-            line = f"{stamp} - DELAY +{body.hours}h: {reason}\n"
+            line = f"{stamp} - DELAY +{body.days}d: {reason}\n"
             t["log"] = (t.get("log") or "") + line
             break
     if not found_task:
@@ -196,8 +252,8 @@ def log_task_delay(project_id: str, task_id: int, body: DelayRequest):
     save_tasks(project_id, project_start, gap_days, tasks)
     add_log_entry(
         project_id,
-        f"Task {task_id} delay +{body.hours}h: {reason} "
-        f"(total delay on task: {found_task.get('delay_hours')}h)",
+        f"Task {task_id} delay +{body.days}d: {reason} "
+        f"(total delay on task: {found_task.get('delay_days')}d)",
     )
     _, _, scheduled = _schedule(project_id)
     updated = next(x for x in scheduled if x["id"] == task_id)
