@@ -1,21 +1,38 @@
+import os
+
 from data_manager import (
     DEFAULT_PROJECT_ID,
     add_log_entry,
     list_projects,
     load_raw,
     load_tasks,
+    resolve_project_id,
     save_tasks,
     shift_project_start,
+    _tasks_path,
 )
 from exceptions import BadRequestError
+from schedule_cache import get_cached, put_cached
 from utils import SchedulingError
 
 
+def _tasks_file_mtime(project_id: str) -> float:
+    path = _tasks_path(project_id)
+    return os.path.getmtime(path) if os.path.exists(path) else 0.0
+
+
 def _schedule(project_id: str):
+    pid = resolve_project_id(project_id)
+    mtime = _tasks_file_mtime(pid)
+    cached = get_cached(pid, mtime)
+    if cached is not None:
+        return cached
     try:
-        return load_tasks(project_id)
+        project_start, gap_days, tasks = load_tasks(pid)
     except SchedulingError as e:
         raise BadRequestError(str(e)) from e
+    put_cached(pid, project_start, gap_days, tasks, mtime)
+    return project_start, gap_days, tasks
 
 
 def get_projects_payload():

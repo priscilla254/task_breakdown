@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Optional
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
@@ -13,7 +14,7 @@ from schemas import (
     TaskReorder,
     TaskUpdate,
 )
-from services import export_service, project_service, task_service
+from services import export_service, project_service, task_service, training_service
 
 router = APIRouter(prefix="/api", tags=["tasks"])
 
@@ -32,6 +33,26 @@ def export_tasks_csv(project_id: str = Depends(get_project_id)):
 @router.get("/tasks")
 def get_tasks(project_id: str = Depends(get_project_id)):
     return project_service.get_tasks_payload(project_id)
+
+
+@router.get("/modules")
+def get_modules(project_id: str = Depends(get_project_id)):
+    return training_service.get_modules_payload(project_id)
+
+
+@router.get("/modules/tasks")
+def get_module_tasks(
+    project_id: str = Depends(get_project_id),
+    module_index: Optional[int] = None,
+    department: Optional[str] = None,
+    subject: Optional[str] = None,
+):
+    return training_service.get_module_tasks_payload(
+        project_id,
+        module_index=module_index,
+        department=department,
+        subject=subject,
+    )
 
 
 @router.post("/tasks")

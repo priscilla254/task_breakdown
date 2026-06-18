@@ -27,7 +27,7 @@ export default function TrainingFiltersBar({
             onChange={(e) => setFilter("department", e.target.value)}
           >
             <option value="all">All</option>
-            {options.departments.map((d) => (
+            {(options.departments || []).map((d) => (
               <option key={d} value={d}>
                 {d}
               </option>
@@ -53,7 +53,7 @@ export default function TrainingFiltersBar({
           >
             <option value="all">All</option>
             <option value="unassigned">Unassigned</option>
-            {options.assignees.map((a) => (
+            {(options.assignees || []).map((a) => (
               <option key={a} value={a}>
                 {a}
               </option>

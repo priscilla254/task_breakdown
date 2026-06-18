@@ -41,6 +41,14 @@ async function request(url, options = {}) {
 export const fetchProjects = () => request("/projects");
 export const fetchTasks = (project = DEFAULT_PROJECT_ID) =>
   request(withProject(project, "/tasks"));
+export const fetchTrainingModules = () => request(withProject("training", "/modules"));
+export const fetchTrainingModuleTasks = (params = {}) => {
+  const qs = new URLSearchParams({ project: "training" });
+  if (params.module_index != null) qs.set("module_index", String(params.module_index));
+  if (params.department) qs.set("department", params.department);
+  if (params.subject) qs.set("subject", params.subject);
+  return request(`/modules/tasks?${qs}`);
+};
 export const createTask = (project, payload) =>
   request(withProject(project, "/tasks"), {
     method: "POST",

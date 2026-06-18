@@ -3,19 +3,30 @@ import {
   EMPTY_TRAINING_FILTERS,
   filterTrainingTasks,
   getTrainingFilterOptions,
+  normalizeTrainingFilterOptions,
 } from "./trainingUtils";
 
-export function useTrainingFilters(tasks, enabled) {
+const EMPTY_OPTIONS = {
+  departments: [],
+  subjects: [],
+  assignees: [],
+  subjectsByDepartment: {},
+};
+
+export function useTrainingFilters(tasks, enabled, externalOptions = null) {
   const [filters, setFilters] = useState(EMPTY_TRAINING_FILTERS);
 
   useEffect(() => {
     if (!enabled) setFilters(EMPTY_TRAINING_FILTERS);
   }, [enabled]);
 
-  const options = useMemo(
-    () => (enabled ? getTrainingFilterOptions(tasks) : { departments: [], subjects: [], assignees: [], subjectsByDepartment: {} }),
-    [tasks, enabled]
-  );
+  const options = useMemo(() => {
+    if (!enabled) return EMPTY_OPTIONS;
+    if (externalOptions) {
+      return normalizeTrainingFilterOptions(externalOptions) || EMPTY_OPTIONS;
+    }
+    return getTrainingFilterOptions(tasks);
+  }, [tasks, enabled, externalOptions]);
 
   const subjectChoices = useMemo(() => {
     if (!enabled) return [];
@@ -27,7 +38,11 @@ export function useTrainingFilters(tasks, enabled) {
 
   useEffect(() => {
     if (!enabled) return;
-    if (filters.subject !== "all" && !subjectChoices.includes(filters.subject)) {
+    if (
+      filters.subject !== "all" &&
+      subjectChoices.length > 0 &&
+      !subjectChoices.includes(filters.subject)
+    ) {
       setFilters((f) => ({ ...f, subject: "all" }));
     }
   }, [enabled, filters.subject, subjectChoices]);
@@ -62,7 +77,7 @@ export function useTrainingFilters(tasks, enabled) {
     subjectChoices,
     filteredTasks,
     anyActive,
-    totalCount: tasks.length,
+    totalCount: options.total_tasks ?? externalOptions?.total_tasks ?? tasks.length,
     filteredCount: filteredTasks.length,
   };
 }

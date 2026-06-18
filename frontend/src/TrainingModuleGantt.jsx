@@ -1,20 +1,40 @@
 import { useMemo, useCallback, useRef, useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 import { assigneeColor } from "./assigneeColors";
-import { buildTrainingModuleSummary } from "./trainingUtils";
 
 const ROW_HEIGHT = 26;
 const PLOT_MARGIN_TOP = 16;
 const PLOT_MARGIN_BOTTOM = 40;
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const X_PAD_DAYS = 21;
 
-export default function TrainingModuleGantt({ tasks, onTaskSelect, filtersActive = false }) {
-  const modules = useMemo(() => buildTrainingModuleSummary(tasks), [tasks]);
+/** Normalize API or client module rows for the chart. */
+function normalizeModule(m) {
+  const rep = m.representativeTask;
+  const name = m.module_name || m.moduleName || "";
+  return {
+    module_index: m.module_index,
+    moduleName: name,
+    department: m.department || "",
+    subject: m.subject || "",
+    start: m.start,
+    end: m.end,
+    spanDays: m.span_days ?? m.spanDays ?? 0,
+    stepCount: m.step_count ?? m.stepCount ?? 0,
+    label: m.label || `M${m.module_index} · ${name}`,
+    representative_task_id: m.representative_task_id ?? rep?.id,
+  };
+}
 
-  const moduleByIndex = useMemo(() => {
-    const map = new Map();
-    for (const m of modules) map.set(m.module_index, m);
-    return map;
-  }, [modules]);
+export default function TrainingModuleGantt({
+  modules: modulesProp,
+  onModuleSelect,
+  filtersActive = false,
+}) {
+  const modules = useMemo(
+    () => (modulesProp || []).map(normalizeModule),
+    [modulesProp]
+  );
 
   const chartHeight =
     PLOT_MARGIN_TOP + modules.length * ROW_HEIGHT + PLOT_MARGIN_BOTTOM;
@@ -41,12 +61,21 @@ export default function TrainingModuleGantt({ tasks, onTaskSelect, filtersActive
     const bases = [];
     const colors = [];
     const customdata = [];
+    let minTime = Infinity;
+    let maxTime = -Infinity;
 
     for (const m of modules) {
       const start = new Date(m.start);
       const end = new Date(m.end);
-      y.push(m.label);
-      durations.push(end - start);
+      const startMs = start.getTime();
+      const endMs = end.getTime();
+      if (Number.isFinite(startMs)) {
+        minTime = Math.min(minTime, startMs);
+        maxTime = Math.max(maxTime, endMs > startMs ? endMs : startMs);
+      }
+      // Unique categorical key — Plotly alphabetises y labels by default (M10 before M2).
+      y.push(`M${String(m.module_index).padStart(3, "0")}`);
+      durations.push(Math.max(endMs - startMs, MS_PER_DAY));
       bases.push(start);
       colors.push(assigneeColor(m.department) || "#32c3e2");
       customdata.push([
@@ -57,7 +86,21 @@ export default function TrainingModuleGantt({ tasks, onTaskSelect, filtersActive
         m.subject || "—",
         m.module_index,
         m.stepCount,
+        m.label,
       ]);
+    }
+
+    const xaxis = {
+      type: "date",
+      gridcolor: "rgba(50,195,226,0.12)",
+      linecolor: "rgba(50,195,226,0.25)",
+      tickfont: { color: "#b8c5d0" },
+    };
+    if (minTime < Infinity && maxTime > -Infinity) {
+      xaxis.range = [
+        new Date(minTime - X_PAD_DAYS * MS_PER_DAY).toISOString(),
+        new Date(maxTime + X_PAD_DAYS * MS_PER_DAY).toISOString(),
+      ];
     }
 
     return {
@@ -74,7 +117,7 @@ export default function TrainingModuleGantt({ tasks, onTaskSelect, filtersActive
           },
           customdata,
           hovertemplate:
-            "<b>%{y}</b><br>Dept: %{customdata[3]}<br>Subject: %{customdata[4]}<br>" +
+            "<b>%{customdata[7]}</b><br>Dept: %{customdata[3]}<br>Subject: %{customdata[4]}<br>" +
             "Start: %{customdata[0]}<br>End: %{customdata[1]}<br>" +
             "Calendar span: %{customdata[2]} days<br>Steps: %{customdata[6]}<br>" +
             "<i>Click to open module</i><extra></extra>",
@@ -84,14 +127,12 @@ export default function TrainingModuleGantt({ tasks, onTaskSelect, filtersActive
         paper_bgcolor: "transparent",
         plot_bgcolor: "transparent",
         font: { family: "DM Sans, sans-serif", color: "#b8c5d0", size: 11 },
-        xaxis: {
-          type: "date",
-          gridcolor: "rgba(50,195,226,0.12)",
-          linecolor: "rgba(50,195,226,0.25)",
-          tickfont: { color: "#b8c5d0" },
-        },
+        xaxis,
         yaxis: {
+          type: "category",
           autorange: "reversed",
+          categoryorder: "array",
+          categoryarray: y,
           showticklabels: false,
           automargin: false,
           gridcolor: "rgba(50,195,226,0.08)",
@@ -111,10 +152,9 @@ export default function TrainingModuleGantt({ tasks, onTaskSelect, filtersActive
 
   const selectModule = useCallback(
     (moduleIndex) => {
-      const m = moduleByIndex.get(moduleIndex);
-      if (m?.representativeTask && onTaskSelect) onTaskSelect(m.representativeTask);
+      if (onModuleSelect) onModuleSelect(moduleIndex);
     },
-    [moduleByIndex, onTaskSelect]
+    [onModuleSelect]
   );
 
   const handleClick = useCallback(
@@ -142,7 +182,7 @@ export default function TrainingModuleGantt({ tasks, onTaskSelect, filtersActive
         staggered pipeline shows when each module enters the schedule; the last bar ends on{" "}
         <strong>{lastEnd}</strong> (matches Target end above).
         {filtersActive
-          ? " Filters apply to task list and detail Gantt only — overview always shows all modules."
+          ? " Department and subject filters apply here; phase and assignee apply on Gantt and task list."
           : null}
       </p>
       <div

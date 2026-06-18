@@ -197,9 +197,12 @@ export function moduleNameFromTask(task) {
 /** One row per module: span from first child start to last child end. */
 export function buildTrainingModuleSummary(tasks) {
   const byModule = new Map();
+  const tasksByModule = new Map();
   for (const t of tasks) {
     const mi = t.module_index;
     if (mi == null) continue;
+    if (!tasksByModule.has(mi)) tasksByModule.set(mi, []);
+    tasksByModule.get(mi).push(t);
     let row = byModule.get(mi);
     if (!row) {
       row = {
@@ -225,6 +228,26 @@ export function buildTrainingModuleSummary(tasks) {
   return [...byModule.values()]
     .sort((a, b) => a.module_index - b.module_index)
     .map((row) => {
+      const modTasks = tasksByModule.get(row.module_index) || [];
+      if (
+        modTasks.length > 0 &&
+        modTasks.every((t) => t.status === "Completed")
+      ) {
+        const completedDates = modTasks
+          .map((t) => toDate(t.completed_on))
+          .filter(Boolean);
+        if (completedDates.length) {
+          const minStart = new Date(
+            Math.min(...completedDates.map((d) => d.getTime()))
+          );
+          const maxEnd = new Date(
+            Math.max(...completedDates.map((d) => d.getTime()))
+          );
+          row.start = minStart.toISOString().slice(0, 10);
+          row.end = maxEnd.toISOString().slice(0, 10);
+          row.allCompleted = true;
+        }
+      }
       const startDt = toDate(row.start);
       const endDt = toDate(row.end);
       const spanDays =
@@ -272,44 +295,44 @@ export const EMPTY_TRAINING_FILTERS = {
   assignee: "all",
 };
 
+/** Normalize API (snake_case) or client filter option payloads. */
+export function normalizeTrainingFilterOptions(raw) {
+  if (!raw) return null;
+  return {
+    departments: raw.departments || [],
+    subjects: raw.subjects || [],
+    assignees: raw.assignees || [],
+    subjectsByDepartment:
+      raw.subjectsByDepartment || raw.subjects_by_department || {},
+    total_tasks: raw.total_tasks,
+  };
+}
+
+/** Filter module summary rows (department / subject only). */
+export function filterTrainingModules(modules, filters) {
+  const { department, subject } = filters;
+  return (modules || []).filter((m) => {
+    if (department !== "all" && (m.department || "") !== department) return false;
+    if (subject !== "all" && (m.subject || "") !== subject) return false;
+    return true;
+  });
+}
+
 import { getRemainingDays } from "./projectStats";
 
 export function getTrainingHourStats(tasks) {
   const totalEffortDays = tasks.reduce((s, t) => s + (Number(t.days) || 0), 0);
-  const developmentDays = tasks
-    .filter((t) => t.phase === "development")
-    .reduce((s, t) => s + (Number(t.days) || 0), 0);
 
   const projectEnd = tasks.reduce((latest, t) => {
     const end = (t.end || "").slice(0, 10);
     return end > latest ? end : latest;
   }, "");
 
-  let calendarSpanDays = 0;
-  if (projectEnd) {
-    const ends = tasks
-      .map((t) => toDate(t.end))
-      .filter(Boolean);
-    const starts = tasks
-      .map((t) => toDate(t.start))
-      .filter(Boolean);
-    if (ends.length && starts.length) {
-      const minStart = new Date(Math.min(...starts.map((d) => d.getTime())));
-      const maxEnd = new Date(Math.max(...ends.map((d) => d.getTime())));
-      calendarSpanDays = Math.max(
-        1,
-        Math.round((maxEnd - minStart) / MS_PER_DAY) + 1
-      );
-    }
-  }
-
   return {
     totalProjectDays: totalEffortDays,
     totalEffortDays,
-    developmentDays,
     remainingDays: getRemainingDays(tasks),
     projectEnd,
-    calendarSpanDays,
   };
 }
 

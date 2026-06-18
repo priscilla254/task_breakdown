@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Tuple, Optional
 
 from duration import hours_to_days, normalize_days, parse_task_days
+from schedule_cache import invalidate_schedule_cache
 from utils import schedule_tasks, SchedulingError
 
 DATA_DIR = "data"
@@ -335,6 +336,7 @@ def save_raw(
         "tasks": [_clean_task(t) for t in tasks],
     }
     _atomic_write_json(path, payload)
+    invalidate_schedule_cache(project_id)
 
 
 def load_tasks(project_id: str = DEFAULT_PROJECT_ID) -> Tuple[str, int, List[Dict]]:

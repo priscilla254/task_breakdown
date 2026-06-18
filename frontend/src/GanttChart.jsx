@@ -15,8 +15,14 @@ function barColor(status) {
 }
 
 const TRAINING_GANTT_LIMIT = 100;
+const TRAINING_GANTT_FILTERED_LIMIT = 1600;
 
-export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }) {
+export default function GanttChart({
+  tasks,
+  onTaskSelect,
+  trainingMode = false,
+  filtersActive = false,
+}) {
   const orderedTasks = useMemo(
     () => (trainingMode ? sortTrainingTasks(tasks) : sortProjectTasks(tasks)),
     [tasks, trainingMode]
@@ -150,12 +156,21 @@ export default function GanttChart({ tasks, onTaskSelect, trainingMode = false }
     return <p className="loading">No tasks to display</p>;
   }
 
-  if (trainingMode && orderedTasks.length > TRAINING_GANTT_LIMIT) {
+  const taskLimit = trainingMode
+    ? filtersActive
+      ? TRAINING_GANTT_FILTERED_LIMIT
+      : TRAINING_GANTT_LIMIT
+    : Infinity;
+
+  if (trainingMode && orderedTasks.length > taskLimit) {
     return (
       <p className="empty-state">
-        Gantt chart shows up to <strong>{TRAINING_GANTT_LIMIT}</strong> tasks at once (
-        {orderedTasks.length} match your filters). Use department, subject, or phase filters to
-        narrow the list, or switch to <strong>Task list</strong> for the full breakdown.
+        Gantt chart shows up to <strong>{taskLimit}</strong> tasks at once (
+        {orderedTasks.length} match your filters).{" "}
+        {filtersActive
+          ? "Try a subject or phase filter to narrow further, or use"
+          : "Use department, subject, or phase filters to narrow the list, or switch to"}{" "}
+        <strong>Task list</strong> for the full breakdown.
       </p>
     );
   }

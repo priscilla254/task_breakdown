@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   appendTaskLog,
   createTask,
   deleteTask,
   fetchTasks,
+  fetchTrainingModuleTasks,
+  fetchTrainingModules,
   logTaskDelay,
   reorderTasks,
   updateProjectStart,
@@ -20,15 +22,40 @@ import TrainingTaskTable from "./TrainingTaskTable";
 import { useTrainingFilters } from "./useTrainingFilters";
 import { useStatusFilter } from "./useStatusFilter";
 import { getRemainingDays } from "./projectStats";
-import { getTrainingHourStats } from "./trainingUtils";
+import {
+  buildTrainingModuleSummary,
+  filterTrainingModules,
+  getTrainingFilterOptions,
+  getTrainingHourStats,
+  normalizeTrainingFilterOptions,
+} from "./trainingUtils";
 import StatDaysPill from "./StatDaysPill";
 import TaskEditor from "./TaskEditor";
 import TaskLogView from "./TaskLogView";
 import AddTaskModal from "./AddTaskModal";
 
+function mergeTasksById(existing, incoming) {
+  const byId = new Map(existing.map((t) => [t.id, t]));
+  for (const t of incoming) byId.set(t.id, t);
+  return [...byId.values()];
+}
+
+function statsFromTasks(tasks) {
+  const hs = getTrainingHourStats(tasks);
+  return {
+    total_effort_days: hs.totalEffortDays,
+    remaining_days: hs.remainingDays,
+    project_end: hs.projectEnd,
+    task_count: tasks.length,
+  };
+}
 export default function App() {
   const [activeProject, setActiveProject] = useState(DEFAULT_PROJECT_ID);
   const [tasks, setTasks] = useState([]);
+  const [trainingModules, setTrainingModules] = useState([]);
+  const [trainingStats, setTrainingStats] = useState(null);
+  const [trainingFilterOptions, setTrainingFilterOptions] = useState(null);
+  const [tasksLoading, setTasksLoading] = useState(false);
   const [projectStart, setProjectStart] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,15 +67,59 @@ export default function App() {
   const projectMeta = getProject(activeProject);
   const isTraining = activeProject === "training";
 
-  const trainingFilters = useTrainingFilters(tasks, isTraining);
+  const filterOptionsForHook = useMemo(() => {
+    if (!trainingFilterOptions) return null;
+    return normalizeTrainingFilterOptions({
+      ...trainingFilterOptions,
+      total_tasks: trainingStats?.task_count ?? trainingFilterOptions.total_tasks,
+    });
+  }, [trainingFilterOptions, trainingStats]);
+
+  const trainingFilters = useTrainingFilters(tasks, isTraining, filterOptionsForHook);
   const statusFilter = useStatusFilter(tasks, !isTraining);
+  const tasksRequestRef = useRef(0);
+
+  const filteredModules = useMemo(
+    () => (isTraining ? filterTrainingModules(trainingModules, trainingFilters.filters) : []),
+    [isTraining, trainingModules, trainingFilters.filters]
+  );
+
+  const needsTaskSliceForFilters =
+    trainingFilters.filters.phase !== "all" ||
+    trainingFilters.filters.assignee !== "all";
+
+  const filteredDisplayCount = useMemo(() => {
+    if (!isTraining) return 0;
+    if (tasks.length > 0 || needsTaskSliceForFilters) {
+      return trainingFilters.filteredCount;
+    }
+    return filteredModules.reduce((sum, m) => sum + (m.step_count || 0), 0);
+  }, [
+    isTraining,
+    tasks.length,
+    needsTaskSliceForFilters,
+    trainingFilters.filteredCount,
+    filteredModules,
+  ]);
 
   const load = useCallback(async () => {
     try {
       setError(null);
-      const taskData = await fetchTasks(activeProject);
-      setTasks(taskData.tasks);
-      setProjectStart(taskData.project_start);
+      if (activeProject === "training") {
+        const data = await fetchTrainingModules();
+        setTrainingModules(data.modules);
+        setTrainingStats(data.stats);
+        setTrainingFilterOptions(data.filter_options);
+        setProjectStart(data.project_start);
+        setTasks([]);
+      } else {
+        const taskData = await fetchTasks(activeProject);
+        setTasks(taskData.tasks);
+        setProjectStart(taskData.project_start);
+        setTrainingModules([]);
+        setTrainingStats(null);
+        setTrainingFilterOptions(null);
+      }
     } catch (e) {
       setError(e.message);
     } finally {
@@ -56,10 +127,45 @@ export default function App() {
     }
   }, [activeProject]);
 
+  const loadTrainingDetailTasks = useCallback(async (filters) => {
+    const requestId = ++tasksRequestRef.current;
+    try {
+      setTasksLoading(true);
+      const params = {};
+      if (filters.department !== "all") params.department = filters.department;
+      if (filters.subject !== "all") params.subject = filters.subject;
+      const data = await fetchTrainingModuleTasks(params);
+      if (requestId !== tasksRequestRef.current) return;
+      setTasks(data.tasks);
+    } catch (e) {
+      if (requestId !== tasksRequestRef.current) return;
+      alert(e.message);
+    } finally {
+      if (requestId === tasksRequestRef.current) setTasksLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     setLoading(true);
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (!isTraining || loading) return;
+    const onDetailView = view !== "overview";
+    if (!onDetailView && !needsTaskSliceForFilters) return;
+    loadTrainingDetailTasks(trainingFilters.filters);
+  }, [
+    isTraining,
+    loading,
+    view,
+    needsTaskSliceForFilters,
+    trainingFilters.filters.phase,
+    trainingFilters.filters.department,
+    trainingFilters.filters.subject,
+    trainingFilters.filters.assignee,
+    loadTrainingDetailTasks,
+  ]);
 
   useEffect(() => {
     if (!logTask) return;
@@ -80,13 +186,32 @@ export default function App() {
     setEditingTask(null);
     setShowAddTask(false);
     setLoading(true);
-    if (projectId === "training") setView("tasks");
+    if (projectId === "training") setView("overview");
   };
+
+  const applyScheduleResponse = useCallback(
+    (result) => {
+      if (result?.tasks) {
+        setTasks(result.tasks);
+        if (activeProject === "training") {
+          setTrainingModules(buildTrainingModuleSummary(result.tasks));
+          const stats = statsFromTasks(result.tasks);
+          setTrainingStats(stats);
+          setTrainingFilterOptions({
+            ...getTrainingFilterOptions(result.tasks),
+            total_tasks: stats.task_count,
+          });
+        }
+      }
+      if (result?.project_start) setProjectStart(result.project_start);
+    },
+    [activeProject]
+  );
 
   const handleProjectStart = async (value) => {
     try {
-      await updateProjectStart(activeProject, value);
-      await load();
+      const result = await updateProjectStart(activeProject, value);
+      applyScheduleResponse(result);
     } catch (e) {
       alert(e.message);
     }
@@ -94,8 +219,8 @@ export default function App() {
 
   const handleTaskUpdate = async (id, payload) => {
     try {
-      await updateTask(activeProject, id, payload);
-      await load();
+      const result = await updateTask(activeProject, id, payload);
+      applyScheduleResponse(result);
     } catch (e) {
       alert(e.message);
     }
@@ -104,7 +229,7 @@ export default function App() {
   const handleTaskReorder = async (order) => {
     try {
       const result = await reorderTasks(activeProject, order);
-      setTasks(result.tasks);
+      applyScheduleResponse(result);
     } catch (e) {
       alert(e.message);
     }
@@ -112,45 +237,72 @@ export default function App() {
 
   const handleAppendLog = async (id, message) => {
     const result = await appendTaskLog(activeProject, id, message);
-    await load();
+    applyScheduleResponse(result);
     return result.task;
   };
 
   const handleLogDelay = async (id, days, reason) => {
     const result = await logTaskDelay(activeProject, id, days, reason);
-    await load();
+    applyScheduleResponse(result);
     return result;
   };
 
   const openLog = (task) => setLogTask(task);
   const openEditor = (task) => setEditingTask(task);
 
+  const handleModuleSelect = useCallback(
+    async (moduleIndex) => {
+      try {
+        const data = await fetchTrainingModuleTasks({ module_index: moduleIndex });
+        setTasks((prev) => mergeTasksById(prev, data.tasks));
+        const mod = trainingModules.find((m) => m.module_index === moduleIndex);
+        const repId = mod?.representative_task_id ?? mod?.representativeTask?.id;
+        const task = data.tasks.find((t) => t.id === repId) || data.tasks[0];
+        if (task) setLogTask(task);
+      } catch (e) {
+        alert(e.message);
+      }
+    },
+    [trainingModules]
+  );
+
   const handleCreateTask = async (payload) => {
-    await createTask(activeProject, payload);
-    await load();
+    const result = await createTask(activeProject, payload);
+    applyScheduleResponse(result);
   };
 
   const handleDeleteTask = async (task) => {
     if (!confirmDeleteTask(task, tasks)) return;
     try {
-      await deleteTask(activeProject, task.id);
+      const result = await deleteTask(activeProject, task.id);
       if (logTask?.id === task.id) setLogTask(null);
       if (editingTask?.id === task.id) setEditingTask(null);
-      await load();
+      applyScheduleResponse(result);
     } catch (e) {
       alert(e.message);
     }
   };
 
-  const trainingHours = isTraining ? getTrainingHourStats(tasks) : null;
-  const projectEnd = isTraining && trainingHours?.projectEnd
-    ? trainingHours.projectEnd
+  const trainingHours = isTraining
+    ? trainingStats
+      ? {
+          totalEffortDays: trainingStats.total_effort_days,
+          remainingDays: trainingStats.remaining_days,
+          projectEnd: trainingStats.project_end,
+        }
+      : getTrainingHourStats(tasks)
+    : null;
+  const projectEnd = isTraining
+    ? trainingHours?.projectEnd || "—"
     : tasks.length
       ? tasks.reduce((latest, t) => {
           const end = (t.end || "").slice(0, 10);
           return end > latest ? end : latest;
         }, "")
       : "—";
+  const taskCount = isTraining
+    ? trainingStats?.task_count ?? tasks.length
+    : tasks.length;
   const totalDays = tasks.reduce((s, t) => s + (t.days || 0), 0);
   const remainingDays = getRemainingDays(tasks);
 
@@ -158,7 +310,6 @@ export default function App() {
     return (
       <div className="app-shell loading">
         Loading project schedule…
-        {activeProject === "training" ? " (2,500+ tasks — may take a moment)" : ""}
       </div>
     );
   }
@@ -221,22 +372,13 @@ export default function App() {
 
           <div className="stats-row">
             <span className="stat-pill">
-              <strong>{tasks.length}</strong> tasks
+              <strong>{taskCount}</strong> tasks
             </span>
             {isTraining && trainingHours ? (
               <>
                 <StatDaysPill
-                  days={trainingHours.calendarSpanDays}
-                  label="calendar span days"
-                />
-                <StatDaysPill
                   days={trainingHours.totalEffortDays}
                   label="total effort days"
-                />
-                <StatDaysPill
-                  days={trainingHours.developmentDays}
-                  label="development days"
-                  className="stat-pill-dev"
                 />
                 <StatDaysPill
                   days={trainingHours.remainingDays}
@@ -314,12 +456,13 @@ export default function App() {
             <div
               className={`card-body ${view === "tasks" ? "card-body-table" : ""} ${view === "overview" ? "card-body-module-overview" : ""}`}
             >
-              {tasks.length === 0 ? (
-                <p className="empty-state">
-                  No tasks yet for this project. Use <strong>+ Add task</strong> to build your
-                  breakdown.
-                </p>
-              ) : isTraining ? (
+              {isTraining ? (
+                trainingModules.length === 0 ? (
+                  <p className="empty-state">
+                    No modules yet for this project. Use <strong>+ Add task</strong> to build your
+                    breakdown.
+                  </p>
+                ) : (
                 <div className="training-view-panel">
                   <TrainingFiltersBar
                     filters={trainingFilters.filters}
@@ -328,15 +471,17 @@ export default function App() {
                     options={trainingFilters.options}
                     subjectChoices={trainingFilters.subjectChoices}
                     anyActive={trainingFilters.anyActive}
-                    filteredCount={trainingFilters.filteredCount}
+                    filteredCount={filteredDisplayCount}
                     totalCount={trainingFilters.totalCount}
                   />
                   {view === "overview" ? (
                     <TrainingModuleGantt
-                      tasks={tasks}
-                      onTaskSelect={openLog}
+                      modules={filteredModules}
+                      onModuleSelect={handleModuleSelect}
                       filtersActive={trainingFilters.anyActive}
                     />
+                  ) : tasksLoading ? (
+                    <p className="loading">Loading tasks…</p>
                   ) : trainingFilters.filteredTasks.length === 0 ? (
                     <p className="empty-state">
                       No tasks match these filters. Try clearing filters.
@@ -346,6 +491,7 @@ export default function App() {
                       tasks={trainingFilters.filteredTasks}
                       onTaskSelect={openLog}
                       trainingMode
+                      filtersActive={trainingFilters.anyActive}
                     />
                   ) : (
                     <TrainingTaskTable
@@ -360,6 +506,12 @@ export default function App() {
                     />
                   )}
                 </div>
+                )
+              ) : tasks.length === 0 ? (
+                <p className="empty-state">
+                  No tasks yet for this project. Use <strong>+ Add task</strong> to build your
+                  breakdown.
+                </p>
               ) : (
                 <div className="phase1-view-panel">
                   <StatusFilterBar

@@ -219,7 +219,7 @@ def append_task_log(project_id: str, task_id: int, body: LogRequest):
             )
             _, _, scheduled = _schedule(project_id)
             updated = next(x for x in scheduled if x["id"] == task_id)
-            return {"message": "logged", "task": updated}
+            return {"message": "logged", "task": updated, "tasks": scheduled}
     raise NotFoundError("Task not found")
 
 
