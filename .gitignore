@@ -9,3 +9,6 @@ venv/
 
 # Frontend deps (dist is built on deploy via nixpacks)
 frontend/node_modules/
+
+# Generated Gantt exports
+exports/

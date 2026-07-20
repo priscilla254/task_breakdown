@@ -417,6 +417,12 @@ export default function App() {
                 >
                   Download CSV
                 </a>
+                <a
+                  className="btn btn-ghost"
+                  href={`/api/export/html?project=${activeProject}`}
+                >
+                  Download HTML
+                </a>
                 <button type="button" className="btn btn-primary" onClick={() => setShowAddTask(true)}>
                   + Add task
                 </button>

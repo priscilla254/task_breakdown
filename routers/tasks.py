@@ -30,6 +30,17 @@ def export_tasks_csv(project_id: str = Depends(get_project_id)):
     )
 
 
+@router.get("/export/html")
+def export_tasks_html(project_id: str = Depends(get_project_id)):
+    html = export_service.tasks_to_html(project_id, embed_js=False)
+    filename = f"{project_id}-gantt-{date.today().isoformat()}.html"
+    return Response(
+        content=html,
+        media_type="text/html; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
 @router.get("/tasks")
 def get_tasks(project_id: str = Depends(get_project_id)):
     return project_service.get_tasks_payload(project_id)
