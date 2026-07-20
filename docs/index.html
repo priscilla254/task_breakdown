@@ -42,7 +42,16 @@
   #summary { margin-left: auto; align-self: center; font-size: 0.82rem; color: #b8c5d0; white-space: nowrap; }
   .card { background: rgba(0,0,0,0.15); border-radius: 12px; padding: 16px; margin-bottom: 24px; }
   .card h2 { margin: 0 0 12px; font-size: 1rem; color: #d7e2ea; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; }
+  #expand-gantt {
+    background: transparent; border: 1px solid rgba(50,195,226,0.3); color: #b8c5d0;
+    padding: 6px 12px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 0.78rem; margin-bottom: 12px;
+  }
+  #expand-gantt:hover { border-color: #32c3e2; color: #32c3e2; }
   #gantt { width: 100%; }
+  #gantt-card:fullscreen { background: #3a4856; padding: 20px; display: flex; flex-direction: column; }
+  #gantt-card:fullscreen #gantt { flex: 1; height: 100% !important; }
+  #gantt-card::backdrop { background: #3a4856; }
   .table-scroll { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
   th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); white-space: nowrap; }
@@ -70,8 +79,11 @@
     <button type="button" id="clear-filters">Clear filters</button>
     <span id="summary"></span>
   </div>
-  <div class="card">
-    <h2>Timeline</h2>
+  <div class="card" id="gantt-card">
+    <div class="card-head">
+      <h2>Timeline</h2>
+      <button type="button" id="expand-gantt">⛶ Full screen</button>
+    </div>
     <div id="gantt"></div>
   </div>
   <div class="card">
@@ -334,6 +346,24 @@ window.__DASHBOARD__ = {"generated": "2026-07-20", "default": "phase1", "project
     document.getElementById("search").value = "";
     renderFilterControls();
     renderAll();
+  });
+
+  var ganttCard = document.getElementById("gantt-card");
+  var expandBtn = document.getElementById("expand-gantt");
+  expandBtn.addEventListener("click", function () {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else if (ganttCard.requestFullscreen) {
+      ganttCard.requestFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    var active = document.fullscreenElement === ganttCard;
+    expandBtn.textContent = active ? "⛶ Exit full screen (Esc)" : "⛶ Full screen";
+    setTimeout(function () {
+      var el = document.getElementById("gantt");
+      if (window.Plotly && el && el.data) Plotly.Plots.resize(el);
+    }, 60);
   });
 
   renderTabs();
