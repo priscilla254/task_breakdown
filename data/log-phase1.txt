@@ -112,3 +112,8 @@
 2026-06-16T09:51:10.728581 - Updated task 17: {}
 2026-06-16T09:51:13.196474 - Updated task 17: {}
 2026-06-16T09:56:21.814477 - Updated task 23: {'task': 'Write detailed database manual', 'days': 20, 'status': 'Not started', 'fixed_start': None, 'assignee': 'Priscilla'}
+2026-06-18T12:26:52.604653 - Updated task 37: {'task': 'Populate projects on template', 'days': 20, 'status': 'Not started', 'fixed_start': None, 'fixed_end': None, 'assignee': 'Directors'}
+2026-06-18T12:27:31.618628 - Updated task 17: {'task': 'Documentation; schema, setup etc', 'days': 20, 'status': 'Not started', 'fixed_start': None, 'fixed_end': None, 'assignee': 'Priscilla'}
+2026-06-18T12:27:35.761776 - Updated task 17: {'task': 'Documentation; schema, setup etc', 'days': 20, 'status': 'Not started', 'fixed_start': None, 'fixed_end': None, 'assignee': 'Priscilla'}
+2026-07-28T11:21:28.045598 - Project start set to 2026-07-15
+2026-07-28T11:21:30.660119 - Project start set to 2026-07-29

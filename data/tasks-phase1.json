@@ -1,5 +1,5 @@
 {
-  "project_start": "2026-06-15",
+  "project_start": "2026-07-29",
   "gap_days": 1,
   "tasks": [
     {
@@ -8,7 +8,7 @@
       "status": "In progress",
       "log": "",
       "depends_on": [],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Directors, Priscilla",
       "display_order": 0
     },
@@ -20,7 +20,7 @@
       "depends_on": [
         1
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Directors, Priscilla",
       "display_order": 1
     },
@@ -32,7 +32,7 @@
       "depends_on": [
         1
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Directors, Priscilla",
       "display_order": 2
     },
@@ -44,7 +44,7 @@
       "depends_on": [
         3
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 5
     },
@@ -56,7 +56,7 @@
       "depends_on": [
         4
       ],
-      "days": 3,
+      "days": 3.0,
       "assignee": "Priscilla",
       "display_order": 6
     },
@@ -68,7 +68,7 @@
       "depends_on": [
         5
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 7
     },
@@ -85,7 +85,7 @@
         5,
         6
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 8
     },
@@ -97,7 +97,7 @@
       "depends_on": [
         7
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Priscilla",
       "display_order": 9
     },
@@ -109,7 +109,7 @@
       "depends_on": [
         8
       ],
-      "days": 3,
+      "days": 3.0,
       "assignee": "Priscilla",
       "display_order": 10
     },
@@ -121,7 +121,7 @@
       "depends_on": [
         9
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 11
     },
@@ -133,7 +133,7 @@
       "depends_on": [
         10
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 12
     },
@@ -145,7 +145,7 @@
       "depends_on": [
         11
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Priscilla",
       "display_order": 13
     },
@@ -157,7 +157,7 @@
       "depends_on": [
         12
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Priscilla",
       "display_order": 14
     },
@@ -169,7 +169,7 @@
       "depends_on": [
         13
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 15
     },
@@ -188,7 +188,7 @@
         13,
         14
       ],
-      "days": 3,
+      "days": 3.0,
       "assignee": "Priscilla",
       "display_order": 16
     },
@@ -201,7 +201,7 @@
         15,
         6
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 17
     },
@@ -213,7 +213,7 @@
       "depends_on": [
         3
       ],
-      "days": 1,
+      "days": 20.0,
       "assignee": "Priscilla",
       "display_order": 4
     },
@@ -228,7 +228,7 @@
         17,
         39
       ],
-      "days": 6,
+      "days": 6.0,
       "assignee": "Priscilla",
       "display_order": 21
     },
@@ -243,7 +243,7 @@
         17,
         18
       ],
-      "days": 10,
+      "days": 10.0,
       "assignee": "Anthony",
       "display_order": 22
     },
@@ -258,7 +258,7 @@
         17,
         18
       ],
-      "days": 10,
+      "days": 10.0,
       "assignee": "TDL",
       "display_order": 23
     },
@@ -272,7 +272,7 @@
         19,
         20
       ],
-      "days": 3,
+      "days": 3.0,
       "assignee": "Priscilla, Anthony",
       "display_order": 24
     },
@@ -285,7 +285,7 @@
         16,
         21
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 25
     },
@@ -300,11 +300,11 @@
         17,
         39
       ],
-      "starts_with": 18,
-      "ends_with": 22,
-      "days": 20,
+      "days": 20.0,
       "assignee": "Priscilla",
-      "display_order": 20
+      "display_order": 20,
+      "starts_with": 18,
+      "ends_with": 22
     },
     {
       "id": 24,
@@ -314,7 +314,7 @@
       "depends_on": [
         23
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 26
     },
@@ -326,7 +326,7 @@
       "depends_on": [
         24
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Directors, Priscilla",
       "display_order": 27
     },
@@ -338,7 +338,7 @@
       "depends_on": [
         25
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Priscilla",
       "display_order": 28
     },
@@ -351,7 +351,7 @@
         26,
         22
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 29
     },
@@ -363,7 +363,7 @@
       "depends_on": [
         40
       ],
-      "days": 6,
+      "days": 6.0,
       "assignee": "Priscilla",
       "display_order": 33
     },
@@ -375,7 +375,7 @@
       "depends_on": [
         27
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 30
     },
@@ -387,7 +387,7 @@
       "depends_on": [
         29
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Directors, Priscilla",
       "display_order": 31
     },
@@ -400,7 +400,7 @@
         28,
         31
       ],
-      "days": 6,
+      "days": 6.0,
       "assignee": "Priscilla",
       "display_order": 34
     },
@@ -412,7 +412,7 @@
       "depends_on": [
         40
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Priscilla, TDL",
       "display_order": 32
     },
@@ -424,7 +424,7 @@
       "depends_on": [
         30
       ],
-      "days": 3,
+      "days": 3.0,
       "assignee": "Priscilla",
       "display_order": 35
     },
@@ -436,7 +436,7 @@
       "depends_on": [
         32
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Directors, Priscilla",
       "display_order": 36
     },
@@ -448,7 +448,7 @@
       "depends_on": [
         41
       ],
-      "days": 3,
+      "days": 3.0,
       "assignee": "Priscilla",
       "display_order": 37
     },
@@ -460,7 +460,7 @@
       "depends_on": [
         42
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Priscilla",
       "display_order": 38
     },
@@ -472,10 +472,10 @@
       "depends_on": [
         25
       ],
-      "ends_with": 36,
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
-      "display_order": 28
+      "display_order": 28,
+      "ends_with": 36
     },
     {
       "id": 35,
@@ -485,7 +485,7 @@
       "depends_on": [
         33
       ],
-      "days": 3,
+      "days": 3.0,
       "assignee": "Priscilla",
       "display_order": 39
     },
@@ -497,7 +497,7 @@
       "depends_on": [
         35
       ],
-      "days": 2,
+      "days": 2.0,
       "assignee": "Priscilla",
       "display_order": 40
     },
@@ -510,7 +510,7 @@
         2,
         3
       ],
-      "days": 7,
+      "days": 20.0,
       "assignee": "Directors",
       "display_order": 3
     },
@@ -522,7 +522,7 @@
       "depends_on": [
         16
       ],
-      "days": 1,
+      "days": 1.0,
       "assignee": "Priscilla, Directors",
       "display_order": 18
     },
@@ -534,7 +534,7 @@
       "depends_on": [
         38
       ],
-      "days": 3,
+      "days": 3.0,
       "assignee": "Priscilla",
       "display_order": 19
     }
